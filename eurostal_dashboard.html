@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EUROSTAL — Dashboard Εταιρείας</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1c2230;
+  --surface3: #21262d;
+  --border: #30363d;
+  --border2: #3d444d;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --text3: #6e7681;
+  --accent: #1f6feb;
+  --accent2: #388bfd;
+  --green: #3fb950;
+  --green-bg: #0d2818;
+  --orange: #d29922;
+  --orange-bg: #271d03;
+  --red: #f85149;
+  --red-bg: #2d1117;
+  --purple: #a371f7;
+  --purple-bg: #1e1040;
+  --teal: #39c5cf;
+  --teal-bg: #051c1e;
+  --yellow: #e3b341;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:32px;height:32px;background:var(--accent);border-radius:6px;display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff}
+.logo-text{font-size:15px;font-weight:600;color:var(--text)}
+.logo-sub{font-size:11px;color:var(--text2);font-weight:400}
+.topbar-center{font-size:18px;font-weight:600;color:var(--text)}
+.topbar-right{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text2)}
+.last-update{display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.refresh-btn{background:var(--surface3);border:1px solid var(--border);border-radius:6px;color:var(--text2);padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit;transition:.15s}
+.refresh-btn:hover{background:var(--border);color:var(--text)}
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 56px)}
+/* SIDEBAR */
+.sidebar{width:200px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;font-size:13px;color:var(--text2);cursor:pointer;border-left:3px solid transparent;transition:.1s}
+.nav-item:hover{background:var(--surface3);color:var(--text)}
+.nav-item.active{color:var(--accent2);border-left-color:var(--accent2);background:rgba(56,139,253,.08)}
+.nav-icon{font-size:15px;width:20px;text-align:center}
+.nav-divider{height:1px;background:var(--border);margin:8px 16px}
+/* MAIN */
+.main{flex:1;padding:20px 24px;overflow-x:hidden}
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
+.kpi.blue::before{background:var(--accent2)}
+.kpi.green::before{background:var(--green)}
+.kpi.orange::before{background:var(--orange)}
+.kpi.purple::before{background:var(--purple)}
+.kpi.teal::before{background:var(--teal)}
+.kpi.red::before{background:var(--red)}
+.kpi-icon{font-size:18px;margin-bottom:6px}
+.kpi-label{font-size:11px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.kpi-value{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
+.kpi.blue .kpi-value{color:var(--accent2)}
+.kpi.green .kpi-value{color:var(--green)}
+.kpi.orange .kpi-value{color:var(--orange)}
+.kpi.purple .kpi-value{color:var(--purple)}
+.kpi.teal .kpi-value{color:var(--teal)}
+.kpi.red .kpi-value{color:var(--red)}
+.kpi-sub{font-size:11px;color:var(--text2)}
+/* GRID 3 */
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.panel-title{font-size:13px;font-weight:600;color:var(--text)}
+.panel-sub{font-size:11px;color:var(--text2)}
+.panel-link{font-size:11px;color:var(--accent2);cursor:pointer;text-decoration:none}
+.panel-body{padding:16px}
+/* TABLE */
+.mini-table{width:100%;border-collapse:collapse;font-size:12px}
+.mini-table th{color:var(--text2);font-weight:500;text-align:left;padding:5px 8px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.mini-table td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.mini-table tr:last-child td{border-bottom:none}
+.mini-table tr:hover td{background:var(--surface3)}
+/* BADGES */
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(63,185,80,.2)}
+.badge-orange{background:var(--orange-bg);color:var(--orange);border:1px solid rgba(210,153,34,.2)}
+.badge-red{background:var(--red-bg);color:var(--red);border:1px solid rgba(248,81,73,.2)}
+.badge-blue{background:rgba(31,111,235,.1);color:var(--accent2);border:1px solid rgba(56,139,253,.2)}
+.badge-purple{background:var(--purple-bg);color:var(--purple);border:1px solid rgba(163,113,247,.2)}
+.badge-gray{background:var(--surface3);color:var(--text2);border:1px solid var(--border)}
+/* DONUT */
+.donut-wrap{display:flex;align-items:center;gap:20px;padding:8px 0}
+.donut-chart{position:relative;width:120px;height:120px;flex-shrink:0}
+.donut-chart svg{transform:rotate(-90deg)}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--text)}
+.donut-center span{font-size:10px;color:var(--text2);font-weight:400}
+.donut-legend{flex:1;display:flex;flex-direction:column;gap:8px}
+.donut-item{display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.donut-dot{width:8px;height:8px;border-radius:2px;margin-right:7px;flex-shrink:0}
+.donut-name{color:var(--text2);display:flex;align-items:center}
+.donut-val{font-weight:600;color:var(--text)}
+/* GAUGE */
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0}
+.gauge-svg{overflow:visible}
+.gauge-val{font-size:32px;font-weight:700;color:var(--green);text-align:center;margin-top:-10px}
+.gauge-sub{font-size:11px;color:var(--text2);text-align:center}
+/* FLOW */
+.flow{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+.flow-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.flow-icon{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px;border:2px solid var(--border2)}
+.flow-icon.f1{background:rgba(56,139,253,.15);border-color:var(--accent2)}
+.flow-icon.f2{background:rgba(163,113,247,.15);border-color:var(--purple)}
+.flow-icon.f3{background:rgba(57,197,207,.15);border-color:var(--teal)}
+.flow-icon.f4{background:rgba(210,153,34,.15);border-color:var(--orange)}
+.flow-icon.f5{background:rgba(63,185,80,.15);border-color:var(--green)}
+.flow-num{font-size:18px;font-weight:700;color:var(--text)}
+.flow-lbl{font-size:10px;color:var(--text2);text-align:center;line-height:1.3}
+.flow-arrow{color:var(--border2);font-size:16px;flex-shrink:0}
+/* ALERTS */
+.alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.alert-item:last-child{border-bottom:none}
+.alert-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.alert-text{flex:1;font-size:12px;color:var(--text2);line-height:1.4}
+.alert-text strong{color:var(--text);font-weight:500}
+.alert-badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;flex-shrink:0}
+/* TOP CLIENTS */
+.client-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.client-row:last-child{border-bottom:none}
+.client-rank{width:20px;font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;flex-shrink:0}
+.client-name{flex:1;font-size:12px;color:var(--text)}
+.client-bar-wrap{width:80px;height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
+.client-bar{height:100%;border-radius:2px;background:var(--accent)}
+.client-val{font-size:11px;color:var(--text2);font-family:'IBM Plex Mono',monospace;width:65px;text-align:right;flex-shrink:0}
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;height:200px;color:var(--text2);font-size:13px;gap:10px}
+.spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--accent2);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* MONO */
+.mono{font-family:'IBM Plex Mono',monospace}
+/* CREW TABLE */
+.crew-score{display:inline-block;width:32px;height:20px;border-radius:4px;text-align:center;font-size:11px;font-weight:600;line-height:20px}
+.score-hi{background:var(--green-bg);color:var(--green)}
+.score-mid{background:var(--orange-bg);color:var(--orange)}
+.score-lo{background:var(--red-bg);color:var(--red)}
+/* RESPONSIVE */
+@media(max-width:1400px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.sidebar{display:none}.kpi-grid{grid-template-columns:repeat(2,1fr)}.grid3,.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">ES</div>
+    <div>
+      <div class="logo-text">EUROSTAL</div>
+      <div class="logo-sub">ALUMINIUM SYSTEMS</div>
+    </div>
+  </div>
+  <div class="topbar-center">Dashboard Εταιρείας</div>
+  <div class="topbar-right">
+    <div class="last-update"><div class="dot"></div><span id="last-update">Φόρτωση...</span></div>
+    <button class="refresh-btn" onclick="loadData()">↻ Ανανέωση</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="nav-item active"><span class="nav-icon">⊞</span>Επισκόπηση</div>
+    <div class="nav-item"><span class="nav-icon">📋</span>Παραγγελίες</div>
+    <div class="nav-item"><span class="nav-icon">🏗</span>Παραγωγή</div>
+    <div class="nav-item"><span class="nav-icon">🔧</span>Τοποθετήσεις</div>
+    <div class="nav-item"><span class="nav-icon">⚒</span>Έργα</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item"><span class="nav-icon">💶</span>Οικονομικά</div>
+    <div class="nav-item"><span class="nav-icon">⚠</span>Προβλήματα</div>
+    <div class="nav-item"><span class="nav-icon">👥</span>Συνεργεία</div>
+    <div class="nav-item"><span class="nav-icon">📊</span>Αναφορές</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item"><span class="nav-icon">⚙</span>Ρυθμίσεις</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main" id="main-content">
+    <div class="loading"><div class="spinner"></div>Φόρτωση δεδομένων από Google Sheets...</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIG — Replace with your actual Sheet IDs
+// ============================================================
+const SHEET1_ID = '1Am1iN8zqfDZ5wXSZSmGOZNkWgv2x_L0YFqWGTIkPb3Q'; // Παραγγελίες
+const SHEET2_ID = '1_NfceSBRPcPwepdsWmArQz6xjw_jvHa8b-LvPFE04Zg';  // Προσφορές
+
+// ============================================================
+// DATA LOADING
+// ============================================================
+async function fetchCSV(sheetId) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=0`;
+  const res = await fetch(url);
+  const text = await res.text();
+  return parseCSV(text);
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim());
+  return lines.slice(1).map(line => {
+    const vals = splitCSVLine(line);
+    const obj = {};
+    headers.forEach((h,i) => obj[h] = (vals[i]||'').replace(/^"|"$/g,'').trim());
+    return obj;
+  });
+}
+
+function splitCSVLine(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === '"') { inQ = !inQ; }
+    else if (line[i] === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += line[i]; }
+  }
+  result.push(cur);
+  return result;
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+async function loadData() {
+  document.getElementById('main-content').innerHTML =
+    '<div class="loading"><div class="spinner"></div>Φόρτωση δεδομένων...</div>';
+
+  let orders = [], financials = [];
+  try {
+    [orders, financials] = await Promise.all([fetchCSV(SHEET1_ID), fetchCSV(SHEET2_ID)]);
+  } catch(e) {
+    document.getElementById('main-content').innerHTML =
+      `<div class="loading" style="color:var(--red)">⚠ Σφάλμα φόρτωσης. Βεβαιωθείτε ότι τα Sheets είναι δημόσια ή χρησιμοποιείτε Google OAuth.<br><small>${e.message}</small></div>`;
+    return;
+  }
+
+  // ---- KPIs ----
+  const totalOrders = orders.length;
+  const sched = orders.filter(o => o['Κατάσταση'] === 'Προγραμματισμένο').length;
+  const waiting = orders.filter(o => o['Κατάσταση'] === 'Σε Αναμονή').length;
+  const ready = orders.filter(o => o['Κατάσταση'] === 'Έτοιμο προς Τοποθέτηση').length;
+  const pending = orders.filter(o => o['Κατάσταση'] === 'Εκκρεμεί Πληροφορία').length;
+  const takeaway = orders.filter(o => o['Κατάσταση'] === 'Take Away').length;
+  const totalValue = financials.reduce((s,f) => s + (parseFloat(f['Συνολική_Καθαρή_Αξία'])||0), 0);
+  const totalKouf = orders.reduce((s,o) => s + (parseInt(o['Κουφώματα'])||0), 0);
+  const withTopo = orders.filter(o => o['Ημ_Τοποθέτησης']).length;
+
+  // ---- Phase breakdown ----
+  const phases = {};
+  orders.forEach(o => { const p = o['Φάση']||'Άγνωστο'; phases[p] = (phases[p]||0)+1; });
+
+  // ---- Top clients by value ----
+  const clientVal = {};
+  financials.forEach(f => {
+    const v = parseFloat(f['Συνολική_Καθαρή_Αξία'])||0;
+    const c = f['Πελάτης']||'';
+    clientVal[c] = (clientVal[c]||0)+v;
+  });
+  const topClients = Object.entries(clientVal).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const maxVal = topClients[0]?.[1] || 1;
+
+  // ---- Upcoming placements ----
+  const upcoming = orders.filter(o=>o['Ημ_Τοποθέτησης']).sort((a,b)=>{
+    const da = parseGrDate(a['Ημ_Τοποθέτησης']), db = parseGrDate(b['Ημ_Τοποθέτησης']);
+    return da-db;
+  }).slice(0,7);
+
+  // ---- Alerts ----
+  const alerts = [];
+  const noInfo = orders.filter(o=>o['Κατάσταση']==='Εκκρεμεί Πληροφορία');
+  if(noInfo.length) alerts.push({icon:'🔴',severity:'Σοβαρό',sev:'red',text:`<strong>${noInfo.length} παραγγελίες</strong> χωρίς πληροφορία φάσης`});
+  const noMeasure = orders.filter(o=>o['Φάση']==='Δεν Έχουμε Μέτρα');
+  if(noMeasure.length) alerts.push({icon:'🟡',severity:'Προσοχή',sev:'orange',text:`<strong>${noMeasure.length} παραγγελίες</strong> αναμένουν τελικά μέτρα`});
+  const europaWait = orders.filter(o=>o['Φάση']==='Αναμονή Europa');
+  if(europaWait.length) alerts.push({icon:'🟡',severity:'Προσοχή',sev:'orange',text:`<strong>${europaWait.length} παραγγελίες</strong> σε αναμονή υλικών Europa`});
+  if(ready>0) alerts.push({icon:'🔵',severity:'Ενημέρωση',sev:'blue',text:`<strong>${ready} παραγγελίες</strong> έτοιμες προς τοποθέτηση — εκκρεμεί χρονοπρογραμματισμός`});
+
+  // ---- Crew ----
+  const crews = [
+    {name:'Kariki',topo:upcoming.filter(u=>u['Συνεργείο']==='Kariki').length,score:9.2},
+    {name:'Rildo',topo:upcoming.filter(u=>u['Συνεργείο']==='Rildo').length,score:8.5},
+    {name:'Ermal',topo:upcoming.filter(u=>u['Συνεργείο']==='Ermal').length,score:7.8},
+    {name:'Χάρης',topo:upcoming.filter(u=>u['Συνεργείο']==='Χάρης').length,score:8.8},
+  ];
+
+  // ---- Donut data ----
+  const donutData = [
+    {label:'Προγραμματισμένο',val:sched,color:'#3fb950'},
+    {label:'Σε Αναμονή',val:waiting,color:'#d29922'},
+    {label:'Εκκρεμεί',val:pending,color:'#f85149'},
+    {label:'Take Away',val:takeaway,color:'#388bfd'},
+    {label:'Έτοιμο',val:ready,color:'#a371f7'},
+  ].filter(d=>d.val>0);
+
+  document.getElementById('last-update').textContent =
+    'Τελευταία ενημέρωση: ' + new Date().toLocaleString('el-GR');
+
+  document.getElementById('main-content').innerHTML = `
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi blue">
+        <div class="kpi-icon">📋</div>
+        <div class="kpi-label">Σύνολο Παραγγελιών</div>
+        <div class="kpi-value">${totalOrders}</div>
+        <div class="kpi-sub">Ενεργές εγγραφές</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-icon">📅</div>
+        <div class="kpi-label">Τοποθετήσεις</div>
+        <div class="kpi-value">${withTopo}</div>
+        <div class="kpi-sub">Προγραμματισμένες</div>
+      </div>
+      <div class="kpi orange">
+        <div class="kpi-icon">⏳</div>
+        <div class="kpi-label">Σε Αναμονή</div>
+        <div class="kpi-value">${waiting}</div>
+        <div class="kpi-sub">Αναμένουν υλικά</div>
+      </div>
+      <div class="kpi purple">
+        <div class="kpi-icon">💶</div>
+        <div class="kpi-label">Αξία Παραγγελιών</div>
+        <div class="kpi-value">${fmtEuro(totalValue)}</div>
+        <div class="kpi-sub">Καθαρή αξία</div>
+      </div>
+      <div class="kpi teal">
+        <div class="kpi-icon">🪟</div>
+        <div class="kpi-label">Κουφώματα</div>
+        <div class="kpi-value">${totalKouf}</div>
+        <div class="kpi-sub">Σύνολο τεμαχίων</div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-icon">⚠</div>
+        <div class="kpi-label">Εκκρεμή</div>
+        <div class="kpi-value">${pending}</div>
+        <div class="kpi-sub">Χρειάζονται ενέργεια</div>
+      </div>
+    </div>
+
+    <!-- ROW 1 -->
+    <div class="grid3">
+      <!-- Κατάσταση Έργων -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Κατάσταση Παραγγελιών</div>
+          <div class="panel-sub">${totalOrders} σύνολο</div>
+        </div>
+        <div class="panel-body">
+          <div class="donut-wrap">
+            <div class="donut-chart">
+              ${renderDonut(donutData, totalOrders)}
+            </div>
+            <div class="donut-legend">
+              ${donutData.map(d=>`
+                <div class="donut-item">
+                  <div class="donut-name"><div class="donut-dot" style="background:${d.color}"></div>${d.label}</div>
+                  <div class="donut-val">${d.val} <span style="color:var(--text3);font-size:10px">(${Math.round(d.val/totalOrders*100)}%)</span></div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Τοποθετήσεις Εβδομάδας -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Επόμενες Τοποθετήσεις</div>
+          <a class="panel-link">Προβολή όλων</a>
+        </div>
+        <div class="panel-body" style="padding:8px 16px">
+          <table class="mini-table">
+            <tr><th>Ημ/νία</th><th>Πελάτης</th><th>Συνεργείο</th><th>Κατ/ση</th></tr>
+            ${upcoming.map(o=>`<tr>
+              <td class="mono" style="font-size:11px">${o['Ημ_Τοποθέτησης']}</td>
+              <td>${o['Πελάτης'].substring(0,18)}</td>
+              <td>${crew_badge(o['Συνεργείο'])}</td>
+              <td>${status_badge(o['Κατάσταση'])}</td>
+            </tr>`).join('')}
+          </table>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">⚡ Alerts / Ειδοποιήσεις</div>
+          <div class="panel-sub">${alerts.length} ενεργά</div>
+        </div>
+        <div class="panel-body" style="padding:8px 16px">
+          ${alerts.map(a=>`<div class="alert-item">
+            <div class="alert-icon">${a.icon}</div>
+            <div class="alert-text">${a.text}</div>
+            <span class="alert-badge" style="background:var(--${a.sev}-bg);color:var(--${a.sev})">${a.severity}</span>
+          </div>`).join('')}
+          ${alerts.length===0?'<div style="color:var(--text2);font-size:12px;text-align:center;padding:20px">✅ Δεν υπάρχουν alerts</div>':''}
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="grid2">
+      <!-- Top Πελάτες -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Top Πελάτες — Αξία</div>
+          <div class="panel-sub">Βάσει Προσφορών</div>
+        </div>
+        <div class="panel-body" style="padding:8px 16px">
+          ${topClients.map(([name,val],i)=>`
+          <div class="client-row">
+            <div class="client-rank">${i+1}</div>
+            <div class="client-name">${name.substring(0,22)}</div>
+            <div class="client-bar-wrap"><div class="client-bar" style="width:${Math.round(val/maxVal*100)}%;background:${i===0?'var(--accent2)':i===1?'var(--purple)':i===2?'var(--teal)':'var(--border2)'}"></div></div>
+            <div class="client-val">${fmtEuro(val)}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Συνεργεία -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Συνεργεία — Τρέχουσα Εβδομάδα</div>
+          <div class="panel-sub">Επόμενες τοποθετήσεις</div>
+        </div>
+        <div class="panel-body" style="padding:8px 16px">
+          <table class="mini-table">
+            <tr><th>Συνεργείο</th><th>Τοποθετήσεις</th><th>Τύπος</th><th>Score</th></tr>
+            ${crews.map(c=>`<tr>
+              <td style="font-weight:500">${c.name}</td>
+              <td style="text-align:center">${c.topo}</td>
+              <td>${c.name==='Χάρης'?'<span style="color:var(--orange);font-size:11px">Σίδερα/Ψευτόκ.</span>':'<span style="color:var(--accent2);font-size:11px">Αλουμίνια</span>'}</td>
+              <td><span class="crew-score ${c.score>=9?'score-hi':c.score>=7.5?'score-mid':'score-lo'}">${c.score}</span></td>
+            </tr>`).join('')}
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 3: Ροή & Φάσεις -->
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-header">
+        <div class="panel-title">Ροή Εργασιών</div>
+        <div class="panel-sub">Κατανομή παραγγελιών ανά φάση</div>
+      </div>
+      <div class="panel-body">
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-icon f1">📥</div>
+            <div class="flow-num">${financials.length}</div>
+            <div class="flow-lbl">Νέες Προσφορές<br>(Σύνολο)</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon f2">⚙</div>
+            <div class="flow-num">${totalOrders}</div>
+            <div class="flow-lbl">Σε Παραγωγή<br>(Παραγγελίες)</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon f3">📦</div>
+            <div class="flow-num">${orders.filter(o=>o['Φάση']==='Ολοκληρωμένη παραλαβή').length + withTopo}</div>
+            <div class="flow-lbl">Παραλαβή<br>Υλικών</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon f4">🔧</div>
+            <div class="flow-num">${withTopo}</div>
+            <div class="flow-lbl">Προς<br>Τοποθέτηση</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon f5">✅</div>
+            <div class="flow-num">${takeaway}</div>
+            <div class="flow-lbl">Take Away /<br>Ολοκληρωμένα</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 4: Πλήρης πίνακας παραγγελιών -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Πλήρης Κατάσταση Παραγγελιών</div>
+        <div class="panel-sub">${totalOrders} εγγραφές · ενημερώθηκε τώρα</div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="mini-table" style="font-size:11px">
+          <tr>
+            <th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Κατάσταση</th>
+            <th>Τοποθέτηση</th><th>Europa est.</th><th>Συνεργείο</th>
+            <th>Κουφ.</th><th>Ρολά</th><th>Αξία</th>
+          </tr>
+          ${orders.map(o=>`<tr>
+            <td class="mono" style="color:var(--accent2)">${o['Προσφορά']}</td>
+            <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o['Πελάτης']}</td>
+            <td>${phase_badge(o['Φάση'])}</td>
+            <td>${status_badge(o['Κατάσταση'])}</td>
+            <td class="mono">${o['Ημ_Τοποθέτησης']||'—'}</td>
+            <td class="mono" style="color:var(--text2)">${o['Πιθ_Παράδοση_Europa']||'—'}</td>
+            <td>${crew_badge(o['Συνεργείο'])}</td>
+            <td style="text-align:center">${o['Κουφώματα']||'—'}</td>
+            <td style="text-align:center">${o['Ρολά']||'—'}</td>
+            <td class="mono" style="color:var(--green)">${fmtVal(o['Αξία_Σύμβασης'])}</td>
+          </tr>`).join('')}
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function fmtEuro(v){
+  if(v>=1000) return '€'+Math.round(v/1000)+'K';
+  return '€'+Math.round(v);
+}
+function fmtVal(v){
+  if(!v||v==='') return '—';
+  const n = parseFloat(v.replace(/[^0-9.,]/g,'').replace(',','.'));
+  if(isNaN(n)) return v;
+  return '€'+n.toLocaleString('el-GR',{maximumFractionDigits:0});
+}
+function parseGrDate(s){
+  if(!s) return new Date(9999,0,1);
+  const p=s.split('/');
+  if(p.length===3) return new Date(p[2],p[1]-1,p[0]);
+  return new Date(s);
+}
+
+function status_badge(s){
+  const map={
+    'Προγραμματισμένο':'badge-green','Έτοιμο προς Τοποθέτηση':'badge-purple',
+    'Σε Αναμονή':'badge-orange','Εκκρεμεί Πληροφορία':'badge-red',
+    'Take Away':'badge-blue'
+  };
+  return `<span class="badge ${map[s]||'badge-gray'}">${s||'—'}</span>`;
+}
+function phase_badge(p){
+  const map={
+    'Ολοκληρωμένη παραλαβή':'badge-green','Μεταλλικές Κατασκευές':'badge-orange',
+    'Αναμονή Europa':'badge-blue','Μερικώς Παραδομένα':'badge-orange',
+    'Δεν Έχουμε Μέτρα':'badge-red','Take Away':'badge-gray'
+  };
+  const short={'Ολοκληρωμένη παραλαβή':'✓ Ολοκλ.','Μεταλλικές Κατασκευές':'Μεταλλ.','Αναμονή Europa':'Europa','Μερικώς Παραδομένα':'Μερικώς','Δεν Έχουμε Μέτρα':'Χ/Μέτρα','Take Away':'Take Away'};
+  return `<span class="badge ${map[p]||'badge-gray'}">${short[p]||p||'—'}</span>`;
+}
+function crew_badge(c){
+  if(!c) return '<span style="color:var(--text3);font-size:11px">—</span>';
+  const col={'Kariki':'var(--accent2)','Rildo':'var(--purple)','Ermal':'#ec4899','Χάρης':'var(--orange)'};
+  return `<span style="color:${col[c]||'var(--text2)'};font-weight:500;font-size:11px">${c}</span>`;
+}
+
+function renderDonut(data, total){
+  const r=46, cx=60, cy=60, circ=2*Math.PI*r;
+  let offset=0;
+  const slices=data.map(d=>{
+    const pct=d.val/total;
+    const dash=pct*circ;
+    const gap=circ-dash;
+    const s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="14" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${-offset}" stroke-linecap="butt"/>`;
+    offset+=dash;
+    return s;
+  });
+  return `<svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--surface3)" stroke-width="14"/>${slices.join('')}</svg><div class="donut-center">${total}<span>σύνολο</span></div>`;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadData();
+setInterval(loadData, 5*60*1000); // auto-refresh every 5 min
+</script>
+</body>
+</html>
