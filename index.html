@@ -6,7 +6,7 @@
 <title>EUROSTAL — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2230;--surface3:#21262d;--border:#30363d;--border2:#3d444d;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;--accent:#1f6feb;--accent2:#388bfd;--green:#3fb950;--green-bg:#0d2818;--orange:#d29922;--orange-bg:#271d03;--red:#f85149;--red-bg:#2d1117;--purple:#a371f7;--purple-bg:#1e1040;--teal:#39c5cf;--yellow:#e3b341}
+:root{--bg:#0d1117;--surface:#161b22;--surface3:#21262d;--border:#30363d;--border2:#3d444d;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;--accent:#1f6feb;--accent2:#388bfd;--green:#3fb950;--green-bg:#0d2818;--orange:#d29922;--orange-bg:#271d03;--red:#f85149;--red-bg:#2d1117;--purple:#a371f7;--purple-bg:#1e1040;--teal:#39c5cf}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
@@ -17,8 +17,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .topbar-right{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text2)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;display:inline-block;margin-right:6px}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.refresh-btn{background:var(--surface3);border:1px solid var(--border);border-radius:6px;color:var(--text2);padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit}
-.refresh-btn:hover{background:var(--border);color:var(--text)}
+.btn{background:var(--surface3);border:1px solid var(--border);border-radius:6px;color:var(--text2);padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--border);color:var(--text)}
 .layout{display:flex;min-height:calc(100vh - 56px)}
 .sidebar{width:200px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0}
 .nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;font-size:13px;color:var(--text2);cursor:pointer;border-left:3px solid transparent}
@@ -30,56 +30,60 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
 .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
 .kpi.blue::before{background:var(--accent2)}.kpi.green::before{background:var(--green)}.kpi.orange::before{background:var(--orange)}.kpi.purple::before{background:var(--purple)}.kpi.teal::before{background:var(--teal)}.kpi.red::before{background:var(--red)}
-.kpi-icon{font-size:18px;margin-bottom:6px}.kpi-label{font-size:11px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.kpi-icon{font-size:18px;margin-bottom:6px}
+.kpi-label{font-size:11px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .kpi-value{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
 .kpi.blue .kpi-value{color:var(--accent2)}.kpi.green .kpi-value{color:var(--green)}.kpi.orange .kpi-value{color:var(--orange)}.kpi.purple .kpi-value{color:var(--purple)}.kpi.teal .kpi-value{color:var(--teal)}.kpi.red .kpi-value{color:var(--red)}
 .kpi-sub{font-size:11px;color:var(--text2)}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
-.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
-.panel-title{font-size:13px;font-weight:600}.panel-sub{font-size:11px;color:var(--text2)}
-.panel-body{padding:16px}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.pt{font-size:13px;font-weight:600}.ps{font-size:11px;color:var(--text2)}
+.pb{padding:16px}
 .mini-table{width:100%;border-collapse:collapse;font-size:12px}
 .mini-table th{color:var(--text2);font-weight:500;text-align:left;padding:5px 8px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 .mini-table td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
-.mini-table tr:last-child td{border-bottom:none}.mini-table tr:hover td{background:var(--surface3)}
+.mini-table tr:last-child td{border-bottom:none}
+.mini-table tr:hover td{background:var(--surface3)}
 .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
-.badge-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(63,185,80,.2)}
-.badge-orange{background:var(--orange-bg);color:var(--orange);border:1px solid rgba(210,153,34,.2)}
-.badge-red{background:var(--red-bg);color:var(--red);border:1px solid rgba(248,81,73,.2)}
-.badge-blue{background:rgba(31,111,235,.1);color:var(--accent2);border:1px solid rgba(56,139,253,.2)}
-.badge-purple{background:var(--purple-bg);color:var(--purple);border:1px solid rgba(163,113,247,.2)}
-.badge-gray{background:var(--surface3);color:var(--text2);border:1px solid var(--border)}
+.bg{background:var(--green-bg);color:var(--green);border:1px solid rgba(63,185,80,.2)}
+.bo{background:var(--orange-bg);color:var(--orange);border:1px solid rgba(210,153,34,.2)}
+.br{background:var(--red-bg);color:var(--red);border:1px solid rgba(248,81,73,.2)}
+.bb{background:rgba(31,111,235,.1);color:var(--accent2);border:1px solid rgba(56,139,253,.2)}
+.bp{background:var(--purple-bg);color:var(--purple);border:1px solid rgba(163,113,247,.2)}
+.bx{background:var(--surface3);color:var(--text2);border:1px solid var(--border)}
 .donut-wrap{display:flex;align-items:center;gap:20px;padding:8px 0}
 .donut-chart{position:relative;width:120px;height:120px;flex-shrink:0}
 .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;font-weight:700}
 .donut-center span{font-size:10px;color:var(--text2);font-weight:400}
-.donut-legend{flex:1;display:flex;flex-direction:column;gap:8px}
-.donut-item{display:flex;align-items:center;justify-content:space-between;font-size:12px}
-.donut-dot{width:8px;height:8px;border-radius:2px;margin-right:7px;flex-shrink:0}
-.donut-name{color:var(--text2);display:flex;align-items:center}.donut-val{font-weight:600}
+.dl{flex:1;display:flex;flex-direction:column;gap:8px}
+.di{display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.dd{width:8px;height:8px;border-radius:2px;margin-right:7px;flex-shrink:0}
+.dn{color:var(--text2);display:flex;align-items:center}.dv{font-weight:600}
 .alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.alert-item:last-child{border-bottom:none}.alert-icon{font-size:15px;flex-shrink:0}
-.alert-text{flex:1;font-size:12px;color:var(--text2);line-height:1.4}.alert-text strong{color:var(--text);font-weight:500}
-.alert-badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;flex-shrink:0}
-.client-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
-.client-row:last-child{border-bottom:none}.client-rank{width:20px;font-size:11px;color:var(--text3);flex-shrink:0}
-.client-name{flex:1;font-size:12px}.client-bar-wrap{width:80px;height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
-.client-bar{height:100%;border-radius:2px}.client-val{font-size:11px;color:var(--text2);width:65px;text-align:right;flex-shrink:0}
+.alert-item:last-child{border-bottom:none}
+.at{flex:1;font-size:12px;color:var(--text2);line-height:1.4}.at strong{color:var(--text);font-weight:500}
+.ab{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;flex-shrink:0}
+.cr{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.cr:last-child{border-bottom:none}
+.crn{flex:1;font-size:12px}
+.cb{width:80px;height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
+.cbf{height:100%;border-radius:2px}
+.cv{font-size:11px;color:var(--text2);width:65px;text-align:right;flex-shrink:0}
 .flow{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
-.flow-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
-.flow-icon{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px;border:2px solid var(--border2)}
-.flow-icon.f1{background:rgba(56,139,253,.15);border-color:var(--accent2)}.flow-icon.f2{background:rgba(163,113,247,.15);border-color:var(--purple)}
-.flow-icon.f3{background:rgba(57,197,207,.15);border-color:var(--teal)}.flow-icon.f4{background:rgba(210,153,34,.15);border-color:var(--orange)}.flow-icon.f5{background:rgba(63,185,80,.15);border-color:var(--green)}
-.flow-num{font-size:18px;font-weight:700}.flow-lbl{font-size:10px;color:var(--text2);text-align:center;line-height:1.3}.flow-arrow{color:var(--border2);font-size:16px;flex-shrink:0}
-.crew-score{display:inline-block;width:32px;height:20px;border-radius:4px;text-align:center;font-size:11px;font-weight:600;line-height:20px}
-.score-hi{background:var(--green-bg);color:var(--green)}.score-mid{background:var(--orange-bg);color:var(--orange)}.score-lo{background:var(--red-bg);color:var(--red)}
+.fs{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.fi{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px;border:2px solid var(--border2)}
+.fi.f1{background:rgba(56,139,253,.15);border-color:var(--accent2)}.fi.f2{background:rgba(163,113,247,.15);border-color:var(--purple)}
+.fi.f3{background:rgba(57,197,207,.15);border-color:var(--teal)}.fi.f4{background:rgba(210,153,34,.15);border-color:var(--orange)}.fi.f5{background:rgba(63,185,80,.15);border-color:var(--green)}
+.fn{font-size:18px;font-weight:700}.fl{font-size:10px;color:var(--text2);text-align:center;line-height:1.3}.fa{color:var(--border2);font-size:16px;flex-shrink:0}
+.cs{display:inline-block;width:32px;height:20px;border-radius:4px;text-align:center;font-size:11px;font-weight:600;line-height:20px}
+.shi{background:var(--green-bg);color:var(--green)}.smi{background:var(--orange-bg);color:var(--orange)}.slo{background:var(--red-bg);color:var(--red)}
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;color:var(--text2);font-size:13px;gap:12px}
 .spinner{width:24px;height:24px;border:2px solid var(--border2);border-top-color:var(--accent2);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .mono{font-family:'IBM Plex Mono',monospace}
-.error-box{background:var(--red-bg);border:1px solid rgba(248,81,73,.3);border-radius:8px;padding:16px;font-size:13px;color:var(--red);line-height:1.6}
+.err{background:var(--red-bg);border:1px solid rgba(248,81,73,.3);border-radius:8px;padding:16px;font-size:13px;color:var(--red);line-height:1.6;margin:20px}
 @media(max-width:1400px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.grid3{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.sidebar{display:none}.kpi-grid{grid-template-columns:repeat(2,1fr)}.grid3,.grid2{grid-template-columns:1fr}}
 </style>
@@ -89,8 +93,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
   <div class="logo"><div class="logo-mark">ES</div><div><div class="logo-text">EUROSTAL</div><div class="logo-sub">ALUMINIUM SYSTEMS</div></div></div>
   <div class="topbar-center">Dashboard Εταιρείας</div>
   <div class="topbar-right">
-    <div><div class="dot"></div><span id="last-update">Φόρτωση...</span></div>
-    <button class="refresh-btn" onclick="loadData()">↻ Ανανέωση</button>
+    <div><div class="dot"></div><span id="upd">Φόρτωση...</span></div>
+    <button class="btn" onclick="init()">↻ Ανανέωση</button>
   </div>
 </div>
 <div class="layout">
@@ -108,145 +112,124 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
     <div class="nav-divider"></div>
     <div class="nav-item">⚙ &nbsp;Ρυθμίσεις</div>
   </div>
-  <div class="main" id="main-content">
-    <div class="loading"><div class="spinner"></div><span>Φόρτωση δεδομένων από Google Sheets...</span></div>
-  </div>
+  <div class="main" id="mc"><div class="loading"><div class="spinner"></div><span>Φόρτωση δεδομένων...</span></div></div>
 </div>
+
 <script>
+// Sheet IDs
 const S1='1Am1iN8zqfDZ5wXSZSmGOZNkWgv2x_L0YFqWGTIkPb3Q';
 const S2='1_NfceSBRPcPwepdsWmArQz6xjw_jvHa8b-LvPFE04Zg';
 
-// Use Google Visualization API — works cross-origin without CORS issues
-function fetchSheet(sheetId) {
-  return new Promise((resolve, reject) => {
-    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Sheet1`;
-    const cbName = `cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-    const script = document.createElement('script');
-    window[cbName] = function(data) {
-      document.head.removeChild(script);
-      delete window[cbName];
-      try {
-        const cols = data.table.cols.map(c => c.label);
-        const rows = data.table.rows.map(r => {
-          const obj = {};
-          r.c.forEach((cell, i) => {
-            obj[cols[i]] = cell ? (cell.v !== null && cell.v !== undefined ? String(cell.v) : '') : '';
-          });
-          return obj;
-        });
-        resolve(rows);
-      } catch(e) { reject(e); }
-    };
-    script.src = url + `&tq=select *&tqx=out:json;responseHandler:${cbName}`;
-    script.onerror = () => reject(new Error('Failed to load sheet'));
-    document.head.appendChild(script);
+// Use SheetDB-style proxy via allorigins to bypass CORS
+async function fetchSheet(id) {
+  const csvUrl = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv&gid=0`;
+  const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`;
+  const r = await fetch(proxy);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return parseCSV(await r.text());
+}
+
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n');
+  const headers = splitLine(lines[0]);
+  return lines.slice(1).map(l => {
+    const vals = splitLine(l);
+    const o = {};
+    headers.forEach((h,i) => o[h.trim()] = (vals[i]||'').trim());
+    return o;
   });
 }
 
-async function loadData() {
-  document.getElementById('main-content').innerHTML =
-    '<div class="loading"><div class="spinner"></div><span>Φόρτωση δεδομένων...</span></div>';
-  
-  let orders = [], fin = [];
+function splitLine(l) {
+  const res=[]; let cur='', q=false;
+  for(let i=0;i<l.length;i++){
+    if(l[i]==='"'){q=!q}
+    else if(l[i]===','&&!q){res.push(cur);cur=''}
+    else cur+=l[i];
+  }
+  res.push(cur);
+  return res;
+}
+
+async function init() {
+  document.getElementById('mc').innerHTML='<div class="loading"><div class="spinner"></div><span>Φόρτωση δεδομένων...</span></div>';
+  let O=[], F=[];
   try {
-    [orders, fin] = await Promise.all([fetchSheet(S1), fetchSheet(S2)]);
+    [O, F] = await Promise.all([fetchSheet(S1), fetchSheet(S2)]);
   } catch(e) {
-    document.getElementById('main-content').innerHTML = `
-      <div style="padding:24px">
-        <div class="error-box">
-          <strong>⚠ Σφάλμα φόρτωσης</strong><br><br>
-          ${e.message}<br><br>
-          Βεβαιωθείτε ότι τα Google Sheets είναι κοινόχρηστα:<br>
-          Share → Anyone with the link → Viewer
-        </div>
-      </div>`;
+    document.getElementById('mc').innerHTML=`<div class="err"><strong>⚠ Σφάλμα φόρτωσης</strong><br><br>${e.message}<br><br>Βεβαιωθείτε ότι τα Google Sheets είναι κοινόχρηστα (Share → Anyone with the link → Viewer)</div>`;
     return;
   }
 
-  // KPIs
-  const tot = orders.length;
-  const sched = orders.filter(o => o['Κατάσταση'] === 'Προγραμματισμένο').length;
-  const wait  = orders.filter(o => o['Κατάσταση'] === 'Σε Αναμονή').length;
-  const ready = orders.filter(o => o['Κατάσταση'] === 'Έτοιμο προς Τοποθέτηση').length;
-  const pend  = orders.filter(o => o['Κατάσταση'] === 'Εκκρεμεί Πληροφορία').length;
-  const ta    = orders.filter(o => o['Κατάσταση'] === 'Take Away').length;
-  const withT = orders.filter(o => o['Ημ_Τοποθέτησης'] && o['Ημ_Τοποθέτησης'] !== '').length;
-  const totVal = fin.reduce((s,f) => s + (parseFloat(f['Συνολική_Καθαρή_Αξία']) || 0), 0);
-  const totK   = orders.reduce((s,o) => s + (parseInt(o['Κουφώματα']) || 0), 0);
+  const tot=O.length;
+  const sched=O.filter(o=>o['Κατάσταση']==='Προγραμματισμένο').length;
+  const wait=O.filter(o=>o['Κατάσταση']==='Σε Αναμονή').length;
+  const ready=O.filter(o=>o['Κατάσταση']==='Έτοιμο προς Τοποθέτηση').length;
+  const pend=O.filter(o=>o['Κατάσταση']==='Εκκρεμεί Πληροφορία').length;
+  const ta=O.filter(o=>o['Κατάσταση']==='Take Away').length;
+  const withT=O.filter(o=>o['Ημ_Τοποθέτησης']&&o['Ημ_Τοποθέτησης']!=='').length;
+  const totVal=F.reduce((s,f)=>s+(parseFloat(f['Συνολική_Καθαρή_Αξία'])||0),0);
+  const totK=O.reduce((s,o)=>s+(parseInt(o['Κουφώματα'])||0),0);
 
-  // Top clients
-  const cVal = {};
-  fin.forEach(f => {
-    const v = parseFloat(f['Συνολική_Καθαρή_Αξία']) || 0;
-    const c = f['Πελάτης'] || '';
-    cVal[c] = (cVal[c] || 0) + v;
-  });
-  const topC = Object.entries(cVal).sort((a,b) => b[1]-a[1]).slice(0,6);
-  const maxV = topC[0]?.[1] || 1;
+  const cVal={};
+  F.forEach(f=>{const v=parseFloat(f['Συνολική_Καθαρή_Αξία'])||0,c=f['Πελάτης']||'';cVal[c]=(cVal[c]||0)+v});
+  const topC=Object.entries(cVal).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const maxV=topC[0]?.[1]||1;
 
-  // Upcoming placements
-  const upcoming = orders
-    .filter(o => o['Ημ_Τοποθέτησης'] && o['Ημ_Τοποθέτησης'] !== '')
-    .sort((a,b) => pgd(a['Ημ_Τοποθέτησης']) - pgd(b['Ημ_Τοποθέτησης']))
-    .slice(0, 7);
+  const upcoming=O.filter(o=>o['Ημ_Τοποθέτησης']&&o['Ημ_Τοποθέτησης']!=='')
+    .sort((a,b)=>pgd(a['Ημ_Τοποθέτησης'])-pgd(b['Ημ_Τοποθέτησης'])).slice(0,7);
 
-  // Alerts
-  const alerts = [];
-  const noMeas = orders.filter(o => o['Φάση'] === 'Δεν Έχουμε Μέτρα').length;
-  if (pend)   alerts.push({i:'🔴',s:'Σοβαρό',sc:'red',t:`<strong>${pend} παραγγελίες</strong> χωρίς πληροφορία φάσης`});
-  if (noMeas) alerts.push({i:'🟡',s:'Προσοχή',sc:'orange',t:`<strong>${noMeas} παραγγελίες</strong> αναμένουν τελικά μέτρα`});
-  if (wait)   alerts.push({i:'🟡',s:'Προσοχή',sc:'orange',t:`<strong>${wait} παραγγελίες</strong> σε αναμονή υλικών Europa`});
-  if (ready)  alerts.push({i:'🔵',s:'Ενημέρωση',sc:'blue',t:`<strong>${ready} παραγγελίες</strong> έτοιμες προς τοποθέτηση`});
+  const alerts=[];
+  const nm=O.filter(o=>o['Φάση']==='Δεν Έχουμε Μέτρα').length;
+  if(pend) alerts.push({i:'🔴',s:'Σοβαρό',sc:'red',t:`<strong>${pend} παραγγελίες</strong> χωρίς πληροφορία φάσης`});
+  if(nm)   alerts.push({i:'🟡',s:'Προσοχή',sc:'orange',t:`<strong>${nm} παραγγελίες</strong> αναμένουν τελικά μέτρα`});
+  if(wait) alerts.push({i:'🟡',s:'Προσοχή',sc:'orange',t:`<strong>${wait} παραγγελίες</strong> σε αναμονή Europa`});
+  if(ready)alerts.push({i:'🔵',s:'Ενημέρωση',sc:'blue',t:`<strong>${ready} παραγγελίες</strong> έτοιμες προς τοποθέτηση`});
 
-  // Crews
-  const crews = [
-    {n:'Kariki', t:upcoming.filter(u=>u['Συνεργείο']==='Kariki').length, sc:9.2},
-    {n:'Rildo',  t:upcoming.filter(u=>u['Συνεργείο']==='Rildo').length,  sc:8.5},
-    {n:'Ermal',  t:upcoming.filter(u=>u['Συνεργείο']==='Ermal').length,  sc:7.8},
-    {n:'Χάρης',  t:upcoming.filter(u=>u['Συνεργείο']==='Χάρης').length,  sc:8.8},
+  const crews=[
+    {n:'Kariki',t:upcoming.filter(u=>u['Συνεργείο']==='Kariki').length,sc:9.2},
+    {n:'Rildo', t:upcoming.filter(u=>u['Συνεργείο']==='Rildo').length, sc:8.5},
+    {n:'Ermal', t:upcoming.filter(u=>u['Συνεργείο']==='Ermal').length, sc:7.8},
+    {n:'Χάρης', t:upcoming.filter(u=>u['Συνεργείο']==='Χάρης').length, sc:8.8},
   ];
 
-  // Donut
-  const dd = [
-    {l:'Προγραμματισμένο', v:sched, c:'#3fb950'},
-    {l:'Σε Αναμονή',       v:wait,  c:'#d29922'},
-    {l:'Εκκρεμεί',         v:pend,  c:'#f85149'},
-    {l:'Take Away',        v:ta,    c:'#388bfd'},
-    {l:'Έτοιμο',           v:ready, c:'#a371f7'},
-  ].filter(d => d.v > 0);
+  const dd=[
+    {l:'Προγραμματισμένο',v:sched,c:'#3fb950'},
+    {l:'Σε Αναμονή',v:wait,c:'#d29922'},
+    {l:'Εκκρεμεί',v:pend,c:'#f85149'},
+    {l:'Take Away',v:ta,c:'#388bfd'},
+    {l:'Έτοιμο',v:ready,c:'#a371f7'},
+  ].filter(d=>d.v>0);
 
-  document.getElementById('last-update').textContent =
-    'Ενημέρωση: ' + new Date().toLocaleString('el-GR');
+  document.getElementById('upd').textContent='Ενημέρωση: '+new Date().toLocaleString('el-GR');
 
-  document.getElementById('main-content').innerHTML = `
+  document.getElementById('mc').innerHTML=`
     <div class="kpi-grid">
-      ${kpi('blue','📋','Παραγγελίες',tot,'Σύνολο')}
-      ${kpi('green','📅','Τοποθετήσεις',withT,'Προγραμματισμένες')}
-      ${kpi('orange','⏳','Σε Αναμονή',wait,'Αναμένουν υλικά')}
-      ${kpi('purple','💶','Αξία',fe(totVal),'Καθαρή αξία')}
-      ${kpi('teal','🪟','Κουφώματα',totK,'Τεμάχια')}
-      ${kpi('red','⚠','Εκκρεμή',pend,'Χρειάζονται ενέργεια')}
+      ${K('blue','📋','Παραγγελίες',tot,'Σύνολο')}
+      ${K('green','📅','Τοποθετήσεις',withT,'Προγραμματισμένες')}
+      ${K('orange','⏳','Σε Αναμονή',wait,'Αναμένουν υλικά')}
+      ${K('purple','💶','Αξία',fe(totVal),'Καθαρή αξία')}
+      ${K('teal','🪟','Κουφώματα',totK,'Τεμάχια')}
+      ${K('red','⚠','Εκκρεμή',pend,'Χρειάζονται ενέργεια')}
     </div>
     <div class="grid3">
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">Κατάσταση Παραγγελιών</div><div class="panel-sub">${tot} σύνολο</div></div>
-        <div class="panel-body">
+        <div class="ph"><div class="pt">Κατάσταση Παραγγελιών</div><div class="ps">${tot} σύνολο</div></div>
+        <div class="pb">
           <div class="donut-wrap">
             <div class="donut-chart">${donut(dd,tot)}</div>
-            <div class="donut-legend">
-              ${dd.map(d=>`<div class="donut-item"><div class="donut-name"><div class="donut-dot" style="background:${d.c}"></div>${d.l}</div><div class="donut-val">${d.v} <span style="color:var(--text3);font-size:10px">(${Math.round(d.v/tot*100)}%)</span></div></div>`).join('')}
-            </div>
+            <div class="dl">${dd.map(d=>`<div class="di"><div class="dn"><div class="dd" style="background:${d.c}"></div>${d.l}</div><div class="dv">${d.v} <span style="color:var(--text3);font-size:10px">(${Math.round(d.v/tot*100)}%)</span></div></div>`).join('')}</div>
           </div>
         </div>
       </div>
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">Επόμενες Τοποθετήσεις</div><div class="panel-sub">${upcoming.length} προγραμματισμένες</div></div>
-        <div class="panel-body" style="padding:8px 16px">
+        <div class="ph"><div class="pt">Επόμενες Τοποθετήσεις</div><div class="ps">${upcoming.length} προγρ.</div></div>
+        <div class="pb" style="padding:8px 16px">
           <table class="mini-table">
             <tr><th>Ημ/νία</th><th>Πελάτης</th><th>Συνεργείο</th><th>Κατ.</th></tr>
             ${upcoming.map(o=>`<tr>
               <td class="mono" style="font-size:11px;color:var(--accent2)">${o['Ημ_Τοποθέτησης']}</td>
-              <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o['Πελάτης'].substring(0,16)}</td>
+              <td style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o['Πελάτης'].substring(0,15)}</td>
               <td>${cb(o['Συνεργείο'])}</td>
               <td>${sb(o['Κατάσταση'])}</td>
             </tr>`).join('')}
@@ -254,66 +237,62 @@ async function loadData() {
         </div>
       </div>
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">⚡ Alerts</div><div class="panel-sub">${alerts.length} ενεργά</div></div>
-        <div class="panel-body" style="padding:8px 16px">
-          ${alerts.map(a=>`<div class="alert-item">
-            <div class="alert-icon">${a.i}</div>
-            <div class="alert-text">${a.t}</div>
-            <span class="alert-badge" style="background:var(--${a.sc}-bg);color:var(--${a.sc})">${a.s}</span>
-          </div>`).join('')}
-          ${alerts.length===0?'<div style="color:var(--text2);font-size:12px;text-align:center;padding:20px">✅ Δεν υπάρχουν alerts</div>':''}
+        <div class="ph"><div class="pt">⚡ Alerts</div><div class="ps">${alerts.length} ενεργά</div></div>
+        <div class="pb" style="padding:8px 16px">
+          ${alerts.map(a=>`<div class="alert-item"><span style="font-size:15px">${a.i}</span><div class="at">${a.t}</div><span class="ab" style="background:var(--${a.sc}-bg);color:var(--${a.sc})">${a.s}</span></div>`).join('')}
+          ${!alerts.length?'<div style="color:var(--text2);font-size:12px;text-align:center;padding:20px">✅ Δεν υπάρχουν alerts</div>':''}
         </div>
       </div>
     </div>
     <div class="grid2">
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">Top Πελάτες — Αξία</div><div class="panel-sub">Βάσει Προσφορών</div></div>
-        <div class="panel-body" style="padding:8px 16px">
-          ${topC.map(([n,v],i)=>`<div class="client-row">
-            <div class="client-rank">${i+1}</div>
-            <div class="client-name">${n.substring(0,22)}</div>
-            <div class="client-bar-wrap"><div class="client-bar" style="width:${Math.round(v/maxV*100)}%;background:${['var(--accent2)','var(--purple)','var(--teal)','var(--green)','var(--orange)','var(--border2)'][i]}"></div></div>
-            <div class="client-val">${fe(v)}</div>
+        <div class="ph"><div class="pt">Top Πελάτες — Αξία</div><div class="ps">Βάσει Προσφορών</div></div>
+        <div class="pb" style="padding:8px 16px">
+          ${topC.map(([n,v],i)=>`<div class="cr">
+            <div style="width:20px;font-size:11px;color:var(--text3)">${i+1}</div>
+            <div class="crn">${n.substring(0,22)}</div>
+            <div class="cb"><div class="cbf" style="width:${Math.round(v/maxV*100)}%;background:${['var(--accent2)','var(--purple)','var(--teal)','var(--green)','var(--orange)','var(--border2)'][i]}"></div></div>
+            <div class="cv">${fe(v)}</div>
           </div>`).join('')}
         </div>
       </div>
       <div class="panel">
-        <div class="panel-header"><div class="panel-title">Συνεργεία</div><div class="panel-sub">Επόμενες τοποθετήσεις</div></div>
-        <div class="panel-body" style="padding:8px 16px">
+        <div class="ph"><div class="pt">Συνεργεία</div><div class="ps">Επόμενες τοποθετήσεις</div></div>
+        <div class="pb" style="padding:8px 16px">
           <table class="mini-table">
             <tr><th>Συνεργείο</th><th>Τοποθ.</th><th>Τύπος</th><th>Score</th></tr>
             ${crews.map(c=>`<tr>
               <td style="font-weight:500">${c.n}</td>
               <td style="text-align:center">${c.t}</td>
-              <td>${c.n==='Χάρης'?'<span style="color:var(--orange);font-size:11px">Σίδερα/Ψευτόκ.</span>':'<span style="color:var(--accent2);font-size:11px">Αλουμίνια</span>'}</td>
-              <td><span class="crew-score ${c.sc>=9?'score-hi':c.sc>=7.5?'score-mid':'score-lo'}">${c.sc}</span></td>
+              <td>${c.n==='Χάρης'?'<span style="color:var(--orange);font-size:11px">Σίδερα</span>':'<span style="color:var(--accent2);font-size:11px">Αλουμίνια</span>'}</td>
+              <td><span class="cs ${c.sc>=9?'shi':c.sc>=7.5?'smi':'slo'}">${c.sc}</span></td>
             </tr>`).join('')}
           </table>
         </div>
       </div>
     </div>
     <div class="panel" style="margin-bottom:16px">
-      <div class="panel-header"><div class="panel-title">Ροή Εργασιών</div></div>
-      <div class="panel-body">
+      <div class="ph"><div class="pt">Ροή Εργασιών</div></div>
+      <div class="pb">
         <div class="flow">
-          <div class="flow-step"><div class="flow-icon f1">📥</div><div class="flow-num">${fin.length}</div><div class="flow-lbl">Νέες<br>Προσφορές</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><div class="flow-icon f2">⚙</div><div class="flow-num">${tot}</div><div class="flow-lbl">Σε<br>Παραγωγή</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><div class="flow-icon f3">📦</div><div class="flow-num">${orders.filter(o=>o['Φάση']==='Ολοκληρωμένη παραλαβή').length}</div><div class="flow-lbl">Παραλαβή<br>Υλικών</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><div class="flow-icon f4">🔧</div><div class="flow-num">${withT}</div><div class="flow-lbl">Προς<br>Τοποθέτηση</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step"><div class="flow-icon f5">✅</div><div class="flow-num">${ta}</div><div class="flow-lbl">Take Away /<br>Ολοκλ.</div></div>
+          <div class="fs"><div class="fi f1">📥</div><div class="fn">${F.length}</div><div class="fl">Νέες<br>Προσφορές</div></div>
+          <div class="fa">→</div>
+          <div class="fs"><div class="fi f2">⚙</div><div class="fn">${tot}</div><div class="fl">Σε<br>Παραγωγή</div></div>
+          <div class="fa">→</div>
+          <div class="fs"><div class="fi f3">📦</div><div class="fn">${O.filter(o=>o['Φάση']==='Ολοκληρωμένη παραλαβή').length}</div><div class="fl">Παραλαβή<br>Υλικών</div></div>
+          <div class="fa">→</div>
+          <div class="fs"><div class="fi f4">🔧</div><div class="fn">${withT}</div><div class="fl">Προς<br>Τοποθέτηση</div></div>
+          <div class="fa">→</div>
+          <div class="fs"><div class="fi f5">✅</div><div class="fn">${ta}</div><div class="fl">Take Away /<br>Ολοκλ.</div></div>
         </div>
       </div>
     </div>
     <div class="panel">
-      <div class="panel-header"><div class="panel-title">Πλήρης Κατάσταση Παραγγελιών</div><div class="panel-sub">${tot} εγγραφές</div></div>
+      <div class="ph"><div class="pt">Πλήρης Κατάσταση Παραγγελιών</div><div class="ps">${tot} εγγραφές</div></div>
       <div style="overflow-x:auto">
         <table class="mini-table" style="font-size:11px">
           <tr><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Κατάσταση</th><th>Τοποθέτηση</th><th>Europa</th><th>Συνεργείο</th><th>Κουφ.</th><th>Ρολά</th><th>Αξία</th></tr>
-          ${orders.map(o=>`<tr>
+          ${O.map(o=>`<tr>
             <td class="mono" style="color:var(--accent2)">${o['Προσφορά']}</td>
             <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o['Πελάτης']}</td>
             <td>${pb(o['Φάση'])}</td>
@@ -331,17 +310,17 @@ async function loadData() {
   `;
 }
 
-function kpi(cl,ic,lb,vl,sb){return`<div class="kpi ${cl}"><div class="kpi-icon">${ic}</div><div class="kpi-label">${lb}</div><div class="kpi-value">${vl}</div><div class="kpi-sub">${sb}</div></div>`}
+function K(cl,ic,lb,vl,su){return`<div class="kpi ${cl}"><div class="kpi-icon">${ic}</div><div class="kpi-label">${lb}</div><div class="kpi-value">${vl}</div><div class="kpi-sub">${su}</div></div>`}
 function fe(v){return v>=1000?'€'+Math.round(v/1000)+'K':'€'+Math.round(v)}
 function fv(v){if(!v||v==='')return'—';const n=parseFloat(v.replace(/[^0-9.,]/g,'').replace(',','.'));return isNaN(n)?v:'€'+n.toLocaleString('el-GR',{maximumFractionDigits:0})}
 function pgd(s){if(!s)return new Date(9999,0,1);const p=s.split('/');return p.length===3?new Date(p[2],p[1]-1,p[0]):new Date(s)}
-function sb(s){const m={'Προγραμματισμένο':'badge-green','Έτοιμο προς Τοποθέτηση':'badge-purple','Σε Αναμονή':'badge-orange','Εκκρεμεί Πληροφορία':'badge-red','Take Away':'badge-blue'};return`<span class="badge ${m[s]||'badge-gray'}">${s||'—'}</span>`}
-function pb(p){const m={'Ολοκληρωμένη παραλαβή':'badge-green','Μεταλλικές Κατασκευές':'badge-orange','Αναμονή Europa':'badge-blue','Μερικώς Παραδομένα':'badge-orange','Δεν Έχουμε Μέτρα':'badge-red','Take Away':'badge-gray'},sh={'Ολοκληρωμένη παραλαβή':'✓ Ολοκλ.','Μεταλλικές Κατασκευές':'Μεταλλ.','Αναμονή Europa':'Europa','Μερικώς Παραδομένα':'Μερικώς','Δεν Έχουμε Μέτρα':'Χ/Μέτρα','Take Away':'Take Away'};return`<span class="badge ${m[p]||'badge-gray'}">${sh[p]||p||'—'}</span>`}
+function sb(s){const m={'Προγραμματισμένο':'bg','Έτοιμο προς Τοποθέτηση':'bp','Σε Αναμονή':'bo','Εκκρεμεί Πληροφορία':'br','Take Away':'bb'};return`<span class="badge ${m[s]||'bx'}">${s||'—'}</span>`}
+function pb(p){const m={'Ολοκληρωμένη παραλαβή':'bg','Μεταλλικές Κατασκευές':'bo','Αναμονή Europa':'bb','Μερικώς Παραδομένα':'bo','Δεν Έχουμε Μέτρα':'br','Take Away':'bx'},sh={'Ολοκληρωμένη παραλαβή':'✓ Ολοκλ.','Μεταλλικές Κατασκευές':'Μεταλλ.','Αναμονή Europa':'Europa','Μερικώς Παραδομένα':'Μερικώς','Δεν Έχουμε Μέτρα':'Χ/Μέτρα','Take Away':'Take Away'};return`<span class="badge ${m[p]||'bx'}">${sh[p]||p||'—'}</span>`}
 function cb(c){if(!c)return'<span style="color:var(--text3);font-size:11px">—</span>';const cl={'Kariki':'var(--accent2)','Rildo':'var(--purple)','Ermal':'#ec4899','Χάρης':'var(--orange)'};return`<span style="color:${cl[c]||'var(--text2)'};font-weight:500;font-size:11px">${c}</span>`}
-function donut(data,tot){const r=46,cx=60,cy=60,circ=2*Math.PI*r;let off=0;const sl=data.map(d=>{const p=d.v/tot,da=p*circ,s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.c}" stroke-width="14" stroke-dasharray="${da} ${circ-da}" stroke-dashoffset="${-off}"/>`;off+=da;return s});return`<svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--surface3)" stroke-width="14"/>${sl.join('')}</svg><div class="donut-center">${tot}<span>σύνολο</span></div>`}
+function donut(data,tot){const r=46,cx=60,cy=60,circ=2*Math.PI*r;let off=0;const sl=data.map(d=>{const da=d.v/tot*circ;const s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.c}" stroke-width="14" stroke-dasharray="${da} ${circ-da}" stroke-dashoffset="${-off}"/>`;off+=da;return s});return`<svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--surface3)" stroke-width="14"/>${sl.join('')}</svg><div class="donut-center">${tot}<span>σύνολο</span></div>`}
 
-loadData();
-setInterval(loadData, 5*60*1000);
+init();
+setInterval(init, 5*60*1000);
 </script>
 </body>
 </html>
