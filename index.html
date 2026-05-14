@@ -3,83 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EUROSTAL — Dashboard Εταιρείας</title>
+<title>EUROSTAL</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d1117;--sf:#161b22;--s3:#21262d;--bd:#30363d;--b2:#3d444d;--tx:#e6edf3;--t2:#8b949e;--t3:#6e7681;--ac:#1f6feb;--a2:#388bfd;--gn:#3fb950;--gb:#0d2818;--or:#d29922;--ob:#271d03;--rd:#f85149;--rb:#2d1117;--pp:#a371f7;--pb:#1e1040;--tl:#39c5cf}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+body{font-family:"IBM Plex Sans",sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--sf);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
 .lm{width:32px;height:32px;background:var(--ac);border-radius:6px;display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff}
 .lt{font-size:15px;font-weight:600}.ls{font-size:11px;color:var(--t2)}
 .tc{font-size:18px;font-weight:600}
-.tr{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--t2)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--gn);animation:pulse 2s infinite;display:inline-block;margin-right:6px}
+.tr{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gn);animation:pulse 2s infinite;display:inline-block;margin-right:5px}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.btn{background:var(--s3);border:1px solid var(--bd);border-radius:6px;color:var(--t2);padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit}
-.btn:hover{background:var(--bd);color:var(--tx)}
 .layout{display:flex;min-height:calc(100vh - 56px)}
-.sidebar{width:200px;background:var(--sf);border-right:1px solid var(--bd);padding:16px 0;flex-shrink:0}
-.ni{display:flex;align-items:center;gap:10px;padding:8px 16px;font-size:13px;color:var(--t2);cursor:pointer;border-left:3px solid transparent}
+.sidebar{width:210px;background:var(--sf);border-right:1px solid var(--bd);padding:12px 0;flex-shrink:0}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;color:var(--t2);cursor:pointer;border-left:3px solid transparent;transition:.1s}
 .ni:hover{background:var(--s3);color:var(--tx)}
 .ni.active{color:var(--a2);border-left-color:var(--a2);background:rgba(56,139,253,.08)}
-.ndv{height:1px;background:var(--bd);margin:8px 16px}
+.ndv{height:1px;background:var(--bd);margin:6px 16px}
 .main{flex:1;padding:20px 24px;overflow-x:hidden}
-.kg{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
-.kpi{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
+.kg{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px}
+.kpi{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:13px 14px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
 .kpi.bl::before{background:var(--a2)}.kpi.gn::before{background:var(--gn)}.kpi.or::before{background:var(--or)}.kpi.pp::before{background:var(--pp)}.kpi.tl::before{background:var(--tl)}.kpi.rd::before{background:var(--rd)}
-.ki{font-size:18px;margin-bottom:6px}
-.kl{font-size:11px;color:var(--t2);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.kv{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px}
+.ki{font-size:17px;margin-bottom:5px}.kl{font-size:10px;color:var(--t2);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.kv{font-size:26px;font-weight:700;line-height:1;margin-bottom:3px}.ks{font-size:10px;color:var(--t2)}
 .kpi.bl .kv{color:var(--a2)}.kpi.gn .kv{color:var(--gn)}.kpi.or .kv{color:var(--or)}.kpi.pp .kv{color:var(--pp)}.kpi.tl .kv{color:var(--tl)}.kpi.rd .kv{color:var(--rd)}
-.ks{font-size:11px;color:var(--t2)}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.panel{background:var(--sf);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
-.ph{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bd)}
-.pt{font-size:13px;font-weight:600}.ps{font-size:11px;color:var(--t2)}
-.pb{padding:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.panel{background:var(--sf);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--bd)}
+.pt{font-size:13px;font-weight:600}.ps{font-size:11px;color:var(--t2)}.pb{padding:14px}
 .mt{width:100%;border-collapse:collapse;font-size:12px}
-.mt th{color:var(--t2);font-weight:500;text-align:left;padding:5px 8px;border-bottom:1px solid var(--bd);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.mt th{color:var(--t2);font-weight:500;text-align:left;padding:5px 8px;border-bottom:1px solid var(--bd);font-size:11px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
 .mt td{padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:middle}
-.mt tr:last-child td{border-bottom:none}
-.mt tr:hover td{background:var(--s3)}
-.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.mt tr:last-child td{border-bottom:none}.mt tr:hover td{background:var(--s3)}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;white-space:nowrap}
 .bg{background:var(--gb);color:var(--gn);border:1px solid rgba(63,185,80,.2)}
 .bo{background:var(--ob);color:var(--or);border:1px solid rgba(210,153,34,.2)}
 .br{background:var(--rb);color:var(--rd);border:1px solid rgba(248,81,73,.2)}
 .bb{background:rgba(31,111,235,.1);color:var(--a2);border:1px solid rgba(56,139,253,.2)}
 .bpp{background:var(--pb);color:var(--pp);border:1px solid rgba(163,113,247,.2)}
 .bx{background:var(--s3);color:var(--t2);border:1px solid var(--bd)}
-.dw{display:flex;align-items:center;gap:20px;padding:8px 0}
-.dc{position:relative;width:120px;height:120px;flex-shrink:0}
-.dcn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+.dw{display:flex;align-items:center;gap:18px;padding:6px 0}
+.dc{position:relative;width:110px;height:110px;flex-shrink:0}
+.dcn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:20px;font-weight:700}
 .dcn span{font-size:10px;color:var(--t2);font-weight:400}
-.dl{flex:1;display:flex;flex-direction:column;gap:8px}
+.dl{flex:1;display:flex;flex-direction:column;gap:7px}
 .di{display:flex;align-items:center;justify-content:space-between;font-size:12px}
-.dd{width:8px;height:8px;border-radius:2px;margin-right:7px;flex-shrink:0}
+.dd{width:8px;height:8px;border-radius:2px;margin-right:6px;flex-shrink:0}
 .dn{color:var(--t2);display:flex;align-items:center}.dv{font-weight:600}
-.ai{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.ai{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--bd)}
 .ai:last-child{border-bottom:none}
 .at{flex:1;font-size:12px;color:var(--t2);line-height:1.4}.at strong{color:var(--tx);font-weight:500}
-.ab{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;flex-shrink:0}
-.cr{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}
-.cr:last-child{border-bottom:none}
-.crn{flex:1;font-size:12px}
-.cb{width:80px;height:4px;background:var(--s3);border-radius:2px;overflow:hidden}
-.cbf{height:100%;border-radius:2px}
-.cv{font-size:11px;color:var(--t2);width:65px;text-align:right;flex-shrink:0}
-.flow{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
-.fs{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
-.fi{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:18px;border:2px solid var(--b2)}
+.ab{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;flex-shrink:0}
+.alert-clients{margin-top:5px;display:flex;flex-wrap:wrap;gap:4px}
+.ac-tag{font-size:10px;background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:1px 6px;color:var(--t2)}
+.flow{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.fs{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.fi{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:17px;border:2px solid var(--b2)}
 .f1{background:rgba(56,139,253,.15);border-color:var(--a2)}.f2{background:rgba(163,113,247,.15);border-color:var(--pp)}
 .f3{background:rgba(57,197,207,.15);border-color:var(--tl)}.f4{background:rgba(210,153,34,.15);border-color:var(--or)}.f5{background:rgba(63,185,80,.15);border-color:var(--gn)}
-.fn{font-size:18px;font-weight:700}.fl{font-size:10px;color:var(--t2);text-align:center;line-height:1.3}.fa{color:var(--b2);font-size:16px;flex-shrink:0}
-.cs{display:inline-block;width:32px;height:20px;border-radius:4px;text-align:center;font-size:11px;font-weight:600;line-height:20px}
-.shi{background:var(--gb);color:var(--gn)}.smi{background:var(--ob);color:var(--or)}.slo{background:var(--rb);color:var(--rd)}
-.mono{font-family:'IBM Plex Mono',monospace}
+.fn{font-size:17px;font-weight:700}.fl{font-size:10px;color:var(--t2);text-align:center;line-height:1.3}.fa{color:var(--b2);font-size:16px;flex-shrink:0}
+.filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.fsel{background:var(--s3);border:1px solid var(--bd);border-radius:6px;color:var(--t2);padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit}
+.finput{background:var(--s3);border:1px solid var(--bd);border-radius:6px;color:var(--tx);padding:5px 10px;font-size:12px;font-family:inherit;width:220px}
+.finput:focus,.fsel:focus{outline:none;border-color:var(--a2)}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--s3);border-radius:8px;padding:12px;text-align:center}
+.stat-val{font-size:22px;font-weight:700;color:var(--a2)}.stat-lbl{font-size:11px;color:var(--t2);margin-top:3px}
+.cr{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}
+.cr:last-child{border-bottom:none}.crn{flex:1;font-size:12px}
+.cb{width:100px;height:4px;background:var(--s3);border-radius:2px;overflow:hidden}
+.cbf{height:100%;border-radius:2px}.cv{font-size:11px;color:var(--t2);width:60px;text-align:right;flex-shrink:0}
+.mono{font-family:"IBM Plex Mono",monospace}
+.page{display:none}.page.active{display:block}
 @media(max-width:1400px){.kg{grid-template-columns:repeat(3,1fr)}.g3{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.sidebar{display:none}.kg{grid-template-columns:repeat(2,1fr)}.g3,.g2{grid-template-columns:1fr}}
 </style>
@@ -87,146 +87,362 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tx)
 <body>
 <div class="topbar">
   <div class="logo"><div class="lm">ES</div><div><div class="lt">EUROSTAL</div><div class="ls">ALUMINIUM SYSTEMS</div></div></div>
-  <div class="tc">Dashboard Εταιρείας</div>
-  <div class="tr"><div><div class="dot"></div><span id="upd">Ενημέρωση: 14/05/2026</span></div></div>
+  <div class="tc" id="page-title">Επισκόπηση</div>
+  <div class="tr"><div class="dot"></div><span>14/05/2026</span></div>
 </div>
 <div class="layout">
   <div class="sidebar">
-    <div class="ni active">⊞ &nbsp;Επισκόπηση</div>
-    <div class="ni">📋 &nbsp;Παραγγελίες</div>
-    <div class="ni">🏗 &nbsp;Παραγωγή</div>
-    <div class="ni">🔧 &nbsp;Τοποθετήσεις</div>
-    <div class="ni">⚒ &nbsp;Έργα</div>
+    <div class="ni active" onclick="nav('overview',this)">&#x229E;&nbsp; Επισκόπηση</div>
+    <div class="ni" onclick="nav('orders',this)">&#x1F4CB;&nbsp; Παραγγελίες</div>
+    <div class="ni" onclick="nav('production',this)">&#x1F3D7;&nbsp; Παραγωγή</div>
+    <div class="ni" onclick="nav('placements',this)">&#x1F527;&nbsp; Τοποθετήσεις</div>
+    <div class="ni" onclick="nav('works',this)">&#x2692;&nbsp; Έργα</div>
     <div class="ndv"></div>
-    <div class="ni">💶 &nbsp;Οικονομικά</div>
-    <div class="ni">⚠ &nbsp;Προβλήματα</div>
-    <div class="ni">👥 &nbsp;Συνεργεία</div>
-    <div class="ni">📊 &nbsp;Αναφορές</div>
+    <div class="ni" onclick="nav('financials',this)">&#x1F4B6;&nbsp; Οικονομικά</div>
+    <div class="ni" onclick="nav('problems',this)">&#x26A0;&nbsp; Προβλήματα</div>
+    <div class="ni" onclick="nav('crews',this)">&#x1F465;&nbsp; Συνεργεία</div>
+    <div class="ni" onclick="nav('reports',this)">&#x1F4CA;&nbsp; Αναφορές</div>
     <div class="ndv"></div>
-    <div class="ni">⚙ &nbsp;Ρυθμίσεις</div>
+    <div class="ni" onclick="nav('settings',this)">&#x2699;&nbsp; Ρυθμίσεις</div>
   </div>
-  <div class="main" id="mc"></div>
+  <div class="main">
+    <div class="page active" id="pg-overview"></div>
+    <div class="page" id="pg-orders">
+      <div class="filters">
+        <input class="finput" id="f-search" placeholder="Αναζήτηση πελάτη / προσφοράς..." oninput="renderOrders()">
+        <select class="fsel" id="f-phase" onchange="renderOrders()"><option value="">Όλες οι φάσεις</option></select>
+        <select class="fsel" id="f-status" onchange="renderOrders()"><option value="">Όλες οι καταστάσεις</option></select>
+        <select class="fsel" id="f-crew" onchange="renderOrders()"><option value="">Όλα τα συνεργεία</option></select>
+      </div>
+      <div class="panel">
+        <div class="ph"><div class="pt">Παραγγελίες</div><div class="ps" id="ord-cnt"></div></div>
+        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Κατάσταση</th><th>Τοποθέτηση</th><th>Europa</th><th>Συνεργείο</th><th>Κουφ.</th><th>Ρολά</th><th>Ημέρες</th><th>Αξία</th><th>Επισκ.</th></tr></thead><tbody id="ord-body"></tbody></table></div>
+      </div>
+    </div>
+    <div class="page" id="pg-production">
+      <div id="prod-phase-stats" class="g3" style="margin-bottom:14px"></div>
+      <div class="panel">
+        <div class="ph"><div class="pt">Παραγωγή — FIFO</div><div class="ps">Παλαιότερη παραγγελία πρώτη</div></div>
+        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>#</th><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Europa</th><th>Κουφ.</th><th>Ρολά</th><th>Περιοχή</th></tr></thead><tbody id="prod-body"></tbody></table></div>
+      </div>
+    </div>
+    <div class="page" id="pg-placements">
+      <div id="cal-wrap"></div>
+      <div class="panel" style="margin-top:14px">
+        <div class="ph"><div class="pt">Πρόγραμμα Τοποθετήσεων</div><div class="ps" id="pl-cnt"></div></div>
+        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>Ημ. Τοποθέτησης</th><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Συνεργείο</th><th>Ημ.</th><th>Κουφ.</th><th>Ρολά</th><th>Όροφος</th><th>Ανυψωτικό</th><th>Περιοχή</th></tr></thead><tbody id="pl-body"></tbody></table></div>
+      </div>
+    </div>
+    <div class="page" id="pg-works">
+      <div class="stat-grid" id="wrk-stats"></div>
+      <div class="panel">
+        <div class="ph"><div class="pt">Ανοιχτές Παραγγελίες</div></div>
+        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>Προσφορά</th><th>Πελάτης</th><th>Κατάσταση</th><th>Φάση</th><th>Αξία</th><th>Κουφ.+Ρολά</th><th>Τοποθέτηση</th><th>Περιοχή</th></tr></thead><tbody id="wrk-body"></tbody></table></div>
+      </div>
+    </div>
+    <div class="page" id="pg-financials">
+      <div class="stat-grid" id="fin-stats"></div>
+      <div class="g2">
+        <div class="panel" style="margin-bottom:0">
+          <div class="ph"><div class="pt">Top Πελάτες — Αξία</div></div>
+          <div class="pb" id="top-clients"></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="ph"><div class="pt">Εκπτώσεις & Αξίες</div></div>
+          <div style="overflow-x:auto"><table class="mt"><thead><tr><th>Πελάτης</th><th>Αξία €</th><th>Έκπτ.%</th><th>Έκπτ.€</th><th>Πριν €</th></tr></thead><tbody id="fin-disc"></tbody></table></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><div class="pt">Ανάλυση Κόστους & Κέρδους</div><div class="ps">Phase 2 — μετά τον τιμοκατάλογο Europa</div></div>
+        <div class="pb" style="text-align:center;color:var(--t2);padding:30px;font-size:13px">⏳ Διαθέσιμο μετά την προσθήκη Sheet 3 (Τιμοκατάλογος) & Sheet 4 (Υλικά)</div>
+      </div>
+    </div>
+    <div class="page" id="pg-problems">
+      <div id="prob-cats"></div>
+      <div class="panel">
+        <div class="ph"><div class="pt">Λίστα Εκκρεμών</div></div>
+        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>Προσφορά</th><th>Πελάτης</th><th>Κατηγορία</th><th>Φάση</th><th>Europa</th><th>Κουφ.</th><th>Αξία</th><th>Ενέργεια</th></tr></thead><tbody id="prob-body"></tbody></table></div>
+      </div>
+    </div>
+    <div class="page" id="pg-crews">
+      <div class="g2" id="crew-ov"></div>
+      <div class="g2" style="margin-top:14px">
+        <div class="panel" style="margin-bottom:0">
+          <div class="ph"><div class="pt">Score Ζευγαριών</div><div class="ps">Βάσει επισκευών</div></div>
+          <div style="overflow-x:auto"><table class="mt"><thead><tr><th>#</th><th>Ζευγάρι</th><th>Τοποθ.</th><th>Επισκ.</th><th>Score</th><th>€/μέρα</th></tr></thead><tbody id="crew-pairs"></tbody></table></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="ph"><div class="pt">Score Τεχνικών</div><div class="ps">Ατομικά</div></div>
+          <div style="overflow-x:auto"><table class="mt"><thead><tr><th>#</th><th>Τεχνικός</th><th>Τοποθ.</th><th>Επισκ.</th><th>Score</th><th>€/μέρα</th></tr></thead><tbody id="crew-ind"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+    <div class="page" id="pg-reports">
+      <div class="stat-grid" id="rep-stats"></div>
+      <div class="g2" id="rep-charts"></div>
+    </div>
+    <div class="page" id="pg-settings">
+      <div class="panel">
+        <div class="ph"><div class="pt">Ημερομίσθια Τεχνικών</div></div>
+        <div class="pb"><table class="mt"><thead><tr><th>Τεχνικός</th><th>€/μέρα</th></tr></thead><tbody id="wage-body"></tbody></table></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><div class="pt">Πληροφορίες Συστήματος</div></div>
+        <div class="pb" style="font-size:13px;color:var(--t2);line-height:2.2">
+          📊 Sheet 1 Παραγγελίες — Ενημέρωση: File → Import → Replace<br>
+          💶 Sheet 2 Προσφορές — Ενημέρωση: File → Import → Replace<br>
+          🔩 Sheet 3 Τιμοκατάλογος Europa — Προσεχώς<br>
+          📦 Sheet 4 Παραγγελία Υλικών — Προσεχώς<br>
+          🔄 Ανυψωτικό: 140€ (1ος–30ος όροφος)<br>
+          ⚡ Dashboard: Ανανέωση → ανέβασε νέο index.html στο GitHub
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
-const O=[{"offer": "*13929", "client": "ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ", "phase": "Μεταλλικές Κατασκευές", "status": "Σε Αναμονή", "topo": "", "europa": "23/06/2026", "crew": "", "kouw": 0, "rola": 0, "value": "2050€", "area": "ΒΡΙΛΗΣΣΙΑ", "addr": "ΚΑΡΑΪΣΚΑΚΗ 3"}, {"offer": "*12868", "client": "ΚΟΤΡΟΠΟΥΛΟΥ ΙΩΑΝΝΑ", "phase": "Μεταλλικές Κατασκευές", "status": "Σε Αναμονή", "topo": "", "europa": "23/06/2026", "crew": "", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13914", "client": "ΜΠΟΥΜΠΑΛΗΣ ΓΕΩΡΓΙΟΣ", "phase": "Μερικώς Παραδομένα", "status": "Σε Αναμονή", "topo": "", "europa": "22/06/2026", "crew": "", "kouw": 4, "rola": 0, "value": "", "area": "ΓΚΥΖΗ", "addr": ""}, {"offer": "*13948", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "phase": "Take Away", "status": "Take Away", "topo": "", "europa": "18/06/2026", "crew": "", "kouw": 2, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*12822", "client": "ΔΗΜΗΤΡΙΑΔΗΣ ΓΕΩΡΓΙΟΣ", "phase": "Take Away", "status": "Take Away", "topo": "", "europa": "18/06/2026", "crew": "", "kouw": 5, "rola": 0, "value": "3.922€", "area": "ΝΕΑ ΧΑΛΚΗΔΟΝΑ", "addr": "ΜΥΚΗΝΩΝ 1"}, {"offer": "*13810", "client": "ΧΟΥΛΙΑΡΑΣ ΛΕΥΤΕΡΗΣ", "phase": "Μερικώς Παραδομένα", "status": "Σε Αναμονή", "topo": "", "europa": "15/06/2026", "crew": "", "kouw": 16, "rola": 16, "value": "25.678€", "area": "ΣΠΑΤΑ", "addr": "ΕΛΑΙΩΝΟΣ ΚΑΙ ΚΟΠΑΝΑ"}, {"offer": "*13932", "client": "KOLOVOS ENERGY IKE", "phase": "Μεταλλικές Κατασκευές", "status": "Σε Αναμονή", "topo": "", "europa": "10/06/2026", "crew": "", "kouw": 1, "rola": 1, "value": "1.744€", "area": "ΑΘΗΝΑ", "addr": "ΑΡΙΣΤΕΙΔΟΥ 10-12"}, {"offer": "*13917", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "phase": "Take Away", "status": "Take Away", "topo": "", "europa": "09/06/2026", "crew": "", "kouw": 2, "rola": 0, "value": "654€", "area": "", "addr": ""}, {"offer": "*13820", "client": "ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ", "phase": "Αναμονή Europa", "status": "Προγραμματισμένο", "topo": "29/05/2026", "europa": "29/05/2026", "crew": "Kariki", "kouw": 2, "rola": 0, "value": "", "area": "ΒΡΙΛΗΣΣΙΑ", "addr": ""}, {"offer": "*13822", "client": "ΚΑΡΑΓΙΩΡΓΟΣ ΔΗΜΗΤΡΗΣ", "phase": "Δεν Έχουμε Μέτρα", "status": "Προγραμματισμένο", "topo": "30/06/2026", "europa": "29/05/2026", "crew": "", "kouw": 14, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13871", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "phase": "Take Away", "status": "Take Away", "topo": "", "europa": "21/05/2026", "crew": "", "kouw": 3, "rola": 0, "value": "1.748€", "area": "", "addr": ""}, {"offer": "*13720", "client": "ΣΑΚΑΛΙΔΗ ΒΑΣΙΛΙΚΗ", "phase": "Αναμονή Europa", "status": "Προγραμματισμένο", "topo": "22/07/2026", "europa": "13/05/2026", "crew": "Kariki", "kouw": 32, "rola": 22, "value": "60.120€", "area": "ΝΕΑ ΕΡΥΘΡΑΙΑ", "addr": "Λ.ΘΗΣΕΩΣ 45"}, {"offer": "*13754", "client": "ΠΑΠΑΠΕΤΡΟΥ ΑΛΕΞΗΣ", "phase": "Ολοκληρωμένη παραλαβή", "status": "Προγραμματισμένο", "topo": "16/05/2026", "europa": "12/05/2026", "crew": "Kariki", "kouw": 4, "rola": 3, "value": "6.450€", "area": "ΠΟΛΥΓΩΝΟ", "addr": "ΣΚΥΡΟΥ 78"}, {"offer": "*13740", "client": "ΓΡΑΜΜΑΤΙΚΑΚΗ ΑΓΓΕΛΙΚΗ", "phase": "Ολοκληρωμένη παραλαβή", "status": "Προγραμματισμένο", "topo": "01/07/2026", "europa": "07/05/2026", "crew": "Kariki", "kouw": 10, "rola": 0, "value": "10.289€", "area": "", "addr": ""}, {"offer": "*13705", "client": "ΞΕΝΕΞ ΑΝΑΣΤΑΣΙΟΣ", "phase": "Δεν Έχουμε Μέτρα", "status": "Εκκρεμεί Πληροφορία", "topo": "", "europa": "14/04/2026", "crew": "", "kouw": 9, "rola": 4, "value": "14.366€", "area": "ΨΥΧΙΚΟ", "addr": "ΚΑΡΚΑΒΙΤΣΑ 8"}, {"offer": "*13644", "client": "ΠΑΡΑΡΑΣ ΜΑΝΩΛΗΣ", "phase": "Ολοκληρωμένη παραλαβή", "status": "Προγραμματισμένο", "topo": "02/06/2026", "europa": "31/03/2026", "crew": "Kariki", "kouw": 11, "rola": 2, "value": "", "area": "ΚΗΦΙΣΙΑ", "addr": "ΕΠΙΔΑΥΡΟΥ"}, {"offer": "*13702", "client": "ΓΙΑΛΟΨΟΥ", "phase": "Δεν Έχουμε Μέτρα", "status": "Προγραμματισμένο", "topo": "30/10/2026", "europa": "23/06/2026", "crew": "", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13782", "client": "ΑΛΒΕΡΤΗΣ", "phase": "Αναμονή Europa", "status": "Προγραμματισμένο", "topo": "30/06/2026", "europa": "23/06/2026", "crew": "Rildo", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13152", "client": "ΠΑΤΕΡΑΚΗΣ", "phase": "Ολοκληρωμένη παραλαβή", "status": "Προγραμματισμένο", "topo": "18/05/2026", "europa": "03/06/2026", "crew": "Kariki", "kouw": 11, "rola": 0, "value": "", "area": "ΝΕΑ ΜΑΚΡΗ", "addr": "ΛΑΜΠΙΩΤΩΝ"}, {"offer": "*13858", "client": "ΔΑΗΜΩΝ", "phase": "Αναμονή Europa", "status": "Σε Αναμονή", "topo": "", "europa": "03/06/2026", "crew": "", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13778", "client": "ΝΤΑΗΣ", "phase": "Take Away", "status": "Take Away", "topo": "", "europa": "21/12/2026", "crew": "", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13583", "client": "ΚΑΛΦΟΠΟΥΛΟΥ", "phase": "Δεν Έχουμε Μέτρα", "status": "Εκκρεμεί Πληροφορία", "topo": "", "europa": "21/12/2026", "crew": "", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13994", "client": "HOMEST", "phase": "Ψευτόκασες", "status": "Προγραμματισμένο", "topo": "20/05/2026", "europa": "", "crew": "Χάρης", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}, {"offer": "*13827", "client": "ΜΑΝΝΕΣ", "phase": "Ψευτόκασες", "status": "Προγραμματισμένο", "topo": "27/07/2026", "europa": "", "crew": "Χάρης", "kouw": 0, "rola": 0, "value": "", "area": "", "addr": ""}];
-const topC=[["ΣΑΚΑΛΙΔΗ ΒΑΣΙΛΙΚΗ", 60119.68], ["ΝΤΑΗΣ ΑΡΗΣ", 27529.1], ["ΧΟΥΛΙΑΡΑΣ ΛΕΥΤΕΡΗΣ", 25678.22], ["ΠΑΡΑΡΑΣ ΜΑΝΩΛΗΣ", 17179.56], ["ΞΕΝΕΞ ΑΝΑΣΤΑΣΙΟΣ", 14366.08], ["KOLOVOS ENERGY IKE", 13601.99]];
-const TOTAL_VAL=242476.23;
-const FIN_COUNT=38;
-const TOTAL_KOUW=126;
+const O=[{"offer":"*13929","client":"ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","phase":"Μεταλλικές Κατασκευές","status":"Σε Αναμονή","topo":"","europa":"23/06/2026","crew":"","kouw":0,"rola":0,"value":"2050","area":"ΒΡΙΛΗΣΣΙΑ","addr":"ΚΑΡΑΪΣΚΑΚΗ 3","days":2,"floor":"","repair":""},{"offer":"*12868","client":"ΚΟΤΡΟΠΟΥΛΟΥ ΙΩΑΝΝΑ","phase":"Μεταλλικές Κατασκευές","status":"Σε Αναμονή","topo":"","europa":"23/06/2026","crew":"","kouw":0,"rola":0,"value":"","area":"","addr":"","days":3,"floor":"","repair":""},{"offer":"*13914","client":"ΜΠΟΥΜΠΑΛΗΣ ΓΕΩΡΓΙΟΣ","phase":"Μερικώς Παραδομένα","status":"Σε Αναμονή","topo":"","europa":"22/06/2026","crew":"","kouw":4,"rola":0,"value":"","area":"ΓΚΥΖΗ","addr":"","days":1,"floor":"","repair":""},{"offer":"*13948","client":"ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ","phase":"Take Away","status":"Take Away","topo":"","europa":"18/06/2026","crew":"","kouw":2,"rola":0,"value":"","area":"","addr":"","days":0,"floor":"","repair":""},{"offer":"*12822","client":"ΔΗΜΗΤΡΙΑΔΗΣ ΓΕΩΡΓΙΟΣ","phase":"Take Away","status":"Take Away","topo":"","europa":"18/06/2026","crew":"","kouw":5,"rola":0,"value":"3922","area":"ΝΕΑ ΧΑΛΚΗΔΟΝΑ","addr":"ΜΥΚΗΝΩΝ 1","days":0,"floor":"","repair":""},{"offer":"*13810","client":"ΧΟΥΛΙΑΡΑΣ ΛΕΥΤΕΡΗΣ","phase":"Μερικώς Παραδομένα","status":"Σε Αναμονή","topo":"","europa":"15/06/2026","crew":"","kouw":16,"rola":16,"value":"25678","area":"ΣΠΑΤΑ","addr":"ΕΛΑΙΩΝΟΣ","days":3,"floor":"","repair":""},{"offer":"*13932","client":"KOLOVOS ENERGY IKE","phase":"Μεταλλικές Κατασκευές","status":"Σε Αναμονή","topo":"","europa":"10/06/2026","crew":"","kouw":1,"rola":1,"value":"1744","area":"ΑΘΗΝΑ","addr":"ΑΡΙΣΤΕΙΔΟΥ 10-12","days":1,"floor":"","repair":""},{"offer":"*13917","client":"ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ","phase":"Take Away","status":"Take Away","topo":"","europa":"09/06/2026","crew":"","kouw":2,"rola":0,"value":"654","area":"","addr":"","days":0,"floor":"","repair":""},{"offer":"*13820","client":"ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","phase":"Αναμονή Europa","status":"Προγραμματισμένο","topo":"29/05/2026","europa":"29/05/2026","crew":"Kariki+Sergio","kouw":2,"rola":0,"value":"","area":"ΒΡΙΛΗΣΣΙΑ","addr":"","days":1,"floor":"ΙΣΟΓΕΙΟ","repair":""},{"offer":"*13822","client":"ΚΑΡΑΓΙΩΡΓΟΣ ΔΗΜΗΤΡΗΣ","phase":"Δεν Έχουμε Μέτρα","status":"Προγραμματισμένο","topo":"30/06/2026","europa":"29/05/2026","crew":"","kouw":14,"rola":0,"value":"","area":"","addr":"","days":2,"floor":"ΙΣΟΓΕΙΟ","repair":""},{"offer":"*13871","client":"ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ","phase":"Take Away","status":"Take Away","topo":"","europa":"21/05/2026","crew":"","kouw":3,"rola":0,"value":"1748","area":"","addr":"","days":0,"floor":"","repair":""},{"offer":"*13720","client":"ΣΑΚΑΛΙΔΗ ΒΑΣΙΛΙΚΗ","phase":"Αναμονή Europa","status":"Προγραμματισμένο","topo":"22/07/2026","europa":"13/05/2026","crew":"Kariki+Leonidas","kouw":32,"rola":22,"value":"60120","area":"ΝΕΑ ΕΡΥΘΡΑΙΑ","addr":"Λ.ΘΗΣΕΩΣ 45","days":15,"floor":"ΙΣΟΓΕΙΟ","repair":""},{"offer":"*13754","client":"ΠΑΠΑΠΕΤΡΟΥ ΑΛΕΞΗΣ","phase":"Ολοκληρωμένη παραλαβή","status":"Προγραμματισμένο","topo":"16/05/2026","europa":"12/05/2026","crew":"Kariki+Sergio","kouw":4,"rola":3,"value":"6450","area":"ΠΟΛΥΓΩΝΟ","addr":"ΣΚΥΡΟΥ 78","days":1,"floor":"5ος","repair":""},{"offer":"*13740","client":"ΓΡΑΜΜΑΤΙΚΑΚΗ ΑΓΓΕΛΙΚΗ","phase":"Ολοκληρωμένη παραλαβή","status":"Προγραμματισμένο","topo":"01/07/2026","europa":"07/05/2026","crew":"Kariki+Adriatic","kouw":10,"rola":0,"value":"10289","area":"ΑΓ.ΠΑΡΑΣΚΕΥΗ","addr":"ΣΙΩΚΟΥ 9","days":2,"floor":"4ος","repair":""},{"offer":"*13705","client":"ΞΕΝΕΞ ΑΝΑΣΤΑΣΙΟΣ","phase":"Δεν Έχουμε Μέτρα","status":"Εκκρεμεί Πληροφορία","topo":"","europa":"14/04/2026","crew":"","kouw":9,"rola":4,"value":"14366","area":"ΨΥΧΙΚΟ","addr":"ΚΑΡΚΑΒΙΤΣΑ 8","days":3,"floor":"ΙΣΟΓΕΙΟ","repair":""},{"offer":"*13644","client":"ΠΑΡΑΡΑΣ ΜΑΝΩΛΗΣ","phase":"Ολοκληρωμένη παραλαβή","status":"Προγραμματισμένο","topo":"02/06/2026","europa":"31/03/2026","crew":"Rildo+Nektarios","kouw":11,"rola":2,"value":"","area":"ΚΗΦΙΣΙΑ","addr":"ΕΠΙΔΑΥΡΟΥ","days":2,"floor":"","repair":""},{"offer":"*13702","client":"ΓΙΑΛΟΨΟΥ","phase":"Δεν Έχουμε Μέτρα","status":"Προγραμματισμένο","topo":"30/10/2026","europa":"23/06/2026","crew":"","kouw":0,"rola":0,"value":"","area":"","addr":"","days":10,"floor":"","repair":""},{"offer":"*13782","client":"ΑΛΒΕΡΤΗΣ","phase":"Αναμονή Europa","status":"Προγραμματισμένο","topo":"30/06/2026","europa":"23/06/2026","crew":"Rildo+Sergio","kouw":0,"rola":0,"value":"","area":"","addr":"","days":4,"floor":"","repair":""},{"offer":"*13152","client":"ΠΑΤΕΡΑΚΗΣ","phase":"Ολοκληρωμένη παραλαβή","status":"Προγραμματισμένο","topo":"18/05/2026","europa":"03/06/2026","crew":"Kariki+Leonidas","kouw":11,"rola":0,"value":"","area":"ΝΕΑ ΜΑΚΡΗ","addr":"ΛΑΜΠΙΩΤΩΝ","days":3,"floor":"ΙΣΟΓΕΙΟ","repair":""},{"offer":"*13858","client":"ΔΑΗΜΩΝ","phase":"Αναμονή Europa","status":"Σε Αναμονή","topo":"","europa":"03/06/2026","crew":"","kouw":0,"rola":0,"value":"","area":"","addr":"","days":6,"floor":"","repair":""},{"offer":"*13778","client":"ΝΤΑΗΣ","phase":"Take Away","status":"Take Away","topo":"","europa":"21/12/2026","crew":"","kouw":0,"rola":0,"value":"","area":"","addr":"","days":0,"floor":"","repair":""},{"offer":"*13583","client":"ΚΑΛΦΟΠΟΥΛΟΥ","phase":"Δεν Έχουμε Μέτρα","status":"Εκκρεμεί Πληροφορία","topo":"","europa":"21/12/2026","crew":"","kouw":0,"rola":0,"value":"","area":"","addr":"","days":3,"floor":"","repair":""},{"offer":"*13994","client":"HOMEST","phase":"Ψευτόκασες","status":"Προγραμματισμένο","topo":"20/05/2026","europa":"","crew":"Χάρης+Amarildo","kouw":0,"rola":0,"value":"","area":"","addr":"","days":4,"floor":"","repair":""},{"offer":"*13827","client":"ΜΑΝΝΕΣ","phase":"Ψευτόκασες","status":"Προγραμματισμένο","topo":"27/07/2026","europa":"","crew":"Χάρης+Amarildo","kouw":0,"rola":0,"value":"","area":"","addr":"","days":4,"floor":"","repair":""}];
+const F=[{"client":"ΛΕΥΤΕΡΗΣ ΚΑΡΙΚΙ","value":5299.47,"discount":45},{"client":"ELVIS","value":2805.63,"discount":45},{"client":"ΜΟΣΧΟΓΙΑΝΝΑΚΗΣ","value":1960.04,"discount":47},{"client":"MECHA","value":4520.72,"discount":47},{"client":"ΔΕΜΙΡΗΣ ΑΚΗΣ","value":1690.33,"discount":47},{"client":"MECHA","value":6197.79,"discount":47},{"client":"ΛΩΛΟΣ ΘΕΟΔΩΡΟΣ","value":1110.45,"discount":35},{"client":"ΑΡΖΟΓΛΟΥ ΑΝΔΡΕΑΣ","value":1080.58,"discount":40},{"client":"EUROSTAL","value":422.38,"discount":0},{"client":"MECHA","value":774.80,"discount":47},{"client":"ΠΑΡΑΡΑΣ ΜΑΝΩΛΗΣ","value":17179.56,"discount":40},{"client":"ΠΕΤΡΟΣ ΚΥΡΚΟΣ","value":2777.60,"discount":46},{"client":"ΔΕΜΙΡΗΣ ΑΚΗΣ","value":3819.00,"discount":47},{"client":"NOUS NOUS","value":1985.74,"discount":0},{"client":"ΞΕΝΕΞ ΑΝΑΣΤΑΣΙΟΣ","value":14366.08,"discount":45},{"client":"ΣΑΚΑΛΙΔΗ ΒΑΣΙΛΙΚΗ","value":60119.68,"discount":45},{"client":"KOLOVOS ENERGY IKE","value":11858.30,"discount":45},{"client":"ΓΡΑΜΜΑΤΙΚΑΚΗ ΑΓΓΕΛΙΚΗ","value":10289.32,"discount":40},{"client":"ΠΑΠΑΠΕΤΡΟΥ ΑΛΕΞΗΣ","value":6446.41,"discount":47},{"client":"AMARILDO","value":365.17,"discount":45},{"client":"ΝΤΑΗΣ ΑΡΗΣ","value":9628.85,"discount":46},{"client":"ΜΑΡΚΟΥ ΕΛΕΝΗ","value":4336.97,"discount":30},{"client":"ΧΟΥΛΙΑΡΑΣ ΛΕΥΤΕΡΗΣ","value":25678.22,"discount":30},{"client":"ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","value":1723.53,"discount":40},{"client":"ΚΑΡΑΓΙΩΡΓΟΣ ΔΗΜΗΤΡΗΣ","value":12212.79,"discount":45},{"client":"ΔΕΜΙΡΗΣ ΑΚΗΣ","value":435.99,"discount":47},{"client":"ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ","value":1747.71,"discount":45},{"client":"ΠΗΤΑΣ ΦΩΤΗΣ","value":2477.93,"discount":43},{"client":"AMARILDO","value":364.43,"discount":45},{"client":"ΠΗΤΑΣ ΦΩΤΗΣ","value":346.30,"discount":43},{"client":"ΜΠΟΥΜΠΑΛΗΣ ΓΕΩΡΓΙΟΣ","value":3995.57,"discount":35},{"client":"ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ","value":653.87,"discount":45},{"client":"ΛΕΥΤΕΡΗΣ ΚΑΡΙΚΙ","value":1525.62,"discount":45},{"client":"ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ","value":2050.00,"discount":0},{"client":"KOLOVOS ENERGY IKE","value":1743.69,"discount":45},{"client":"MECHA","value":0.00,"discount":0},{"client":"ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ","value":585.46,"discount":45},{"client":"ΝΤΑΗΣ ΑΡΗΣ","value":17900.25,"discount":46}];
+const W={"Ermal":90,"Kariki":80,"Χάρης":80,"Amarildo":70,"Leonidas":70,"Adriatic":60,"Nektarios":60,"Sergio":50};
+const TITLES={overview:"Επισκόπηση",orders:"Παραγγελίες",production:"Παραγωγή",placements:"Τοποθετήσεις",works:"Έργα",financials:"Οικονομικά",problems:"Προβλήματα",crews:"Συνεργεία",reports:"Αναφορές",settings:"Ρυθμίσεις"};
 
-const tot=O.length;
-const sched=O.filter(o=>o.status==='Προγραμματισμένο').length;
-const wait=O.filter(o=>o.status==='Σε Αναμονή').length;
-const ready=O.filter(o=>o.status==='Έτοιμο προς Τοποθέτηση').length;
-const pend=O.filter(o=>o.status==='Εκκρεμεί Πληροφορία').length;
-const ta=O.filter(o=>o.status==='Take Away').length;
-const withT=O.filter(o=>o.topo&&o.topo!=='').length;
+function fe(v){return v>=1000?"€"+Math.round(v/1000)+"K":"€"+Math.round(v)}
+function fev(v){return "€"+(v||0).toLocaleString("el-GR",{maximumFractionDigits:0})}
+function pgd(s){if(!s)return new Date(9999,0,1);const p=s.split("/");return p.length===3?new Date(p[2],p[1]-1,p[0]):new Date(s)}
+function flN(f){const m=(f||"").match(/(\d+)/);return m?parseInt(m[1]):0}
+function sc(v){return v>=8?"var(--gn)":v>=6?"var(--or)":"var(--rd)"}
 
-const upcoming=O.filter(o=>o.topo&&o.topo!=='').sort((a,b)=>pgd(a.topo)-pgd(b.topo)).slice(0,8);
+function sb(s){const m={"Προγραμματισμένο":"bg","Έτοιμο προς Τοποθέτηση":"bpp","Σε Αναμονή":"bo","Εκκρεμεί Πληροφορία":"br","Take Away":"bb"};return`<span class="badge ${m[s]||"bx"}">${s||"—"}</span>`}
+function pb(p){const m={"Ολοκληρωμένη παραλαβή":"bg","Μεταλλικές Κατασκευές":"bo","Αναμονή Europa":"bb","Μερικώς Παραδομένα":"bo","Δεν Έχουμε Μέτρα":"br","Take Away":"bx","Ψευτόκασες":"bpp"},sh={"Ολοκληρωμένη παραλαβή":"✓ Ολοκλ.","Μεταλλικές Κατασκευές":"Μεταλλ.","Αναμονή Europa":"Europa","Μερικώς Παραδομένα":"Μερικώς","Δεν Έχουμε Μέτρα":"Χ/Μέτρα","Take Away":"Take Away","Ψευτόκασες":"Ψευτόκ."};return`<span class="badge ${m[p]||"bx"}">${sh[p]||p||"—"}</span>`}
+function cb(c){if(!c)return"<span style='color:var(--t3);font-size:11px'>—</span>";const cl={"Kariki":"var(--a2)","Rildo":"var(--pp)","Ermal":"#ec4899","Χάρης":"var(--or)","Amarildo":"var(--tl)","Leonidas":"var(--gn)","Nektarios":"#f0a500","Sergio":"#aaa"};return c.split("+").map(p=>`<span style="color:${cl[p.trim()]||"var(--t2)"};font-weight:500;font-size:11px">${p.trim()}</span>`).join("<span style='color:var(--t3)'>+</span>")}
 
-const maxV=topC[0][1];
+function donut(data,tot){const r=42,circ=2*Math.PI*r;let off=0;const sl=data.map(d=>{const da=d.v/tot*circ;const s=`<circle cx="55" cy="55" r="${r}" fill="none" stroke="${d.c}" stroke-width="13" stroke-dasharray="${da} ${circ-da}" stroke-dashoffset="${-off}"/>`;off+=da;return s});return`<svg width="110" height="110" viewBox="0 0 110 110"><circle cx="55" cy="55" r="42" fill="none" stroke="var(--s3)" stroke-width="13"/>${sl.join("")}</svg><div class="dcn">${tot}<span>σύνολο</span></div>`}
 
-const alerts=[];
-const nm=O.filter(o=>o.phase==='Δεν Έχουμε Μέτρα').length;
-if(pend) alerts.push({i:'🔴',s:'Σοβαρό',sc:'rb',tc:'rd',t:`<strong>${pend} παραγγελίες</strong> χωρίς πληροφορία φάσης`});
-if(nm)   alerts.push({i:'🟡',s:'Προσοχή',sc:'ob',tc:'or',t:`<strong>${nm} παραγγελίες</strong> αναμένουν τελικά μέτρα`});
-if(wait) alerts.push({i:'🟡',s:'Προσοχή',sc:'ob',tc:'or',t:`<strong>${wait} παραγγελίες</strong> σε αναμονή Europa`});
-if(ready)alerts.push({i:'🔵',s:'Ενημέρωση',sc:'bb',tc:'a2',t:`<strong>${ready} παραγγελίες</strong> έτοιμες προς τοποθέτηση`});
+function nav(id,el){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".ni").forEach(n=>n.classList.remove("active"));
+  document.getElementById("pg-"+id).classList.add("active");
+  if(el)el.classList.add("active");
+  document.getElementById("page-title").textContent=TITLES[id]||id;
+  renders[id]&&renders[id]();
+}
 
-const crews=[
-  {n:'Kariki',t:upcoming.filter(u=>u.crew==='Kariki').length,sc:9.2},
-  {n:'Rildo', t:upcoming.filter(u=>u.crew==='Rildo').length, sc:8.5},
-  {n:'Ermal', t:upcoming.filter(u=>u.crew==='Ermal').length, sc:7.8},
-  {n:'Χάρης', t:upcoming.filter(u=>u.crew==='Χάρης').length, sc:8.8},
-];
-
-const dd=[
-  {l:'Προγραμματισμένο',v:sched,c:'#3fb950'},
-  {l:'Σε Αναμονή',v:wait,c:'#d29922'},
-  {l:'Εκκρεμεί',v:pend,c:'#f85149'},
-  {l:'Take Away',v:ta,c:'#388bfd'},
-  {l:'Έτοιμο',v:ready,c:'#a371f7'},
-].filter(d=>d.v>0);
-
-function fe(v){return v>=1000?'€'+Math.round(v/1000)+'K':'€'+Math.round(v)}
-function pgd(s){if(!s)return new Date(9999,0,1);const p=s.split('/');return p.length===3?new Date(p[2],p[1]-1,p[0]):new Date(s)}
-function sb(s){const m={'Προγραμματισμένο':'bg','Έτοιμο προς Τοποθέτηση':'bpp','Σε Αναμονή':'bo','Εκκρεμεί Πληροφορία':'br','Take Away':'bb'};return`<span class="badge ${m[s]||'bx'}">${s||'—'}</span>`}
-function pb(p){const m={'Ολοκληρωμένη παραλαβή':'bg','Μεταλλικές Κατασκευές':'bo','Αναμονή Europa':'bb','Μερικώς Παραδομένα':'bo','Δεν Έχουμε Μέτρα':'br','Take Away':'bx','Ψευτόκασες':'bo'},sh={'Ολοκληρωμένη παραλαβή':'✓ Ολοκλ.','Μεταλλικές Κατασκευές':'Μεταλλ.','Αναμονή Europa':'Europa','Μερικώς Παραδομένα':'Μερικώς','Δεν Έχουμε Μέτρα':'Χ/Μέτρα','Take Away':'Take Away','Ψευτόκασες':'Ψευτόκ.'};return`<span class="badge ${m[p]||'bx'}">${sh[p]||p||'—'}</span>`}
-function cb(c){if(!c)return'<span style="color:var(--t3);font-size:11px">—</span>';const cl={'Kariki':'var(--a2)','Rildo':'var(--pp)','Ermal':'#ec4899','Χάρης':'var(--or)'};return`<span style="color:${cl[c]||'var(--t2)'};font-weight:500;font-size:11px">${c}</span>`}
-function donut(data,tot){const r=46,cx=60,cy=60,circ=2*Math.PI*r;let off=0;const sl=data.map(d=>{const da=d.v/tot*circ;const s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.c}" stroke-width="14" stroke-dasharray="${da} ${circ-da}" stroke-dashoffset="${-off}"/>`;off+=da;return s});return`<svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--s3)" stroke-width="14"/>${sl.join('')}</svg><div class="dcn">${tot}<span>σύνολο</span></div>`}
-
-document.getElementById('mc').innerHTML=`
-  <div class="kg">
-    <div class="kpi bl"><div class="ki">📋</div><div class="kl">Παραγγελίες</div><div class="kv">${tot}</div><div class="ks">Σύνολο</div></div>
-    <div class="kpi gn"><div class="ki">📅</div><div class="kl">Τοποθετήσεις</div><div class="kv">${withT}</div><div class="ks">Προγραμματισμένες</div></div>
-    <div class="kpi or"><div class="ki">⏳</div><div class="kl">Σε Αναμονή</div><div class="kv">${wait}</div><div class="ks">Αναμένουν υλικά</div></div>
-    <div class="kpi pp"><div class="ki">💶</div><div class="kl">Αξία</div><div class="kv">${fe(TOTAL_VAL)}</div><div class="ks">Καθαρή αξία</div></div>
-    <div class="kpi tl"><div class="ki">🪟</div><div class="kl">Κουφώματα</div><div class="kv">${TOTAL_KOUW}</div><div class="ks">Τεμάχια</div></div>
-    <div class="kpi rd"><div class="ki">⚠</div><div class="kl">Εκκρεμή</div><div class="kv">${pend}</div><div class="ks">Χρειάζονται ενέργεια</div></div>
-  </div>
-  <div class="g3">
-    <div class="panel">
-      <div class="ph"><div class="pt">Κατάσταση Παραγγελιών</div><div class="ps">${tot} σύνολο</div></div>
-      <div class="pb"><div class="dw"><div class="dc">${donut(dd,tot)}</div><div class="dl">${dd.map(d=>`<div class="di"><div class="dn"><div class="dd" style="background:${d.c}"></div>${d.l}</div><div class="dv">${d.v} <span style="color:var(--t3);font-size:10px">(${Math.round(d.v/tot*100)}%)</span></div></div>`).join('')}</div></div></div>
+// OVERVIEW
+function renderOverview(){
+  const tot=O.length,sched=O.filter(o=>o.status==="Προγραμματισμένο").length,wait=O.filter(o=>o.status==="Σε Αναμονή").length,pend=O.filter(o=>o.status==="Εκκρεμεί Πληροφορία").length,ta=O.filter(o=>o.status==="Take Away").length,withT=O.filter(o=>o.topo).length,totK=O.reduce((s,o)=>s+(o.kouw||0),0);
+  const noInfo=O.filter(o=>o.status==="Εκκρεμεί Πληροφορία"),noMeas=O.filter(o=>o.phase==="Δεν Έχουμε Μέτρα"),euroW=O.filter(o=>o.phase==="Αναμονή Europa"&&!o.topo),part=O.filter(o=>o.phase==="Μερικώς Παραδομένα"),ready=O.filter(o=>o.status==="Έτοιμο προς Τοποθέτηση");
+  const alerts=[];
+  if(noInfo.length)alerts.push({i:"🔴",s:"Σοβαρό",sc:"rb",tc:"rd",t:`<strong>${noInfo.length} παραγγελίες</strong> χωρίς πληροφορία φάσης`,cl:noInfo.map(o=>o.client)});
+  if(noMeas.length)alerts.push({i:"🟡",s:"Προσοχή",sc:"ob",tc:"or",t:`<strong>${noMeas.length} παραγγελίες</strong> αναμένουν τελικά μέτρα`,cl:noMeas.map(o=>o.client)});
+  if(euroW.length)alerts.push({i:"🟡",s:"Προσοχή",sc:"ob",tc:"or",t:`<strong>${euroW.length} παραγγελίες</strong> σε αναμονή Europa χωρίς ημ.`,cl:euroW.map(o=>o.client)});
+  if(part.length)alerts.push({i:"🟠",s:"Προσοχή",sc:"ob",tc:"or",t:`<strong>${part.length} παραγγελίες</strong> μερικώς παραδομένες`,cl:part.map(o=>o.client)});
+  if(ready.length)alerts.push({i:"🔵",s:"Ενημέρωση",sc:"bb",tc:"a2",t:`<strong>${ready.length} παραγγελίες</strong> έτοιμες — εκκρεμεί ημ. τοποθέτησης`,cl:ready.map(o=>o.client)});
+  const up=O.filter(o=>o.topo).sort((a,b)=>pgd(a.topo)-pgd(b.topo)).slice(0,6);
+  const dd=[{l:"Προγραμματισμένο",v:sched,c:"#3fb950"},{l:"Σε Αναμονή",v:wait,c:"#d29922"},{l:"Εκκρεμεί",v:pend,c:"#f85149"},{l:"Take Away",v:ta,c:"#388bfd"}].filter(d=>d.v>0);
+  document.getElementById("pg-overview").innerHTML=`
+    <div class="kg">
+      <div class="kpi bl"><div class="ki">📋</div><div class="kl">Παραγγελίες</div><div class="kv">${tot}</div><div class="ks">Σύνολο</div></div>
+      <div class="kpi gn"><div class="ki">📅</div><div class="kl">Τοποθετήσεις</div><div class="kv">${withT}</div><div class="ks">Προγραμματισμένες</div></div>
+      <div class="kpi or"><div class="ki">⏳</div><div class="kl">Σε Αναμονή</div><div class="kv">${wait}</div><div class="ks">Αναμένουν υλικά</div></div>
+      <div class="kpi tl"><div class="ki">🪟</div><div class="kl">Κουφώματα</div><div class="kv">${totK}</div><div class="ks">Τεμάχια</div></div>
+      <div class="kpi rd"><div class="ki">⚠</div><div class="kl">Εκκρεμή</div><div class="kv">${pend}</div><div class="ks">Χρειάζονται ενέργεια</div></div>
+      <div class="kpi pp"><div class="ki">✅</div><div class="kl">Take Away</div><div class="kv">${ta}</div><div class="ks">Έτοιμα παραλαβή</div></div>
     </div>
-    <div class="panel">
-      <div class="ph"><div class="pt">Επόμενες Τοποθετήσεις</div><div class="ps">${upcoming.length} προγρ.</div></div>
-      <div class="pb" style="padding:8px 16px">
-        <table class="mt"><tr><th>Ημ/νία</th><th>Πελάτης</th><th>Συνεργείο</th><th>Κατ.</th></tr>
-        ${upcoming.map(o=>`<tr><td class="mono" style="font-size:11px;color:var(--a2)">${o.topo}</td><td style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.client.substring(0,15)}</td><td>${cb(o.crew)}</td><td>${sb(o.status)}</td></tr>`).join('')}
-        </table>
-      </div>
+    <div class="g3">
+      <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Κατάσταση</div><div class="ps">${tot} σύνολο</div></div><div class="pb"><div class="dw"><div class="dc">${donut(dd,tot)}</div><div class="dl">${dd.map(d=>`<div class="di"><div class="dn"><div class="dd" style="background:${d.c}"></div>${d.l}</div><div class="dv">${d.v}<span style="color:var(--t3);font-size:10px"> (${Math.round(d.v/tot*100)}%)</span></div></div>`).join("")}</div></div></div></div>
+      <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Επόμενες Τοποθετήσεις</div><div class="ps">${up.length}</div></div><div class="pb" style="padding:8px 16px"><table class="mt"><tr><th>Ημ/νία</th><th>Πελάτης</th><th>Συνεργείο</th><th>Κατ.</th></tr>${up.map(o=>`<tr><td class="mono" style="font-size:11px;color:var(--a2)">${o.topo}</td><td style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.client.substring(0,15)}</td><td>${cb(o.crew)}</td><td>${sb(o.status)}</td></tr>`).join("")}</table></div></div>
+      <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">⚡ Alerts</div><div class="ps">${alerts.length} ενεργά</div></div><div class="pb" style="padding:8px 16px">${alerts.map(a=>`<div class="ai"><span style="font-size:14px">${a.i}</span><div class="at">${a.t}<div class="alert-clients">${a.cl.map(c=>`<span class="ac-tag">${c.substring(0,18)}</span>`).join("")}</div></div><span class="ab" style="background:var(--${a.sc});color:var(--${a.tc})">${a.s}</span></div>`).join("")}${!alerts.length?"<div style='color:var(--t2);font-size:12px;text-align:center;padding:20px'>✅ Δεν υπάρχουν alerts</div>":""}</div></div>
     </div>
-    <div class="panel">
-      <div class="ph"><div class="pt">⚡ Alerts</div><div class="ps">${alerts.length} ενεργά</div></div>
-      <div class="pb" style="padding:8px 16px">
-        ${alerts.map(a=>`<div class="ai"><span style="font-size:15px">${a.i}</span><div class="at">${a.t}</div><span class="ab" style="background:var(--${a.sc});color:var(--${a.tc})">${a.s}</span></div>`).join('')}
-        ${!alerts.length?'<div style="color:var(--t2);font-size:12px;text-align:center;padding:20px">✅ Δεν υπάρχουν alerts</div>':''}
-      </div>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="panel">
-      <div class="ph"><div class="pt">Top Πελάτες — Αξία</div><div class="ps">Βάσει Προσφορών</div></div>
-      <div class="pb" style="padding:8px 16px">
-        ${topC.map(([n,v],i)=>`<div class="cr"><div style="width:20px;font-size:11px;color:var(--t3)">${i+1}</div><div class="crn">${n.substring(0,22)}</div><div class="cb"><div class="cbf" style="width:${Math.round(v/maxV*100)}%;background:${['var(--a2)','var(--pp)','var(--tl)','var(--gn)','var(--or)','var(--b2)'][i]}"></div></div><div class="cv">${fe(v)}</div></div>`).join('')}
-      </div>
-    </div>
-    <div class="panel">
-      <div class="ph"><div class="pt">Συνεργεία</div><div class="ps">Επόμενες τοποθετήσεις</div></div>
-      <div class="pb" style="padding:8px 16px">
-        <table class="mt"><tr><th>Συνεργείο</th><th>Τοποθ.</th><th>Τύπος</th><th>Score</th></tr>
-        ${crews.map(c=>`<tr><td style="font-weight:500">${c.n}</td><td style="text-align:center">${c.t}</td><td>${c.n==='Χάρης'?'<span style="color:var(--or);font-size:11px">Σίδερα</span>':'<span style="color:var(--a2);font-size:11px">Αλουμίνια</span>'}</td><td><span class="cs ${c.sc>=9?'shi':c.sc>=7.5?'smi':'slo'}">${c.sc}</span></td></tr>`).join('')}
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="panel" style="margin-bottom:16px">
-    <div class="ph"><div class="pt">Ροή Εργασιών</div></div>
-    <div class="pb">
-      <div class="flow">
-        <div class="fs"><div class="fi f1">📥</div><div class="fn">${FIN_COUNT}</div><div class="fl">Νέες<br>Προσφορές</div></div>
-        <div class="fa">→</div>
-        <div class="fs"><div class="fi f2">⚙</div><div class="fn">${tot}</div><div class="fl">Σε<br>Παραγωγή</div></div>
-        <div class="fa">→</div>
-        <div class="fs"><div class="fi f3">📦</div><div class="fn">${O.filter(o=>o.phase==='Ολοκληρωμένη παραλαβή').length}</div><div class="fl">Παραλαβή<br>Υλικών</div></div>
-        <div class="fa">→</div>
-        <div class="fs"><div class="fi f4">🔧</div><div class="fn">${withT}</div><div class="fl">Προς<br>Τοποθέτηση</div></div>
-        <div class="fa">→</div>
-        <div class="fs"><div class="fi f5">✅</div><div class="fn">${ta}</div><div class="fl">Take Away /<br>Ολοκλ.</div></div>
-      </div>
-    </div>
-  </div>
-  <div class="panel">
-    <div class="ph"><div class="pt">Πλήρης Κατάσταση Παραγγελιών</div><div class="ps">${tot} εγγραφές</div></div>
-    <div style="overflow-x:auto">
-      <table class="mt" style="font-size:11px">
-        <tr><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Κατάσταση</th><th>Τοποθέτηση</th><th>Europa</th><th>Συνεργείο</th><th>Κουφ.</th><th>Ρολά</th><th>Αξία</th></tr>
-        ${O.map(o=>`<tr><td class="mono" style="color:var(--a2)">${o.offer}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.client}</td><td>${pb(o.phase)}</td><td>${sb(o.status)}</td><td class="mono">${o.topo||'—'}</td><td class="mono" style="color:var(--t2)">${o.europa||'—'}</td><td>${cb(o.crew)}</td><td style="text-align:center">${o.kouw||'—'}</td><td style="text-align:center">${o.rola||'—'}</td><td class="mono" style="color:var(--gn)">${o.value||'—'}</td></tr>`).join('')}
-      </table>
-    </div>
-  </div>
-`;
+    <div class="panel"><div class="ph"><div class="pt">Ροή Δουλειών</div></div><div class="pb"><div class="flow">
+      <div class="fs"><div class="fi f1">🏗</div><div class="fn">${O.filter(o=>o.status!=="Take Away").length}</div><div class="fl">Δουλειές<br>σε Εξέλιξη</div></div>
+      <div class="fa">→</div>
+      <div class="fs"><div class="fi f2">📦</div><div class="fn">${O.filter(o=>o.phase==="Ολοκληρωμένη παραλαβή").length}</div><div class="fl">Παραλαβή<br>Υλικών</div></div>
+      <div class="fa">→</div>
+      <div class="fs"><div class="fi f3">🔧</div><div class="fn">${withT}</div><div class="fl">Προς<br>Τοποθέτηση</div></div>
+      <div class="fa">→</div>
+      <div class="fs"><div class="fi f4">✅</div><div class="fn">${ta}</div><div class="fl">Take Away /<br>Ολοκλ.</div></div>
+    </div></div></div>`;
+}
+
+// ORDERS
+function renderOrders(){
+  const phases=[...new Set(O.map(o=>o.phase))].filter(Boolean),statuses=[...new Set(O.map(o=>o.status))].filter(Boolean),crews=[...new Set(O.map(o=>o.crew))].filter(Boolean);
+  const ps=document.getElementById("f-phase"),ss=document.getElementById("f-status"),cs=document.getElementById("f-crew");
+  if(ps.options.length<=1){phases.forEach(p=>{const o=document.createElement("option");o.value=p;o.textContent=p;ps.appendChild(o)})}
+  if(ss.options.length<=1){statuses.forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;ss.appendChild(o)})}
+  if(cs.options.length<=1){crews.forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=c;cs.appendChild(o)})}
+  const search=(document.getElementById("f-search")?.value||"").toLowerCase(),phase=document.getElementById("f-phase")?.value||"",status=document.getElementById("f-status")?.value||"",crew=document.getElementById("f-crew")?.value||"";
+  const filtered=O.filter(o=>{
+    if(search&&!o.client.toLowerCase().includes(search)&&!o.offer.toLowerCase().includes(search))return false;
+    if(phase&&o.phase!==phase)return false;
+    if(status&&o.status!==status)return false;
+    if(crew&&o.crew!==crew)return false;
+    return true;
+  });
+  document.getElementById("ord-cnt").textContent=`${filtered.length} εγγραφές`;
+  document.getElementById("ord-body").innerHTML=filtered.map(o=>`<tr>
+    <td class="mono" style="color:var(--a2)">${o.offer}</td>
+    <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.client}</td>
+    <td>${pb(o.phase)}</td><td>${sb(o.status)}</td>
+    <td class="mono">${o.topo||"—"}</td>
+    <td class="mono" style="color:var(--t2)">${o.europa||"—"}</td>
+    <td>${cb(o.crew)}</td>
+    <td style="text-align:center">${o.kouw||"—"}</td>
+    <td style="text-align:center">${o.rola||"—"}</td>
+    <td style="text-align:center">${o.days||"—"}</td>
+    <td class="mono" style="color:var(--gn)">${o.value?"€"+parseInt(o.value).toLocaleString("el-GR"):"—"}</td>
+    <td style="text-align:center">${o.repair?"<span style='color:var(--rd)'>⚠</span>":"<span style='color:var(--t3)'>—</span>"}</td>
+  </tr>`).join("");
+}
+
+// PRODUCTION
+function renderProduction(){
+  const byPhase={};O.forEach(o=>{byPhase[o.phase]=(byPhase[o.phase]||0)+1});
+  document.getElementById("prod-phase-stats").innerHTML=Object.entries(byPhase).map(([ph,cnt])=>`<div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">${pb(ph)}</div><div class="ps">${cnt}</div></div></div>`).join("");
+  const prod=O.filter(o=>o.status!=="Take Away").sort((a,b)=>pgd(a.europa||"31/12/2099")-pgd(b.europa||"31/12/2099"));
+  document.getElementById("prod-body").innerHTML=prod.map((o,i)=>`<tr>
+    <td style="color:var(--t3);text-align:center">${i+1}</td>
+    <td class="mono" style="color:var(--a2)">${o.offer}</td>
+    <td>${o.client.substring(0,22)}</td>
+    <td>${pb(o.phase)}</td>
+    <td class="mono" style="color:${pgd(o.europa)<new Date()?"var(--gn)":"var(--or)"}">${o.europa||"—"}</td>
+    <td style="text-align:center">${o.kouw||"—"}</td>
+    <td style="text-align:center">${o.rola||"—"}</td>
+    <td style="color:var(--t2)">${o.area||"—"}</td>
+  </tr>`).join("");
+}
+
+// PLACEMENTS
+function renderPlacements(){
+  const placed=O.filter(o=>o.topo).sort((a,b)=>pgd(a.topo)-pgd(b.topo));
+  document.getElementById("pl-cnt").textContent=`${placed.length} τοποθετήσεις`;
+  // Mini calendar
+  const dm={};placed.forEach(j=>{const k=j.topo.split("/").reverse().join("-");if(!dm[k])dm[k]=[];dm[k].push(j)});
+  function dsL(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+  const GRM=["ΙΑΝ","ΦΕΒ","ΜΑΡ","ΑΠΡ","ΜΑΪΟΣ","ΙΟΥΝΙΟΣ","ΙΟΥΛΙΟΣ","ΑΥΓ","ΣΕΠ","ΟΚΤ","ΝΟΕ","ΔΕΚ"];
+  const TODAY=new Date("2026-05-12");
+  let ch="";
+  [{y:2026,m:4},{y:2026,m:5},{y:2026,m:6}].forEach(({y,m})=>{
+    ch+=`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--bd)">${GRM[m]} ${y}</div>`;
+    ch+=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px">`;
+    const first=new Date(y,m,1);const dow=first.getDay();const back=dow===0?6:dow-1;
+    const days=new Date(y,m+1,0).getDate();
+    for(let i=0;i<back;i++)ch+=`<div style="min-height:50px"></div>`;
+    for(let d=1;d<=days;d++){
+      const cur=new Date(y,m,d);if(cur.getDay()===0){ch+=`<div style="min-height:50px;opacity:.15;border-radius:4px;background:var(--s3);display:grid;place-items:center;font-size:9px;color:var(--t3)">Κυρ</div>`;continue}
+      const k=dsL(cur);const ent=dm[k]||[];const isSat=cur.getDay()===6;
+      const hasCrew=ent.some(e=>e.crew);const isPast=cur<TODAY;
+      const bg=ent.length?(hasCrew?"rgba(63,185,80,.12)":"rgba(210,153,34,.12)"):"var(--s3)";
+      const br=ent.length?(hasCrew?"#3fb950":"#d29922"):"var(--bd)";
+      ch+=`<div style="min-height:50px;border-radius:4px;padding:3px 4px;background:${bg};border:0.5px solid ${br};border-style:${isSat?"dashed":"solid"};opacity:${isPast?.35:1}">`;
+      ch+=`<div style="font-size:9px;font-weight:600;color:var(--t2);margin-bottom:2px">${d}</div>`;
+      ent.slice(0,2).forEach(e=>{ch+=`<div style="font-size:8px;color:var(--tx);line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.client.substring(0,11)}</div>`});
+      if(ent.length>2)ch+=`<div style="font-size:8px;color:var(--t3)">+${ent.length-2}</div>`;
+      ch+=`</div>`;
+    }
+    ch+=`</div></div>`;
+  });
+  document.getElementById("cal-wrap").innerHTML=`<div class="panel"><div class="ph"><div class="pt">Ημερολόγιο Μάιος–Ιούλιος 2026</div><div class="ps">🟢 με συνεργείο · 🟡 χωρίς</div></div><div class="pb">${ch}</div></div>`;
+  document.getElementById("pl-body").innerHTML=placed.map(o=>{
+    const fn=flN(o.floor);const hasL=fn>=1&&fn<=30;
+    return`<tr>
+      <td class="mono" style="color:var(--a2);font-weight:600">${o.topo}</td>
+      <td class="mono" style="color:var(--t2)">${o.offer}</td>
+      <td>${o.client.substring(0,20)}</td>
+      <td>${pb(o.phase)}</td><td>${cb(o.crew)}</td>
+      <td style="text-align:center">${o.days||"—"}</td>
+      <td style="text-align:center">${o.kouw||"—"}</td>
+      <td style="text-align:center">${o.rola||"—"}</td>
+      <td style="text-align:center">${o.floor||"—"}</td>
+      <td style="text-align:center">${hasL?"<span style='color:var(--or)'>140€</span>":"<span style='color:var(--t3)'>—</span>"}</td>
+      <td style="color:var(--t2)">${o.area||"—"}</td>
+    </tr>`;}).join("");
+}
+
+// WORKS
+function renderWorks(){
+  const open=O.filter(o=>o.status!=="Take Away");
+  const tV=open.reduce((s,o)=>s+(parseFloat(o.value)||0),0),tK=open.reduce((s,o)=>s+(o.kouw||0),0);
+  document.getElementById("wrk-stats").innerHTML=`<div class="stat"><div class="stat-val">${open.length}</div><div class="stat-lbl">Ανοιχτές Παραγγελίες</div></div><div class="stat"><div class="stat-val">${fev(tV)}</div><div class="stat-lbl">Συνολική Αξία</div></div><div class="stat"><div class="stat-val">${tK}</div><div class="stat-lbl">Κουφώματα</div></div>`;
+  document.getElementById("wrk-body").innerHTML=open.sort((a,b)=>pgd(a.topo||"31/12/2099")-pgd(b.topo||"31/12/2099")).map(o=>`<tr>
+    <td class="mono" style="color:var(--a2)">${o.offer}</td>
+    <td>${o.client.substring(0,22)}</td>
+    <td>${sb(o.status)}</td><td>${pb(o.phase)}</td>
+    <td class="mono" style="color:var(--gn)">${o.value?"€"+parseInt(o.value).toLocaleString("el-GR"):"—"}</td>
+    <td style="text-align:center">${(o.kouw||0)+(o.rola||0)}</td>
+    <td class="mono">${o.topo||"—"}</td>
+    <td style="color:var(--t2)">${o.area||"—"}</td>
+  </tr>`).join("");
+}
+
+// FINANCIALS
+function renderFinancials(){
+  const tV=F.reduce((s,f)=>s+f.value,0),avgD=F.filter(f=>f.discount>0).reduce((s,f)=>s+f.discount,0)/Math.max(F.filter(f=>f.discount>0).length,1);
+  const tDE=F.reduce((s,f)=>s+(f.discount>0?f.value/(1-f.discount/100)-f.value:0),0);
+  document.getElementById("fin-stats").innerHTML=`<div class="stat"><div class="stat-val">${fev(tV)}</div><div class="stat-lbl">Συνολική Καθαρή Αξία</div></div><div class="stat"><div class="stat-val">${Math.round(avgD)}%</div><div class="stat-lbl">Μέση Έκπτωση</div></div><div class="stat"><div class="stat-val">${fev(tDE)}</div><div class="stat-lbl">Συνολική Έκπτωση €</div></div>`;
+  const cv={};F.forEach(f=>{cv[f.client]=(cv[f.client]||0)+f.value});
+  const topC=Object.entries(cv).sort((a,b)=>b[1]-a[1]).slice(0,8),maxV=topC[0][1];
+  document.getElementById("top-clients").innerHTML=topC.map(([n,v],i)=>`<div class="cr"><div style="width:20px;font-size:11px;color:var(--t3)">${i+1}</div><div class="crn">${n.substring(0,22)}</div><div class="cb"><div class="cbf" style="width:${Math.round(v/maxV*100)}%;background:${["var(--a2)","var(--pp)","var(--tl)","var(--gn)","var(--or)","var(--b2)","var(--a2)","var(--pp)"][i]}"></div></div><div class="cv">${fe(v)}</div></div>`).join("");
+  document.getElementById("fin-disc").innerHTML=F.filter(f=>f.value>100).sort((a,b)=>b.value-a.value).slice(0,12).map(f=>{const orig=f.discount>0?f.value/(1-f.discount/100):f.value,dE=orig-f.value;return`<tr><td>${f.client.substring(0,18)}</td><td class="mono" style="color:var(--gn)">${fev(f.value)}</td><td style="text-align:center;color:var(--or)">${f.discount>0?f.discount+"%":"—"}</td><td class="mono" style="color:var(--rd)">${f.discount>0?"-"+fev(dE):"—"}</td><td class="mono" style="color:var(--t2)">${f.discount>0?fev(orig):"—"}</td></tr>`}).join("");
+}
+
+// PROBLEMS
+function renderProblems(){
+  const cats=[
+    {l:"Εκκρεμεί Πληροφορία",items:O.filter(o=>o.status==="Εκκρεμεί Πληροφορία"),c:"var(--rd)",i:"🔴",a:"Ενημέρωση φάσης"},
+    {l:"Δεν Έχουμε Μέτρα",items:O.filter(o=>o.phase==="Δεν Έχουμε Μέτρα"),c:"var(--or)",i:"🟡",a:"Αναμονή επιμέτρησης"},
+    {l:"Μερικώς Παραδομένα",items:O.filter(o=>o.phase==="Μερικώς Παραδομένα"),c:"var(--or)",i:"🟠",a:"Αναμονή υπόλοιπων"},
+    {l:"Αναμονή Europa (χωρίς ημ.)",items:O.filter(o=>o.phase==="Αναμονή Europa"&&!o.topo),c:"var(--a2)",i:"🔵",a:"Ορισμός ημ. τοποθέτησης"},
+  ];
+  document.getElementById("prob-cats").innerHTML=cats.map(c=>`<div class="panel" style="border-left:3px solid ${c.c}"><div class="ph"><div class="pt">${c.i} ${c.l}</div><div class="ps">${c.items.length} παραγγελίες</div></div><div class="pb" style="padding:8px 16px"><div style="display:flex;flex-wrap:wrap;gap:5px">${c.items.map(o=>`<span class="ac-tag" title="${o.offer} — ${c.a}">${o.client.substring(0,20)}</span>`).join("")}</div></div></div>`).join("");
+  const all=O.filter(o=>o.status==="Εκκρεμεί Πληροφορία"||o.phase==="Δεν Έχουμε Μέτρα"||o.phase==="Μερικώς Παραδομένα");
+  document.getElementById("prob-body").innerHTML=all.map(o=>{
+    const cat=o.status==="Εκκρεμεί Πληροφορία"?"Χωρίς φάση":o.phase==="Δεν Έχουμε Μέτρα"?"Χωρίς μέτρα":"Μερικώς παραδ.";
+    const act=o.status==="Εκκρεμεί Πληροφορία"?"Ενημέρωση φάσης":o.phase==="Δεν Έχουμε Μέτρα"?"Αναμονή επιμέτρησης":"Αναμονή υπόλοιπων";
+    return`<tr><td class="mono" style="color:var(--a2)">${o.offer}</td><td>${o.client.substring(0,22)}</td><td>${pb(cat)}</td><td>${pb(o.phase)}</td><td class="mono" style="color:var(--or)">${o.europa||"—"}</td><td style="text-align:center">${o.kouw||"—"}</td><td class="mono" style="color:var(--gn)">${o.value?"€"+parseInt(o.value).toLocaleString("el-GR"):"—"}</td><td style="font-size:11px;color:var(--t2)">${act}</td></tr>`;}).join("");
+}
+
+// CREWS
+function renderCrews(){
+  const placed=O.filter(o=>o.topo&&o.crew);
+  const pairs={};placed.forEach(o=>{if(!pairs[o.crew])pairs[o.crew]={t:0,r:0};pairs[o.crew].t++;if(o.repair)pairs[o.crew].r++});
+  const pList=Object.entries(pairs).map(([n,d])=>({n,t:d.t,r:d.r,sc:d.t>0?Math.round((1-d.r/d.t)*10*10)/10:10})).sort((a,b)=>b.sc-a.sc);
+  const indivs={};placed.forEach(o=>(o.crew||"").split("+").forEach(p=>{const n=p.trim();if(!n)return;if(!indivs[n])indivs[n]={t:0,r:0};indivs[n].t++;if(o.repair)indivs[n].r++}));
+  const iList=Object.entries(indivs).map(([n,d])=>({n,t:d.t,r:d.r,sc:d.t>0?Math.round((1-d.r/d.t)*10*10)/10:10,w:W[n]||"—"})).sort((a,b)=>b.sc-a.sc);
+  document.getElementById("crew-ov").innerHTML=`
+    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Τεχνικοί — Επισκόπηση</div></div><div class="pb">${iList.map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd)"><span style="font-size:13px;font-weight:500">${c.n}</span><span style="font-size:11px;color:var(--t2)">${c.t} τοποθ. · ${c.r} επισκ.</span><span style="color:${sc(c.sc)};font-weight:600">${c.sc}/10</span></div>`).join("")}</div></div>
+    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Κόστος Εργατικών ανά Ζευγάρι</div></div><div class="pb" style="padding:8px 16px"><table class="mt"><tr><th>Ζευγάρι</th><th>Μάστορας</th><th>Βοηθός</th><th>€/μέρα</th></tr>${pList.map(p=>{const pts=p.n.split("+");const m=pts[0]?.trim(),v=pts[1]?.trim(),tot=(W[m]||0)+(W[v]||0);return`<tr><td>${cb(p.n)}</td><td>${m||"—"} <span style="color:var(--t2);font-size:10px">(€${W[m]||"?"})</span></td><td>${v||"—"} <span style="color:var(--t2);font-size:10px">(€${W[v]||"?"})</span></td><td style="font-weight:600;color:var(--gn)">€${tot}</td></tr>`}).join("")}</table></div></div>`;
+  document.getElementById("crew-pairs").innerHTML=pList.map((p,i)=>`<tr><td style="color:var(--t3);text-align:center">${i+1}</td><td>${cb(p.n)}</td><td style="text-align:center">${p.t}</td><td style="text-align:center;color:${p.r>0?"var(--rd)":"var(--t3)"}">${p.r}</td><td><span style="font-weight:600;color:${sc(p.sc)}">${p.sc}/10</span></td><td class="mono" style="color:var(--gn)">€${(W[p.n.split("+")[0]?.trim()]||0)+(W[p.n.split("+")[1]?.trim()]||0)}</td></tr>`).join("");
+  document.getElementById("crew-ind").innerHTML=iList.map((c,i)=>`<tr><td style="color:var(--t3);text-align:center">${i+1}</td><td style="font-weight:500">${c.n}</td><td style="text-align:center">${c.t}</td><td style="text-align:center;color:${c.r>0?"var(--rd)":"var(--t3)"}">${c.r}</td><td><span style="font-weight:600;color:${sc(c.sc)}">${c.sc}/10</span></td><td class="mono" style="color:var(--gn)">€${c.w}</td></tr>`).join("");
+}
+
+// REPORTS
+function renderReports(){
+  const placed=O.filter(o=>o.topo),tK=O.reduce((s,o)=>s+(o.kouw||0),0),tR=O.reduce((s,o)=>s+(o.rola||0),0);
+  const avgD=placed.filter(o=>o.days>0).reduce((s,o)=>s+o.days,0)/Math.max(placed.filter(o=>o.days>0).length,1);
+  const withL=placed.filter(o=>{const n=flN(o.floor);return n>=1&&n<=30});
+  document.getElementById("rep-stats").innerHTML=`
+    <div class="stat"><div class="stat-val">${tK}</div><div class="stat-lbl">Σύνολο Κουφωμάτων</div></div>
+    <div class="stat"><div class="stat-val">${tR}</div><div class="stat-lbl">Σύνολο Ρολών</div></div>
+    <div class="stat"><div class="stat-val">${Math.round(avgD*10)/10}</div><div class="stat-lbl">Μέσες Ημ./Τοποθέτηση</div></div>
+    <div class="stat"><div class="stat-val">${O.filter(o=>o.repair).length}</div><div class="stat-lbl">Επισκευές</div></div>
+    <div class="stat"><div class="stat-val">${withL.length}</div><div class="stat-lbl">Τοποθ. με Ανυψωτικό</div></div>
+    <div class="stat"><div class="stat-val">€${withL.length*140}</div><div class="stat-lbl">Κόστος Ανυψωτικών</div></div>`;
+  const areas={};O.filter(o=>o.area).forEach(o=>{areas[o.area]=(areas[o.area]||0)+1});
+  const topA=Object.entries(areas).sort((a,b)=>b[1]-a[1]).slice(0,8),maxA=topA[0]?.[1]||1;
+  const phases={};O.forEach(o=>{phases[o.phase]=(phases[o.phase]||0)+1});
+  document.getElementById("rep-charts").innerHTML=`
+    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Κατανομή ανά Περιοχή</div></div><div class="pb" style="padding:8px 16px">${topA.map(([a,cnt])=>`<div class="cr"><div class="crn">${a}</div><div class="cb"><div class="cbf" style="width:${Math.round(cnt/maxA*100)}%;background:var(--a2)"></div></div><div class="cv">${cnt} παρ.</div></div>`).join("")}</div></div>
+    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Αναφορές που θα προστεθούν</div></div><div class="pb" style="font-size:13px;color:var(--t2);line-height:2.2">✅ Κατανομή ανά περιοχή<br>✅ Κόστος ανυψωτικών<br>✅ Μέσες ημέρες τοποθέτησης<br>⏳ Μηνιαία παραγωγή<br>⏳ Europa accuracy<br>⏳ Seasonality<br>⏳ Επιστρέφοντες πελάτες<br>⏳ Χάρτης Αττικής (Phase 2)</div></div>`;
+}
+
+// SETTINGS
+function renderSettings(){
+  document.getElementById("wage-body").innerHTML=Object.entries(W).map(([n,w])=>`<tr><td style="font-weight:500">${n}</td><td class="mono" style="color:var(--gn)">€${w}</td></tr>`).join("");
+}
+
+const renders={overview:renderOverview,orders:renderOrders,production:renderProduction,placements:renderPlacements,works:renderWorks,financials:renderFinancials,problems:renderProblems,crews:renderCrews,reports:renderReports,settings:renderSettings};
+renderOverview();
 </script>
 </body>
 </html>
