@@ -264,10 +264,12 @@ function mapFinancials(rows){
 // Loading state
 let isLoading=false;
 function showLoading(){
-  document.getElementById('page-title').textContent='Φόρτωση...';
+  const el=document.getElementById('page-title');
+  if(el)el.textContent='Φόρτωση...';
 }
 function showError(msg){
-  document.querySelectorAll('.page').forEach(p=>{if(p.classList.contains('active'))p.innerHTML=`<div style="background:var(--rb);border:1px solid rgba(248,81,73,.3);border-radius:8px;padding:20px;margin:20px;color:var(--rd)"><strong>⚠ Σφάλμα φόρτωσης</strong><br><br>${msg}<br><br>Βεβαιωθείτε ότι το Google Sheet είναι Published to web.</div>`});
+  const actPage=document.querySelector('.page.active')||document.getElementById('pg-overview');
+  if(actPage)actPage.innerHTML=`<div style="background:var(--rb);border:1px solid rgba(248,81,73,.3);border-radius:8px;padding:20px;margin:20px;color:var(--rd)"><strong>⚠ Σφάλμα φόρτωσης</strong><br><br>${msg}<br><br>Βεβαιωθείτε ότι το Google Sheet είναι Published to web.</div>`;
 }
 
 async function loadData(){
@@ -275,13 +277,14 @@ async function loadData(){
   isLoading=true;
   showLoading();
   try{
+    const proxy='https://corsproxy.io/?';
     const[r1,r2]=await Promise.all([
-      fetch(S1).then(r=>r.ok?r.text():Promise.reject('Sheet1 HTTP '+r.status)),
-      fetch(S2).then(r=>r.ok?r.text():Promise.reject('Sheet2 HTTP '+r.status))
+      fetch(proxy+encodeURIComponent(S1)).then(r=>r.ok?r.text():Promise.reject('Sheet1 HTTP '+r.status)),
+      fetch(proxy+encodeURIComponent(S2)).then(r=>r.ok?r.text():Promise.reject('Sheet2 HTTP '+r.status))
     ]);
     O=mapOrders(parseCSV(r1));
     F=mapFinancials(parseCSV(r2));
-    document.getElementById('upd').textContent='Ενημέρωση: '+new Date().toLocaleString('el-GR');
+    const updEl=document.getElementById('upd');if(updEl)updEl.textContent='Ενημέρωση: '+new Date().toLocaleString('el-GR');
     // Re-render active page
     const active=document.querySelector('.page.active');
     const pgId=active?.id?.replace('pg-','');
@@ -534,7 +537,9 @@ function renderSettings(){
 }
 
 const renders={overview:renderOverview,orders:renderOrders,production:renderProduction,placements:renderPlacements,works:renderWorks,financials:renderFinancials,problems:renderProblems,crews:renderCrews,reports:renderReports,settings:renderSettings};
-loadData();
+document.addEventListener("DOMContentLoaded", function(){
+  loadData();
+});
 </script>
 </body>
 </html>
