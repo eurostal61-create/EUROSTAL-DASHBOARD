@@ -410,7 +410,7 @@ function nav(id,el){
 // OVERVIEW
 function renderOverview(){
   const tot=O.length,sched=O.filter(o=>o.status==="Προγραμματισμένο").length,wait=O.filter(o=>o.status==="Σε Αναμονή").length,pend=O.filter(o=>o.status==="Εκκρεμεί Πληροφορία").length,ta=O.filter(o=>o.status==="Take Away").length,withT=O.filter(o=>o.topo).length,totK=O.reduce((s,o)=>s+(o.kouw||0),0);
-  const noInfo=O.filter(o=>o.status==="Εκκρεμεί Πληροφορία"),noMeas=O.filter(o=>o.phase==="Δεν Έχουμε Μέτρα"),euroW=O.filter(o=>o.phase==="Αναμονή Europa"&&!o.topo),part=O.filter(o=>o.phase==="Μερικώς Παραδομένα"),ready=O.filter(o=>o.status==="Έτοιμο προς Τοποθέτηση");
+  const noInfo=O.filter(o=>o.status==="Εκκρεμεί Πληροφορία"),noMeas=O.filter(o=>o.phase==="Δεν Έχουμε Μέτρα"),euroW=O.filter(o=>o.phase==="Αναμονή Europa"&&!o.topo),part=O.filter(o=>o.phase==="Μερικώς Παραδομένα"),ready=O.filter(o=>o.status==="Έτοιμο προς Τοποθέτηση"||(o.phase==="Ολοκληρωμένη παραγωγή"&&!o.topo));
   const alerts=[];
   if(noInfo.length)alerts.push({i:"🔴",s:"Σοβαρό",sc:"rb",tc:"rd",t:`<strong>${noInfo.length} παραγγελίες</strong> χωρίς πληροφορία φάσης`,cl:noInfo.map(o=>o.client)});
   if(noMeas.length)alerts.push({i:"🟡",s:"Προσοχή",sc:"ob",tc:"or",t:`<strong>${noMeas.length} παραγγελίες</strong> αναμένουν τελικά μέτρα`,cl:noMeas.map(o=>o.client)});
