@@ -391,7 +391,13 @@ function pb(p){
   };
   return`<span class="badge ${m[p]||"bx"}">${sh[p]||p||"—"}</span>`;
 }
-function cb(c){if(!c)return"<span style='color:var(--t3);font-size:11px'>—</span>";const cl={"Kariki":"var(--a2)","Rildo":"var(--pp)","Ermal":"#ec4899","Χάρης":"var(--or)","Amarildo":"var(--tl)","Leonidas":"var(--gn)","Nektarios":"#f0a500","Sergio":"#aaa"};return c.split("+").map(p=>`<span style="color:${cl[p.trim()]||"var(--t2)"};font-weight:500;font-size:11px">${p.trim()}</span>`).join("<span style='color:var(--t3)'>+</span>")}
+function cb(c){
+  if(!c)return"<span style='color:var(--t3);font-size:11px'>—</span>";
+  const cl={"Kariki":"var(--a2)","Rildo":"var(--pp)","Ermal":"#ec4899","Χάρης":"var(--or)","Amarildo":"var(--tl)","Leonidas":"var(--gn)","Nektarios":"#f0a500","Sergio":"#aaa","Adriatic":"var(--tl)"};
+  const parts=c.split("+");
+  if(parts.length===1)return`<span style="color:${cl[parts[0].trim()]||"var(--t2)"};font-weight:500;font-size:11px">${parts[0].trim()} <span style="color:var(--t3);font-size:9px">(μόνος)</span></span>`;
+  return parts.map(p=>`<span style="color:${cl[p.trim()]||"var(--t2)"};font-weight:500;font-size:11px">${p.trim()}</span>`).join("<span style='color:var(--t3)'>+</span>");
+}
 
 function donut(data,tot){const r=42,circ=2*Math.PI*r;let off=0;const sl=data.map(d=>{const da=d.v/tot*circ;const s=`<circle cx="55" cy="55" r="${r}" fill="none" stroke="${d.c}" stroke-width="13" stroke-dasharray="${da} ${circ-da}" stroke-dashoffset="${-off}"/>`;off+=da;return s});return`<svg width="110" height="110" viewBox="0 0 110 110"><circle cx="55" cy="55" r="42" fill="none" stroke="var(--s3)" stroke-width="13"/>${sl.join("")}</svg><div class="dcn">${tot}<span>σύνολο</span></div>`}
 
@@ -664,11 +670,19 @@ function renderCrews(){
   const placedWithTopo=O.filter(o=>o.topo&&o.crew&&o.crew.trim());
   const pairs={};placed.forEach(o=>{if(!pairs[o.crew])pairs[o.crew]={t:0,r:0};pairs[o.crew].t++;if(o.repair)pairs[o.crew].r++});
   const pList=Object.entries(pairs).map(([n,d])=>({n,t:d.t,r:d.r,sc:d.t>0?Math.round((1-d.r/d.t)*10*10)/10:10})).sort((a,b)=>b.sc-a.sc);
-  const indivs={};placed.forEach(o=>(o.crew||"").split("+").forEach(p=>{const n=p.trim();if(!n)return;if(!indivs[n])indivs[n]={t:0,r:0};indivs[n].t++;if(o.repair)indivs[n].r++}));
+  const indivs={};
+  placed.forEach(o=>{
+    (o.crew||"").split("+").forEach(p=>{
+      const n=p.trim();if(!n||n.length<2)return;
+      if(!indivs[n])indivs[n]={t:0,r:0};
+      indivs[n].t++;
+      if(o.repair&&o.repair==="✓")indivs[n].r++;
+    });
+  });
   const iList=Object.entries(indivs).map(([n,d])=>({n,t:d.t,r:d.r,sc:d.t>0?Math.round((1-d.r/d.t)*10*10)/10:10,w:W[n]||"—"})).sort((a,b)=>b.sc-a.sc);
   document.getElementById("crew-ov").innerHTML=`
     <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Τεχνικοί — Επισκόπηση</div></div><div class="pb">${iList.map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd)"><span style="font-size:13px;font-weight:500">${c.n}</span><span style="font-size:11px;color:var(--t2)">${c.t} τοποθ. · ${c.r} επισκ.</span><span style="color:${sc(c.sc)};font-weight:600">${c.sc}/10</span></div>`).join("")}</div></div>
-    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Κόστος Εργατικών ανά Ζευγάρι</div></div><div class="pb" style="padding:8px 16px"><table class="mt"><tr><th>Ζευγάρι</th><th>Μάστορας</th><th>Βοηθός</th><th>€/μέρα</th></tr>${pList.map(p=>{const pts=p.n.split("+");const m=pts[0]?.trim(),v=pts[1]?.trim(),tot=(W[m]||0)+(W[v]||0);return`<tr><td>${cb(p.n)}</td><td>${m||"—"} <span style="color:var(--t2);font-size:10px">(€${W[m]||"?"})</span></td><td>${v||"—"} <span style="color:var(--t2);font-size:10px">(€${W[v]||"?"})</span></td><td style="font-weight:600;color:var(--gn)">€${tot}</td></tr>`}).join("")}</table></div></div>`;
+    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Κόστος Εργατικών ανά Ζευγάρι</div></div><div class="pb" style="padding:8px 16px"><table class="mt"><tr><th>Ομάδα</th><th colspan="2">Μέλη & Ημερομίσθια</th><th>€/μέρα</th></tr>${pList.map(p=>{const pts=p.n.split("+");const m=pts[0]?.trim(),v=pts[1]?.trim(),tot=(W[m]||0)+(W[v]||0);return`<tr><td>${cb(p.n)}</td><td>${m||"—"} <span style="color:var(--t2);font-size:10px">(€${W[m]||"?"})</span></td><td>${v||"—"} <span style="color:var(--t2);font-size:10px">(€${W[v]||"?"})</span></td><td style="font-weight:600;color:var(--gn)">€${tot}</td></tr>`}).join("")}</table></div></div>`;
   document.getElementById("crew-pairs").innerHTML=pList.map((p,i)=>`<tr><td style="color:var(--t3);text-align:center">${i+1}</td><td>${cb(p.n)}</td><td style="text-align:center">${p.t}</td><td style="text-align:center;color:${p.r>0?"var(--rd)":"var(--t3)"}">${p.r}</td><td><span style="font-weight:600;color:${sc(p.sc)}">${p.sc}/10</span></td><td class="mono" style="color:var(--gn)">€${(W[p.n.split("+")[0]?.trim()]||0)+(W[p.n.split("+")[1]?.trim()]||0)}</td></tr>`).join("");
   document.getElementById("crew-ind").innerHTML=iList.map((c,i)=>`<tr><td style="color:var(--t3);text-align:center">${i+1}</td><td style="font-weight:500">${c.n}</td><td style="text-align:center">${c.t}</td><td style="text-align:center;color:${c.r>0?"var(--rd)":"var(--t3)"}">${c.r}</td><td><span style="font-weight:600;color:${sc(c.sc)}">${c.sc}/10</span></td><td class="mono" style="color:var(--gn)">€${c.w}</td></tr>`).join("");
 }
