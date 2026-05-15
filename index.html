@@ -123,14 +123,14 @@ body{font-family:"IBM Plex Sans",sans-serif;background:var(--bg);color:var(--tx)
       <div id="prod-phase-stats" class="g3" style="margin-bottom:14px"></div>
       <div class="panel">
         <div class="ph"><div class="pt">Παραγωγή — FIFO</div><div class="ps">Παλαιότερη παραγγελία πρώτη</div></div>
-        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>#</th><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Europa</th><th>Κουφ.</th><th>Ρολά</th><th>Περιοχή</th></tr></thead><tbody id="prod-body"></tbody></table></div>
+        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>#</th><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Έναρξη Παραγ.</th><th>Λήξη Παραγ.</th><th>Αποστολή</th><th>Κουφ.</th><th>Ρολά</th><th>Περιοχή</th></tr></thead><tbody id="prod-body"></tbody></table></div>
       </div>
     </div>
     <div class="page" id="pg-placements">
       <div id="cal-wrap"></div>
       <div class="panel" style="margin-top:14px">
         <div class="ph"><div class="pt">Πρόγραμμα Τοποθετήσεων</div><div class="ps" id="pl-cnt"></div></div>
-        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>Ημ. Τοποθέτησης</th><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Συνεργείο</th><th>Ημ.</th><th>Κουφ.</th><th>Ρολά</th><th>Όροφος</th><th>Ανυψωτικό</th><th>Περιοχή</th></tr></thead><tbody id="pl-body"></tbody></table></div>
+        <div style="overflow-x:auto"><table class="mt"><thead><tr><th>Έναρξη</th><th>Λήξη (εκτίμηση)</th><th>Προσφορά</th><th>Πελάτης</th><th>Φάση</th><th>Συνεργείο</th><th>Ημ.</th><th>Κουφ.</th><th>Ρολά</th><th>Όροφος</th><th>Ανυψ.</th><th>Veto Πελάτη</th><th>Περιοχή</th></tr></thead><tbody id="pl-body"></tbody></table></div>
       </div>
     </div>
     <div class="page" id="pg-works">
@@ -227,40 +227,99 @@ function splitLine(l){
   res.push(cur);return res;
 }
 
-// Map sheet columns to our data format
+// Map sheet columns to our data format — protoproduction compatible
 function mapOrders(rows){
-  return rows.map(r=>{
-    const floorVal = r['Δρομολόγιο']||r['floor']||'';
-    return {
-      offer: r['Προσφορά']||r['offer']||'',
-      client: r['Πελάτης']||r['client']||'',
-      phase: r['Φάση']||r['phase']||'',
-      status: r['Κατάσταση']||r['status']||'',
-      topo: r['Ημ_Τοποθέτησης']||r['topo']||'',
-      europa: r['Πιθ_Παράδοση_Europa']||r['europa']||'',
-      crew: r['Συνεργείο']||r['crew']||'',
-      kouw: parseInt(r['Κουφώματα']||r['kouw'])||0,
-      rola: parseInt(r['Ρολά']||r['rola'])||0,
-      days: parseInt(r['Ημέρες_Τοποθέτησης']||r['days'])||0,
-      value: r['Αξία_Σύμβασης']||r['value']||'',
-      area: r['Περιοχή']||r['area']||'',
-      addr: r['Διεύθυνση']||r['addr']||'',
-      floor: floorVal,
-      repair: r['Επισκευή']||r['repair']||''
-    };
-  });
-}
-function mapFinancials(rows){
-  return rows.map(r=>{
-    const disc=parseFloat((r['Έκπτωση_%']||r['discount']||'0').toString().replace('%',''))||0;
-    return {
-      client: r['Πελάτης']||r['client']||'',
-      value: parseFloat(r['Συνολική_Καθαρή_Αξία']||r['value']||0)||0,
-      discount: disc
-    };
-  }).filter(r=>r.client);
-}
+  function pdt(v){
+    if(!v||v==='nan'||v==='NaT'||v==='None')return '';
+    // Handle "2026-04-20 00:00:00" or "2026-04-20" or "20/04/2026"
+    const s=String(v).trim();
+    if(s.includes('-')&&s.length>=10){
+      const p=s.substring(0,10).split('-');
+      if(p.length===3)return `${p[2]}/${p[1]}/${p[0]}`;
+    }
+    if(s.includes('/')&&s.length>=8)return s.substring(0,10);
+    return '';
+  }
+  function extractDays(ttype){
+    if(!ttype||ttype==='nan')return 1;
+    const s=String(ttype).toUpperCase();
+    if(s.includes('TAKE AWAY'))return 0;
+    const m=s.match(/(\d+)\s*ΜΕΡΕ/);
+    if(m)return parseInt(m[1]);
+    if(s.includes('1 ΜΕΡΑ'))return 1;
+    return 1;
+  }
+  function mapPhase(phase, ttype){
+    const t=String(ttype||'').toLowerCase();
+    if(t.includes('take away'))return 'Take Away';
+    if(!phase||phase==='nan'||phase==='None')return 'Χωρίς Φάση';
+    const p=String(phase).toLowerCase();
+    if(p.includes('ολοκληρωμένη παραγωγή')||p.includes('ολοκληρωμενη παραγωγη'))return 'Ολοκληρωμένη παραγωγή';
+    if(p.includes('ολοκληρωμένη παραλαβή')||p.includes('ολοκληρωμενη παραλαβη'))return 'Ολοκληρωμένη παραλαβή υλικών';
+    if(p.includes('αναμονή υλικών')||p.includes('αναμονη υλικων')||p.includes('αναμον'))return 'Αναμονή Europa';
+    if(p.includes('μεταλλικ'))return 'Μεταλλικές Κατασκευές';
+    if(p.includes('μερικώς')||p.includes('μερικως'))return 'Μερικώς Παραδομένα';
+    if(p.includes('τελικά μέτρα')||p.includes('τελικα μετρα'))return 'Δεν Έχουμε Μέτρα';
+    return 'Χωρίς Φάση';
+  }
+  function mapStatus(phase, topo){
+    if(phase==='Take Away')return 'Take Away';
+    if(phase==='Ολοκληρωμένη παραγωγή'||phase==='Ολοκληρωμένη παραλαβή υλικών')
+      return topo?'Προγραμματισμένο':'Έτοιμο προς Τοποθέτηση';
+    if(['Αναμονή Europa','Μεταλλικές Κατασκευές','Μερικώς Παραδομένα'].includes(phase))return 'Σε Αναμονή';
+    if(phase==='Δεν Έχουμε Μέτρα')return 'Εκκρεμεί Πληροφορία';
+    return 'Εκκρεμεί Πληροφορία';
+  }
+  function mapCrew(synerg){
+    if(!synerg||synerg==='nan')return '';
+    // "Kariki - Leonidas - Adriatic" or "ΚΑΡΙΚΙ" or "Kariki+Sergio"
+    const s=String(synerg).trim();
+    if(s.includes(' - ')){
+      const parts=s.split(' - ').map(p=>p.trim()).filter(p=>p&&p.length>1);
+      return parts.slice(0,2).join('+');
+    }
+    if(s.includes('+'))return s;
+    return s;
+  }
 
+  return rows.map(r=>{
+    // Support both protoproduction column names AND already-mapped names
+    const phase_raw = r['Φάση έργου']||r['Φάση']||r['phase']||'';
+    const ttype = r['Τύπος έργου']||r['Τύπος_Έργου']||r['ttype']||'';
+    const phase = mapPhase(phase_raw, ttype);
+    const topo = pdt(r['Τοποθέτηση']||r['Ημ_Τοποθέτησης']||r['topo']||'');
+    const status = mapStatus(phase, topo);
+    const days = extractDays(ttype);
+    // repair: True/False boolean or ✓ or text
+    const repRaw = r['Επισκευή']||r['repair']||'';
+    const repair = repRaw===true||repRaw==='True'||repRaw==='true'||repRaw==='✓'||repRaw==='1'?'✓':'';
+
+    return {
+      offer:   r['Σχετική προσφορά']||r['Προσφορά']||r['offer']||'',
+      client:  r['Πελάτης']||r['client']||'',
+      related: r['Σχετικός πελάτης']||r['Εργοτάξιο']||r['related']||'',
+      phase:   phase,
+      status:  status,
+      topo:    topo,
+      pithani: pdt(r['Πιθανή Παράδοση']||r['pithani']||''),
+      europa:  pdt(r['Αποστολή']||r['Πιθ_Παράδοση_Europa']||r['europa']||''),
+      order_date: pdt(r['Ημερομηνία']||r['Ημ_Παραγγελίας']||r['order_date']||''),
+      prod_start: pdt(r['Έναρξη παραγωγής']||r['prod_start']||''),
+      prod_end:   pdt(r['Λήξη παραγωγής']||r['prod_end']||''),
+      crew:    mapCrew(r['Συνεργείο']||r['crew']||''),
+      kouw:    parseInt(r['Αρ. κουφωμάτων']||r['Κουφώματα']||r['kouw'])||0,
+      rola:    parseInt(r['Αρ. ρολών']||r['Ρολά']||r['rola'])||0,
+      eis:     parseInt(r['Αρ. εισόδων']||r['Είσοδοι']||r['eis'])||0,
+      days:    days,
+      value:   String(r['Αξία_Σύμβασης']||r['value']||'').replace(/[^0-9.]/g,''),
+      area:    r['Περιοχή Π']||r['Περιοχή']||r['area']||'',
+      addr:    r['Διεύθυνση Π']||r['Διεύθυνση']||r['addr']||'',
+      floor:   r['Δρομολόγιο']||r['floor']||'',
+      repair:  repair,
+      ttype:   ttype
+    };
+  }).filter(r=>r.offer&&r.offer!=='nan'&&r.offer!=='None'&&r.offer!=='ΤΕΣΤ'&&r.client!=='ΤΕΣΤ');
+}
 // Loading state
 let isLoading=false;
 function showLoading(){
@@ -308,7 +367,33 @@ function flN(f){const m=(f||"").match(/(\d+)/);return m?parseInt(m[1]):0}
 function sc(v){return v>=8?"var(--gn)":v>=6?"var(--or)":"var(--rd)"}
 
 function sb(s){const m={"Προγραμματισμένο":"bg","Έτοιμο προς Τοποθέτηση":"bpp","Σε Αναμονή":"bo","Εκκρεμεί Πληροφορία":"br","Take Away":"bb"};return`<span class="badge ${m[s]||"bx"}">${s||"—"}</span>`}
-function pb(p){const m={"Ολοκληρωμένη παραλαβή":"bg","Μεταλλικές Κατασκευές":"bo","Αναμονή Europa":"bb","Μερικώς Παραδομένα":"bo","Δεν Έχουμε Μέτρα":"br","Take Away":"bx","Ψευτόκασες":"bpp"},sh={"Ολοκληρωμένη παραλαβή":"✓ Ολοκλ.","Μεταλλικές Κατασκευές":"Μεταλλ.","Αναμονή Europa":"Europa","Μερικώς Παραδομένα":"Μερικώς","Δεν Έχουμε Μέτρα":"Χ/Μέτρα","Take Away":"Take Away","Ψευτόκασες":"Ψευτόκ."};return`<span class="badge ${m[p]||"bx"}">${sh[p]||p||"—"}</span>`}
+function pb(p){
+  const m={
+    "Ολοκληρωμένη παραγωγή":"bg",
+    "Ολοκληρωμένη παραλαβή υλικών":"bg",
+    "Ολοκληρωμένη παραλαβή":"bg",
+    "Αναμονή Europa":"bb",
+    "Μεταλλικές Κατασκευές":"bo",
+    "Μερικώς Παραδομένα":"bo",
+    "Δεν Έχουμε Μέτρα":"br",
+    "Take Away":"bx",
+    "Ψευτόκασες":"bpp",
+    "Χωρίς Φάση":"br"
+  };
+  const sh={
+    "Ολοκληρωμένη παραγωγή":"✓ Παραγωγή",
+    "Ολοκληρωμένη παραλαβή υλικών":"✓ Παραλαβή",
+    "Ολοκληρωμένη παραλαβή":"✓ Παραλαβή",
+    "Αναμονή Europa":"Europa",
+    "Μεταλλικές Κατασκευές":"Μεταλλ.",
+    "Μερικώς Παραδομένα":"Μερικώς",
+    "Δεν Έχουμε Μέτρα":"Χ/Μέτρα",
+    "Take Away":"Take Away",
+    "Ψευτόκασες":"Ψευτόκ.",
+    "Χωρίς Φάση":"Χ/Φάση"
+  };
+  return`<span class="badge ${m[p]||"bx"}">${sh[p]||p||"—"}</span>`;
+}
 function cb(c){if(!c)return"<span style='color:var(--t3);font-size:11px'>—</span>";const cl={"Kariki":"var(--a2)","Rildo":"var(--pp)","Ermal":"#ec4899","Χάρης":"var(--or)","Amarildo":"var(--tl)","Leonidas":"var(--gn)","Nektarios":"#f0a500","Sergio":"#aaa"};return c.split("+").map(p=>`<span style="color:${cl[p.trim()]||"var(--t2)"};font-weight:500;font-size:11px">${p.trim()}</span>`).join("<span style='color:var(--t3)'>+</span>")}
 
 function donut(data,tot){const r=42,circ=2*Math.PI*r;let off=0;const sl=data.map(d=>{const da=d.v/tot*circ;const s=`<circle cx="55" cy="55" r="${r}" fill="none" stroke="${d.c}" stroke-width="13" stroke-dasharray="${da} ${circ-da}" stroke-dashoffset="${-off}"/>`;off+=da;return s});return`<svg width="110" height="110" viewBox="0 0 110 110"><circle cx="55" cy="55" r="42" fill="none" stroke="var(--s3)" stroke-width="13"/>${sl.join("")}</svg><div class="dcn">${tot}<span>σύνολο</span></div>`}
@@ -400,7 +485,9 @@ function renderProduction(){
     <td class="mono" style="color:var(--a2)">${o.offer}</td>
     <td>${o.client.substring(0,22)}</td>
     <td>${pb(o.phase)}</td>
-    <td class="mono" style="color:${pgd(o.europa)<new Date()?"var(--gn)":"var(--or)"}">${o.europa||"—"}</td>
+    <td class="mono" style="color:var(--t2)">${o.prod_start||"—"}</td>
+    <td class="mono" style="color:var(--t2)">${o.prod_end||"—"}</td>
+    <td class="mono" style="color:${o.europa&&pgd(o.europa)<new Date()?"var(--gn)":"var(--or)"}">${o.europa||"—"}</td>
     <td style="text-align:center">${o.kouw||"—"}</td>
     <td style="text-align:center">${o.rola||"—"}</td>
     <td style="color:var(--t2)">${o.area||"—"}</td>
@@ -412,14 +499,37 @@ function renderPlacements(){
   const placed=O.filter(o=>o.topo).sort((a,b)=>pgd(a.topo)-pgd(b.topo));
   document.getElementById("pl-cnt").textContent=`${placed.length} τοποθετήσεις`;
 
-  // Build day map: key = YYYY-MM-DD
+  // Build day map: key = YYYY-MM-DD — highlight ALL placement days
   const dm={};
-  placed.forEach(j=>{
-    const parts=j.topo.split("/");
-    if(parts.length===3){
-      const k=`${parts[2]}-${parts[1].padStart(2,"0")}-${parts[0].padStart(2,"0")}`;
-      if(!dm[k])dm[k]=[];dm[k].push(j);
+  function toJSDate(dstr){
+    const p=dstr.split("/");
+    return p.length===3?new Date(p[2],p[1]-1,p[0]):null;
+  }
+  function addWorkDays(startDate, nDays){
+    // Returns array of all dates from start for nDays working days (Mon-Sat)
+    const dates=[];
+    let cur=new Date(startDate);
+    let added=0;
+    while(added<nDays){
+      if(cur.getDay()!==0){ // skip Sunday
+        dates.push(new Date(cur));
+        added++;
+      }
+      cur.setDate(cur.getDate()+1);
     }
+    return dates;
+  }
+  placed.forEach(j=>{
+    const startDate=toJSDate(j.topo);
+    if(!startDate)return;
+    const nDays=Math.max(j.days||1,1);
+    const allDays=addWorkDays(startDate,nDays);
+    allDays.forEach(d=>{
+      const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+      if(!dm[k])dm[k]=[];
+      // Avoid duplicates
+      if(!dm[k].find(x=>x.offer===j.offer))dm[k].push(j);
+    });
   });
 
   function dsL(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
@@ -483,16 +593,26 @@ function renderPlacements(){
   document.getElementById("cal-wrap").innerHTML=`<div class="panel"><div class="ph"><div class="pt">Ημερολόγιο Μάιος–Ιούλιος 2026</div><div class="ps">🟢 με συνεργείο &nbsp;·&nbsp; 🟡 χωρίς συνεργείο</div></div><div class="pb" style="padding:16px">${ch}</div></div>`;
   document.getElementById("pl-body").innerHTML=placed.map(o=>{
     const fn=flN(o.floor);const hasL=fn>=1&&fn<=30;
+    // Calculate end date
+    function calcEnd(topoStr,days){
+      const p=topoStr.split("/");if(p.length!==3)return "—";
+      let d=new Date(p[2],p[1]-1,p[0]);let added=0;
+      while(added<Math.max(days-1,0)){d.setDate(d.getDate()+1);if(d.getDay()!==0)added++;}
+      return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
+    }
+    const endDate=calcEnd(o.topo,o.days||1);
     return`<tr>
       <td class="mono" style="color:var(--a2);font-weight:600">${o.topo}</td>
-      <td class="mono" style="color:var(--t2)">${o.offer}</td>
-      <td>${o.client.substring(0,20)}</td>
+      <td class="mono" style="color:var(--t2)">${o.days>1?endDate:"—"}</td>
+      <td class="mono" style="color:var(--t3)">${o.offer}</td>
+      <td>${o.client.substring(0,18)}</td>
       <td>${pb(o.phase)}</td><td>${cb(o.crew)}</td>
       <td style="text-align:center">${o.days||"—"}</td>
       <td style="text-align:center">${o.kouw||"—"}</td>
       <td style="text-align:center">${o.rola||"—"}</td>
       <td style="text-align:center">${o.floor||"—"}</td>
       <td style="text-align:center">${hasL?"<span style='color:var(--or)'>140€</span>":"<span style='color:var(--t3)'>—</span>"}</td>
+      <td class="mono" style="color:var(--pp)">${o.pithani||"—"}</td>
       <td style="color:var(--t2)">${o.area||"—"}</td>
     </tr>`;}).join("");
 }
@@ -940,4 +1060,24 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 </body>
-</html>
+</htmlfunction mapFinancials(rows){
+  return rows.map(r=>{
+    // Support protoproduction Σύντομη_προσφορά column names
+    const disc = parseFloat(String(r['Έκπτωση1 %']||r['Έκπτωση_%']||r['discount']||'0').replace('%',''))||0;
+    const markup = parseFloat(String(r['Προσαύξηση τιμών']||r['markup']||'0'))||0;
+    const val = parseFloat(String(r['Συνολική καθαρή αξία']||r['Συνολική_Καθαρή_Αξία']||r['value']||'0').replace(/[^0-9.]/g,''))||0;
+    const offer = String(r['Α/Α προσφοράς']||r['Προσφορά']||r['offer']||'');
+    return {
+      offer:    offer,
+      client:   r['Πελάτης']||r['client']||'',
+      related:  r['Σχετικός πελάτης']||r['related']||'',
+      value:    val,
+      discount: disc,
+      markup:   markup,
+      invoice:  r['Παραστατικό']||r['invoice']||'',
+      area:     r['Περιοχή Π']||r['Περιοχή']||r['area']||'',
+      date_entry:  String(r['Ημερομηνία εισαγωγής']||r['Ημ_Εισαγωγής']||'').substring(0,10),
+      date_update: String(r['Ημερομηνία ενημέρωσης']||r['Ημ_Ενημέρωσης']||'').substring(0,10),
+    };
+  }).filter(r=>r.client&&r.client!=='nan'&&val!==0||r.value>0);
+}>
