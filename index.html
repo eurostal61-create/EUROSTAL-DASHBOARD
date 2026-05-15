@@ -201,170 +201,159 @@ body{font-family:"IBM Plex Sans",sans-serif;background:var(--bg);color:var(--tx)
   </div>
 </div>
 <script>
-const S1="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGYnjaOv4NKd-tvBnf43C-dzntd7G86PJmBaH59PoaDIvqkWpYuvgublTGJC-CcnugwSTsegbrYJ6H/pub?gid=1247452802&single=true&output=csv";
-const S2="https://docs.google.com/spreadsheets/d/e/2PACX-1vRTLaqzV6Z_vB416oTLwmsWpr4dhYL8l4keeayXMPC3xb2G9CefJn7rAdPJo8ENm6rYrxrGh4EhL2QK/pub?gid=2083460645&single=true&output=csv";
-const W={"Ermal":90,"Kariki":80,"ΚΑΡΙΚΙ":80,"Χάρης":80,"ΧΑΡΗΣ":80,"Amarildo":70,"Leonidas":70,"LEONIDAS":70,"Adriatic":60,"ADRIATIC":60,"Nektarios":60,"ΝΕΚΤΑΡΙΟΣ":60,"Sergio":50,"SERGIO":50,"Rildo":80,"ΡΙΛΝΤΟ":80};
-let O=[], F=[];
+// ═══ EMBEDDED DATA (always works) ═══
+const EMBEDDED_O = [{"offer": "*13134", "order_date": "15/01/2026", "client": "ΜΙΧΑΛΕΑΣ", "related": "ESS47", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 1, "area": "ΑΛΙΜΟΣ", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13558", "order_date": "20/01/2026", "client": "ELVIS", "related": "OTIUM", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 2, "eis": 0, "rola": 1, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13488", "order_date": "21/01/2026", "client": "ΠΑΠΟΥΤΣΗΣ ΑΡΗΣ", "related": "ΕΠΑΛΛΗΛΟ ΨΥΧΡΟ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13051", "order_date": "22/01/2026", "client": "ΑΡΖΟΓΛΟΥ ΑΝΔΡΕΑΣ", "related": "EOS60 ΤΕΛΙΚΗ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 7, "eis": 0, "rola": 3, "area": "ΑΓΙΑ ΠΑΡΑΣΚΕΥΗ", "addr": "ΑΣΗΜΑΚΟΠΟΥΛΟΥ 52", "floor": "", "repair": "", "value": ""}, {"offer": "*13574", "order_date": "29/01/2026", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "Γ. Βλάχου 49-53 Αθήνα", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 4, "eis": 0, "rola": 3, "area": "ΧΑΛΑΝΔΡΙ", "addr": "ΣΑΡΑΝΤΑΠΟΡΟΥ 65 (ΘΕΟΔΩΡΗΤΟΥ ΒΡΕΣΘΕΝΗΣ 71 ΑΘΗΝΑ)", "floor": "", "repair": "", "value": ""}, {"offer": "*13499", "order_date": "29/01/2026", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "VALEV ΝΕΟΣ ΚΟΣΜΟΣ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 7, "eis": 0, "rola": 4, "area": "ΧΑΛΑΝΔΡΙ", "addr": "ΣΑΡΑΝΤΑΠΟΡΟΥ 65", "floor": "", "repair": "", "value": ""}, {"offer": "*13613", "order_date": "02/02/2026", "client": "ΛΩΛΟΣ ΘΕΟΔΩΡΟΣ", "related": "ΠΑΡΑΘΥΡΟ ΚΟΥΖΙΝΑΣ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 1, "area": "ΠΟΡΤΟ ΡΑΦΤΗ", "addr": "ΜΕΓΑΛΟΧΑΡΗΣ ΤΗΝΟΥ", "floor": "", "repair": "", "value": ""}, {"offer": "*13607", "order_date": "04/02/2026", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "ΜΑΡΚΟΥ ΜΠΟΤΣΑΡΗ 55 ΚΗΦΙΣΙΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 6, "eis": 0, "rola": 0, "area": "ΧΑΛΑΝΔΡΙ", "addr": "ΣΑΡΑΝΤΑΠΟΡΟΥ 65 (ΘΕΟΔΩΡΗΤΟΥ ΒΡΕΣΘΕΝΗΣ 71 ΑΘΗΝΑ)", "floor": "", "repair": "", "value": ""}, {"offer": "*13543", "order_date": "04/02/2026", "client": "ΛΕΥΤΕΡΗΣ ΚΑΡΙΚΙ", "related": "ΤΖΑΚΑΝΙΚΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 9, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13626", "order_date": "05/02/2026", "client": "ΑΡΖΟΓΛΟΥ ΑΝΔΡΕΑΣ", "related": "ΕΧΤΡΑ ΠΑΡΑΘΥΡΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 2, "eis": 0, "rola": 0, "area": "ΑΓΙΑ ΠΑΡΑΣΚΕΥΗ", "addr": "ΑΣΗΜΑΚΟΠΟΥΛΟΥ 52", "floor": "", "repair": "", "value": ""}, {"offer": "*13627", "order_date": "05/02/2026", "client": "EUROSTAL", "related": "ΠΑΥΛΟΣ ΣΠΑΤΑ ΕΞΤΡΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13636", "order_date": "06/02/2026", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "ΜΠΟΤΣΑΡΗ 55 EXTRA Χώρισμα", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 0, "area": "ΧΑΛΑΝΔΡΙ", "addr": "ΣΑΡΑΝΤΑΠΟΡΟΥ 65", "floor": "", "repair": "", "value": ""}, {"offer": "*13657", "order_date": "12/02/2026", "client": "ΠΕΤΡΟΣ ΚΥΡΚΟΣ", "related": "", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 3, "eis": 1, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13597", "order_date": "13/02/2026", "client": "ΔΕΜΙΡΗΣ ΑΚΗΣ", "related": "ΚΗΦΙΣΙΑ ΓΕΛΑΣΗΣ 2 special ral 9006", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 3, "eis": 1, "rola": 0, "area": "ΜΕΛΙΣΣΙΑ", "addr": "Λ. ΔΗΜΟΚΡΑΤΙΑΣ 8", "floor": "", "repair": "", "value": ""}, {"offer": "*13331", "order_date": "13/02/2026", "client": "ΔΕΜΙΡΗΣ ΑΚΗΣ", "related": "ΦΥΣΟΥΝΕΣ", "phase": "Ολοκληρωμένη παραγωγή", "status": "Προγραμματισμένο", "ttype": "Ψευτόκασες", "prod_start": "27/04/2026", "prod_end": "02/05/2026", "europa": "", "topo": "07/05/2026", "pithani": "", "days": 1, "crew": "Kariki", "kouw": 2, "eis": 0, "rola": 0, "area": "ΜΕΛΙΣΣΙΑ", "addr": "Λ. ΔΗΜΟΚΡΑΤΙΑΣ 8", "floor": "4ος", "repair": "", "value": ""}, {"offer": "*13644", "order_date": "13/02/2026", "client": "ΠΑΡΑΡΑΣ ΜΑΝΩΛΗΣ", "related": "ΣΕΝΑΡΙΟ ΜΕ TRIPLEX & MHXΑΝΙΣΜΟΙ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 11, "eis": 0, "rola": 2, "area": "ΚΗΦΙΣΙΑ", "addr": "ΕΠΙΔΑΥΡΟΥ", "floor": "", "repair": "", "value": ""}, {"offer": "*13673", "order_date": "20/02/2026", "client": "ΔΕΜΙΡΗΣ ΑΚΗΣ", "related": "Επαλληλο Κακου ΜΕ ΣΤΕΝΗ ΕΠΑΛΛΗΛΙΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 0, "area": "ΜΕΛΙΣΣΙΑ", "addr": "Λ. ΔΗΜΟΚΡΑΤΙΑΣ 8", "floor": "", "repair": "", "value": ""}, {"offer": "*13684", "order_date": "24/02/2026", "client": "NOUS NOUS", "related": "ΑΦΟΙ ΜΑΡΝΕΖΟΥ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 2, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13705", "order_date": "27/02/2026", "client": "ΞΕΝΕΞ ΑΝΑΣΤΑΣΙΟΣ ΚΙΟΥΛΠΑΠΑΣ Α.Ε.", "related": "ΨΥΧΙΚΟ ΜΕ ΑΠΟΜΙΜΗΣΗ ΞΥΛΟΥ( ΧΩΡΙΣ ΧΡΕΩΣΗ ΑΝΑΣΥΡΟΜΕΝΩΝ)", "phase": "Δεν Έχουμε Μέτρα", "status": "Εκκρεμεί Πληροφορία", "ttype": "2 ΜΕΡΕΣ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 2, "crew": "", "kouw": 9, "eis": 0, "rola": 4, "area": "ΨΥΧΙΚΟ", "addr": "ΚΑΡΚΑΒΙΤΣΑ 8  (ΠΡΟΣΟΧΗ ΔΙΕΥΘΥΝΣΗ ΣΠΙΤΙΟΥ) ΟΧΙ ΕΔΡΑΣ", "floor": "ΙΣΟΓΕΙΟ", "repair": "", "value": ""}, {"offer": "*13569", "order_date": "09/03/2026", "client": "ΜΟΣΧΟΓΙΑΝΝΑΚΗΣ", "related": "ΧΟΛΑΡΓΟΣ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 2, "eis": 0, "rola": 2, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13725", "order_date": "10/03/2026", "client": "KOLOVOS ENERGY IKE", "related": "ΑΡΙΣΤΕΙΔΟΥ 10-12 ΑΘΗΝΑ", "phase": "Ολοκληρωμένη παραγωγή", "status": "Προγραμματισμένο", "ttype": "1 ΜΕΡΑ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "15/04/2026", "prod_end": "20/04/2026", "europa": "20/04/2026", "topo": "20/04/2026", "pithani": "12/05/2026", "days": 1, "crew": "Kariki+Leonidas", "kouw": 13, "eis": 0, "rola": 7, "area": "", "addr": "ΑΡΙΣΤΕΙΔΟΥ 10-12 ΑΘΗΝΑ", "floor": "4ος", "repair": "✓", "value": ""}, {"offer": "*13775", "order_date": "20/03/2026", "client": "AMARILDO", "related": "ΠΑΝΟΣ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 0, "eis": 1, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13809", "order_date": "24/03/2026", "client": "ΜΑΡΚΟΥ ΕΛΕΝΗ", "related": "ΙΣΟΓΕΙΟ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 4, "eis": 1, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13740", "order_date": "24/03/2026", "client": "ΓΡΑΜΜΑΤΙΚΑΚΗ ΑΓΓΕΛΙΚΗ (ΚΑΠΡΑΛΟΣ ΛΕΩΝΙΔΑΣ)", "related": "ΣΙΩΚΟΥ 9 Αγία Παρασκευή", "phase": "Αναμονή Europa", "status": "Σε Αναμονή", "ttype": "3  ΜΕΡΕΣ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "01/07/2026", "pithani": "", "days": 3, "crew": "", "kouw": 10, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "4ος", "repair": "", "value": ""}, {"offer": "*13823", "order_date": "24/03/2026", "client": "ΔΕΜΙΡΗΣ ΑΚΗΣ", "related": "ΑΛΙΜΟΣ ΕΧΤΡΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 0, "area": "ΜΕΛΙΣΣΙΑ", "addr": "Λ. ΔΗΜΟΚΡΑΤΙΑΣ 8", "floor": "", "repair": "", "value": ""}, {"offer": "*13754", "order_date": "27/03/2026", "client": "ΠΑΠΑΠΕΤΡΟΥ ΑΛΕΞΗΣ", "related": "ΜΕΤΑ ΑΠΟ ΕΠΙΜΕΤΡΗΣΗ", "phase": "Μερικώς Παραδομένα", "status": "Σε Αναμονή", "ttype": "1 ΜΕΡΑ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "16/05/2026", "pithani": "", "days": 1, "crew": "", "kouw": 4, "eis": 0, "rola": 3, "area": "ΠΟΛΥΓΩΝΟ", "addr": "ΣΚΥΡΟΥ 78", "floor": "5ος", "repair": "✓", "value": ""}, {"offer": "*13720", "order_date": "30/03/2026", "client": "ΣΑΚΑΛΙΔΗ ΒΑΣΙΛΙΚΗ", "related": "ΜΑΡΚΟΠΟΥΛΟΣ ΜΑΡΙΟΣ ME ΣΥΝΕΠΙΠΕΔΗ νέα", "phase": "Αναμονή Europa", "status": "Σε Αναμονή", "ttype": "3  ΜΕΡΕΣ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "22/07/2026", "pithani": "", "days": 3, "crew": "", "kouw": 32, "eis": 0, "rola": 22, "area": "ΝΕΑ ΕΡΥΘΡΑΙΑ", "addr": "Λ. ΘΗΣΕΩΣ 45", "floor": "ΙΣΟΓΕΙΟ", "repair": "", "value": ""}, {"offer": "*13871", "order_date": "07/04/2026", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "related": "ΚΑΚΑΣ ΨΥΧΡΑ RAL ΓΚΡΙ", "phase": "Take Away", "status": "Take Away", "ttype": "take away", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 0, "crew": "", "kouw": 3, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13876", "order_date": "07/04/2026", "client": "ΠΗΤΑΣ ΦΩΤΗΣ", "related": "ΓΑΒΡΙΗΛ ΛΕΥΚΑ ΨΥΧΡΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 5, "eis": 1, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13822", "order_date": "15/04/2026", "client": "ΚΑΡΑΓΙΩΡΓΟΣ ΔΗΜΗΤΡΗΣ", "related": "ΑΓΙΟΣ ΚΩΝΣΤΑΝΤΙΝΟΣ (ΠΕΛΑΤΗΣ ΣΥΡΙΓΟΣ)", "phase": "Δεν Έχουμε Μέτρα", "status": "Εκκρεμεί Πληροφορία", "ttype": "2 ΜΕΡΕΣ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "30/06/2026", "pithani": "", "days": 2, "crew": "", "kouw": 14, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "ΙΣΟΓΕΙΟ", "repair": "", "value": ""}, {"offer": "*13820", "order_date": "15/04/2026", "client": "ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ", "related": "ΔΕΗ", "phase": "Αναμονή Europa", "status": "Σε Αναμονή", "ttype": "1 ΜΕΡΑ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "29/05/2026", "pithani": "", "days": 1, "crew": "", "kouw": 2, "eis": 0, "rola": 0, "area": "ΒΡΙΛΗΣΣΙΑ", "addr": "", "floor": "ΙΣΟΓΕΙΟ", "repair": "", "value": ""}, {"offer": "*13904", "order_date": "16/04/2026", "client": "ΠΗΤΑΣ ΦΩΤΗΣ", "related": "ΜΑΚΡΙΔΑΚΗΣ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13920", "order_date": "20/04/2026", "client": "ΛΕΥΤΕΡΗΣ ΚΑΡΙΚΙ", "related": "ΗΛΙΑΣ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 1, "rola": 2, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13892", "order_date": "22/04/2026", "client": "AMARILDO", "related": "ΠΟΡΤΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 0, "eis": 1, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13940", "order_date": "23/04/2026", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "ΣΙΤΑ ΕΠΑΛΛΗΛΟΥ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 0, "area": "ΧΑΛΑΝΔΡΙ", "addr": "ΣΑΡΑΝΤΑΠΟΡΟΥ 65", "floor": "", "repair": "", "value": ""}, {"offer": "*13917", "order_date": "24/04/2026", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "related": "ΧΑΡΑΤΣΑΡΗ ΨΥΧΡΑ", "phase": "Take Away", "status": "Take Away", "ttype": "take away", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 0, "crew": "", "kouw": 2, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13932", "order_date": "27/04/2026", "client": "KOLOVOS ENERGY IKE", "related": "", "phase": "Μεταλλικές Κατασκευές", "status": "Σε Αναμονή", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 1, "eis": 0, "rola": 1, "area": "ΑΘΗΝΑ", "addr": "ΑΡΙΣΤΕΙΔΟΥ 10-12", "floor": "", "repair": "✓", "value": ""}, {"offer": "*13810", "order_date": "30/04/2026", "client": "ΧΟΥΛΙΑΡΑΣ ΛΕΥΤΕΡΗΣ( Γιουπάι Κατερίνα )", "related": "ΕΛΑΙΩΝΟΣ ΚΑΙ ΚΟΠΑΝΑ ΣΠΑΤΑ 9240 Νέα τιμή", "phase": "Μερικώς Παραδομένα", "status": "Σε Αναμονή", "ttype": "3  ΜΕΡΕΣ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 3, "crew": "", "kouw": 16, "eis": 0, "rola": 16, "area": "ΣΠΑΤΑ", "addr": "ΕΛΑΙΩΝΟΣ ΚΑΙ ΚΟΠΑΝΑ", "floor": "", "repair": "", "value": ""}, {"offer": "*13974", "order_date": "04/05/2026", "client": "ΝΤΑΗΣ ΑΡΗΣ", "related": "ΜΟΝΤΑΡΙΣΜΑ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 27, "eis": 0, "rola": 0, "area": "Αχαρναί", "addr": "Αγίου Κων/νου & Ελένης 82", "floor": "", "repair": "", "value": ""}, {"offer": "*12822", "order_date": "05/05/2026", "client": "ΔΗΜΗΤΡΙΑΔΗΣ ΓΕΩΡΓΙΟΣ", "related": "ΚΟΥΡΟΣ", "phase": "Take Away", "status": "Take Away", "ttype": "take away", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 0, "crew": "", "kouw": 5, "eis": 0, "rola": 0, "area": "ΝΕΑ ΧΑΛΚΗΔΟΝΑ", "addr": "ΜΥΚΗΝΩΝ 1", "floor": "", "repair": "", "value": ""}, {"offer": "*13948", "order_date": "05/05/2026", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "related": "ΦΩΤΕΙΝΟΥ", "phase": "Take Away", "status": "Take Away", "ttype": "take away", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 0, "crew": "", "kouw": 2, "eis": 0, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13914", "order_date": "07/05/2026", "client": "ΜΠΟΥΜΠΑΛΗΣ ΓΕΩΡΓΙΟΣ", "related": "", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 4, "eis": 0, "rola": 0, "area": "ΓΚΥΖΗ", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*12868", "order_date": "08/05/2026", "client": "ΚΟΤΡΟΠΟΥΛΟΥ ΙΩΑΝΝΑ", "related": "ΒΑΦΗ & ΕΠΙΣΚΕΥΕΣ", "phase": "Μεταλλικές Κατασκευές", "status": "Σε Αναμονή", "ttype": "3  ΜΕΡΕΣ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "29/05/2026", "days": 3, "crew": "", "kouw": 0, "eis": 1, "rola": 0, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13929", "order_date": "08/05/2026", "client": "ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ", "related": "ΜΕΤΑΛΛΙΚΕΣ ΠΟΡΤΕΣ", "phase": "Μεταλλικές Κατασκευές", "status": "Σε Αναμονή", "ttype": "2 ΜΕΡΕΣ ΤΟΠΟΘΕΤΗΣΗ", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "12/06/2026", "days": 2, "crew": "", "kouw": 0, "eis": 5, "rola": 0, "area": "ΒΡΙΛΗΣΣΙΑ", "addr": "ΚΑΡΑΪΣΚΑΚΗ 3", "floor": "", "repair": "", "value": ""}, {"offer": "*13778", "order_date": "11/05/2026", "client": "ΝΤΑΗΣ ΑΡΗΣ", "related": "ΠΕΛΟΠΟΝΝΗΣΟΥ 56", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 9, "eis": 0, "rola": 0, "area": "Αχαρναί", "addr": "Αγίου Κων/νου & Ελένης 82", "floor": "", "repair": "", "value": ""}, {"offer": "*13468", "order_date": "13/05/2026", "client": "POSITIVE LIVING", "related": "ΛΟΥΤΡΑΚΙ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 5, "eis": 0, "rola": 3, "area": "", "addr": "ΚΑΛΥΒΙΑ ΑΤΤΙΚΗΣ", "floor": "", "repair": "", "value": ""}, {"offer": "*13988", "order_date": "13/05/2026", "client": "ΤΟΡΤΟΠΙΔΗ ΠΟΛΥΜΝΙΑ", "related": "", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 4, "eis": 0, "rola": 4, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}, {"offer": "*13995", "order_date": "14/05/2026", "client": "ΓΑΛΑΝΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ", "related": "ΚΟΥΦΩΜΑΤΑ & ΡΟΛΑ ΚΑΤΟΠΙΝ ΕΠΙΜΕΤΡΗΣΗΣ ΤΕΛΙΚΗ", "phase": "Χωρίς Φάση", "status": "Εκκρεμεί Πληροφορία", "ttype": "", "prod_start": "", "prod_end": "", "europa": "", "topo": "", "pithani": "", "days": 1, "crew": "", "kouw": 13, "eis": 2, "rola": 7, "area": "", "addr": "", "floor": "", "repair": "", "value": ""}];
+const EMBEDDED_F = [{"offer": "13543", "client": "ΛΕΥΤΕΡΗΣ ΚΑΡΙΚΙ", "related": "ΤΖΑΚΑΝΙΚΑ", "value": 5299.47, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "12/01/2026", "date_update": "04/02/2026"}, {"offer": "13558", "client": "ELVIS", "related": "OTIUM", "value": 2805.63, "discount": 45.0, "markup": 0.0, "invoice": "ΤΙΜΟΛΟΓΙΟ", "area": "", "date_entry": "19/01/2026", "date_update": "20/01/2026"}, {"offer": "13569", "client": "ΜΟΣΧΟΓΙΑΝΝΑΚΗΣ", "related": "ΧΟΛΑΡΓΟΣ", "value": 1960.04, "discount": 47.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "20/01/2026", "date_update": "09/03/2026"}, {"offer": "13574", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "Γ. Βλάχου 49-53 Αθήνα", "value": 4520.72, "discount": 47.0, "markup": 0.0, "invoice": "", "area": "ΧΑΛΑΝΔΡΙ", "date_entry": "21/01/2026", "date_update": "29/01/2026"}, {"offer": "13597", "client": "ΔΕΜΙΡΗΣ ΑΚΗΣ", "related": "ΚΗΦΙΣΙΑ ΓΕΛΑΣΗΣ 2 special ral 9006", "value": 1690.33, "discount": 47.0, "markup": 0.0, "invoice": "", "area": "ΜΕΛΙΣΣΙΑ", "date_entry": "28/01/2026", "date_update": "13/02/2026"}, {"offer": "13607", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "ΜΑΡΚΟΥ ΜΠΟΤΣΑΡΗ 55 ΚΗΦΙΣΙΑ", "value": 6197.79, "discount": 47.0, "markup": 0.0, "invoice": "", "area": "ΧΑΛΑΝΔΡΙ", "date_entry": "29/01/2026", "date_update": "04/02/2026"}, {"offer": "13613", "client": "ΛΩΛΟΣ ΘΕΟΔΩΡΟΣ", "related": "ΠΑΡΑΘΥΡΟ ΚΟΥΖΙΝΑΣ", "value": 1110.45, "discount": 35.0, "markup": 0.0, "invoice": "", "area": "ΠΟΡΤΟ ΡΑΦΤΗ", "date_entry": "30/01/2026", "date_update": "02/02/2026"}, {"offer": "13626", "client": "ΑΡΖΟΓΛΟΥ ΑΝΔΡΕΑΣ", "related": "ΕΧΤΡΑ ΠΑΡΑΘΥΡΑ", "value": 1080.58, "discount": 40.0, "markup": 10.0, "invoice": "", "area": "ΑΓΙΑ ΠΑΡΑΣΚΕΥΗ", "date_entry": "05/02/2026", "date_update": "05/02/2026"}, {"offer": "13627", "client": "EUROSTAL", "related": "ΠΑΥΛΟΣ ΣΠΑΤΑ ΕΞΤΡΑ", "value": 422.38, "discount": 0.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "05/02/2026", "date_update": "05/02/2026"}, {"offer": "13636", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "ΜΠΟΤΣΑΡΗ 55 EXTRA Χώρισμα", "value": 774.8, "discount": 47.0, "markup": 0.0, "invoice": "", "area": "ΧΑΛΑΝΔΡΙ", "date_entry": "06/02/2026", "date_update": "06/02/2026"}, {"offer": "13644", "client": "ΠΑΡΑΡΑΣ ΜΑΝΩΛΗΣ", "related": "ΣΕΝΑΡΙΟ ΜΕ TRIPLEX & MHXΑΝΙΣΜΟΙ", "value": 17179.56, "discount": 40.0, "markup": 0.0, "invoice": "ΑΠΟΔΕΙΞΗ ΛΙΑΝΙΚΗΣ", "area": "ΚΗΦΙΣΙΑ", "date_entry": "09/02/2026", "date_update": "13/02/2026"}, {"offer": "13657", "client": "ΠΕΤΡΟΣ ΚΥΡΚΟΣ", "related": "", "value": 2777.6, "discount": 46.2, "markup": 0.0, "invoice": "", "area": "", "date_entry": "11/02/2026", "date_update": "12/02/2026"}, {"offer": "13673", "client": "ΔΕΜΙΡΗΣ ΑΚΗΣ", "related": "Επαλληλο Κακου ΜΕ ΣΤΕΝΗ ΕΠΑΛΛΗΛΙΑ", "value": 3819.0, "discount": 47.0, "markup": 0.0, "invoice": "", "area": "ΜΕΛΙΣΣΙΑ", "date_entry": "16/02/2026", "date_update": "20/02/2026"}, {"offer": "13684", "client": "NOUS NOUS", "related": "ΑΦΟΙ ΜΑΡΝΕΖΟΥ", "value": 1985.74, "discount": 0.0, "markup": 0.0, "invoice": "ΤΙΜΟΛΟΓΙΟ", "area": "", "date_entry": "17/02/2026", "date_update": "24/02/2026"}, {"offer": "13705", "client": "ΞΕΝΕΞ ΑΝΑΣΤΑΣΙΟΣ ΚΙΟΥΛΠΑΠΑΣ Α.Ε.", "related": "ΨΥΧΙΚΟ ΜΕ ΑΠΟΜΙΜΗΣΗ ΞΥΛΟΥ( ΧΩΡΙΣ ΧΡΕΩΣΗ ΑΝΑΣΥΡΟΜΕΝΩΝ)", "value": 14366.08, "discount": 45.0, "markup": 50.0, "invoice": "", "area": "ΨΥΧΙΚΟ", "date_entry": "24/02/2026", "date_update": "27/02/2026"}, {"offer": "13720", "client": "ΣΑΚΑΛΙΔΗ ΒΑΣΙΛΙΚΗ", "related": "ΜΑΡΚΟΠΟΥΛΟΣ ΜΑΡΙΟΣ ME ΣΥΝΕΠΙΠΕΔΗ νέα", "value": 60119.68, "discount": 45.0, "markup": 24.0, "invoice": "ΑΠΟΔΕΙΞΗ ΛΙΑΝΙΚΗΣ", "area": "ΝΕΑ ΕΡΥΘΡΑΙΑ", "date_entry": "27/02/2026", "date_update": "30/03/2026"}, {"offer": "13725", "client": "KOLOVOS ENERGY IKE", "related": "ΑΡΙΣΤΕΙΔΟΥ 10-12 ΑΘΗΝΑ", "value": 11858.3, "discount": 45.0, "markup": 10.0, "invoice": "ΤΙΜΟΛΟΓΙΟ ΔΑ", "area": "", "date_entry": "02/03/2026", "date_update": "10/03/2026"}, {"offer": "13740", "client": "ΓΡΑΜΜΑΤΙΚΑΚΗ ΑΓΓΕΛΙΚΗ (ΚΑΠΡΑΛΟΣ ΛΕΩΝΙΔΑΣ)", "related": "ΣΙΩΚΟΥ 9 Αγία Παρασκευή", "value": 10289.32, "discount": 40.0, "markup": 0.0, "invoice": "ΑΠΟΔΕΙΞΗ ΔΑ", "area": "", "date_entry": "04/03/2026", "date_update": "24/03/2026"}, {"offer": "13754", "client": "ΠΑΠΑΠΕΤΡΟΥ ΑΛΕΞΗΣ", "related": "ΜΕΤΑ ΑΠΟ ΕΠΙΜΕΤΡΗΣΗ", "value": 6446.41, "discount": 47.0, "markup": 0.0, "invoice": "", "area": "ΠΟΛΥΓΩΝΟ", "date_entry": "06/03/2026", "date_update": "27/03/2026"}, {"offer": "13775", "client": "AMARILDO", "related": "ΠΑΝΟΣ", "value": 365.17, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "12/03/2026", "date_update": "20/03/2026"}, {"offer": "13778", "client": "ΝΤΑΗΣ ΑΡΗΣ", "related": "ΠΕΛΟΠΟΝΝΗΣΟΥ 56", "value": 9628.85, "discount": 46.0, "markup": 0.0, "invoice": "", "area": "Αχαρναί", "date_entry": "12/03/2026", "date_update": "11/05/2026"}, {"offer": "13809", "client": "ΜΑΡΚΟΥ ΕΛΕΝΗ", "related": "ΙΣΟΓΕΙΟ", "value": 4336.97, "discount": 30.0, "markup": 0.0, "invoice": "ΑΠΟΔΕΙΞΗ ΔΑ", "area": "", "date_entry": "18/03/2026", "date_update": "24/03/2026"}, {"offer": "13810", "client": "ΧΟΥΛΙΑΡΑΣ ΛΕΥΤΕΡΗΣ( Γιουπάι Κατερίνα )", "related": "ΕΛΑΙΩΝΟΣ ΚΑΙ ΚΟΠΑΝΑ ΣΠΑΤΑ 9240 Νέα τιμή", "value": 25678.22, "discount": 30.0, "markup": 2.0, "invoice": "ΑΠΟΔΕΙΞΗ ΛΙΑΝΙΚΗΣ", "area": "ΣΠΑΤΑ", "date_entry": "19/03/2026", "date_update": "30/04/2026"}, {"offer": "13820", "client": "ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ", "related": "ΔΕΗ", "value": 1723.53, "discount": 40.0, "markup": 0.0, "invoice": "", "area": "ΒΡΙΛΗΣΣΙΑ", "date_entry": "23/03/2026", "date_update": "15/04/2026"}, {"offer": "13822", "client": "ΚΑΡΑΓΙΩΡΓΟΣ ΔΗΜΗΤΡΗΣ", "related": "ΑΓΙΟΣ ΚΩΝΣΤΑΝΤΙΝΟΣ (ΠΕΛΑΤΗΣ ΣΥΡΙΓΟΣ)", "value": 12212.79, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "23/03/2026", "date_update": "15/04/2026"}, {"offer": "13823", "client": "ΔΕΜΙΡΗΣ ΑΚΗΣ", "related": "ΑΛΙΜΟΣ ΕΧΤΡΑ", "value": 435.99, "discount": 47.0, "markup": 0.0, "invoice": "ΤΙΜΟΛΟΓΙΟ ΔΑ", "area": "ΜΕΛΙΣΣΙΑ", "date_entry": "23/03/2026", "date_update": "24/03/2026"}, {"offer": "13871", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "related": "ΚΑΚΑΣ ΨΥΧΡΑ RAL ΓΚΡΙ", "value": 1747.71, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "02/04/2026", "date_update": "07/04/2026"}, {"offer": "13876", "client": "ΠΗΤΑΣ ΦΩΤΗΣ", "related": "ΓΑΒΡΙΗΛ ΛΕΥΚΑ ΨΥΧΡΑ", "value": 2477.93, "discount": 43.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "03/04/2026", "date_update": "07/04/2026"}, {"offer": "13892", "client": "AMARILDO", "related": "ΠΟΡΤΑ", "value": 364.43, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "08/04/2026", "date_update": "22/04/2026"}, {"offer": "13904", "client": "ΠΗΤΑΣ ΦΩΤΗΣ", "related": "ΜΑΚΡΙΔΑΚΗΣ", "value": 346.3, "discount": 43.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "15/04/2026", "date_update": "16/04/2026"}, {"offer": "13914", "client": "ΜΠΟΥΜΠΑΛΗΣ ΓΕΩΡΓΙΟΣ", "related": "", "value": 3995.57, "discount": 35.0, "markup": 0.0, "invoice": "ΑΠΟΔΕΙΞΗ ΔΑ", "area": "ΓΚΥΖΗ", "date_entry": "16/04/2026", "date_update": "07/05/2026"}, {"offer": "13917", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "related": "ΧΑΡΑΤΣΑΡΗ ΨΥΧΡΑ", "value": 653.87, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "16/04/2026", "date_update": "24/04/2026"}, {"offer": "13920", "client": "ΛΕΥΤΕΡΗΣ ΚΑΡΙΚΙ", "related": "ΗΛΙΑΣ", "value": 1525.62, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "17/04/2026", "date_update": "20/04/2026"}, {"offer": "13929", "client": "ΑΝΤΩΝΑΚΟΠΟΥΛΟΣ ΝΙΚΟΣ", "related": "ΜΕΤΑΛΛΙΚΕΣ ΠΟΡΤΕΣ", "value": 2050.0, "discount": 0.0, "markup": 0.0, "invoice": "", "area": "ΒΡΙΛΗΣΣΙΑ", "date_entry": "20/04/2026", "date_update": "08/05/2026"}, {"offer": "13932", "client": "KOLOVOS ENERGY IKE", "related": "", "value": 1743.69, "discount": 45.0, "markup": 2.0, "invoice": "", "area": "ΑΘΗΝΑ", "date_entry": "21/04/2026", "date_update": "27/04/2026"}, {"offer": "13940", "client": "MECHA - ΑΛΟΥΚΟΣ ΚΑΙ ΣΙΑ Ι.Κ.Ε.", "related": "ΣΙΤΑ ΕΠΑΛΛΗΛΟΥ", "value": 0.0, "discount": 0.0, "markup": 0.0, "invoice": "", "area": "ΧΑΛΑΝΔΡΙ", "date_entry": "23/04/2026", "date_update": "23/04/2026"}, {"offer": "13948", "client": "ΟΥΡΑΝΙΤΣΑΣ ΙΑΚΩΒΟΣ", "related": "ΦΩΤΕΙΝΟΥ", "value": 585.46, "discount": 45.0, "markup": 0.0, "invoice": "", "area": "", "date_entry": "27/04/2026", "date_update": "05/05/2026"}, {"offer": "13974", "client": "ΝΤΑΗΣ ΑΡΗΣ", "related": "ΜΟΝΤΑΡΙΣΜΑ", "value": 17900.25, "discount": 46.0, "markup": 0.0, "invoice": "", "area": "Αχαρναί", "date_entry": "04/05/2026", "date_update": "04/05/2026"}, {"offer": "13988", "client": "ΤΟΡΤΟΠΙΔΗ ΠΟΛΥΜΝΙΑ", "related": "", "value": 4975.94, "discount": 40.0, "markup": 0.0, "invoice": "ΑΠΟΔΕΙΞΗ ΔΑ", "area": "", "date_entry": "06/05/2026", "date_update": "13/05/2026"}, {"offer": "13995", "client": "ΓΑΛΑΝΟΠΟΥΛΟΣ ΝΙΚΟΛΑΟΣ", "related": "ΚΟΥΦΩΜΑΤΑ & ΡΟΛΑ ΚΑΤΟΠΙΝ ΕΠΙΜΕΤΡΗΣΗΣ ΤΕΛΙΚΗ", "value": 76886.28, "discount": 45.0, "markup": 0.0, "invoice": "ΑΠΟΔΕΙΞΗ ΛΙΑΝΙΚΗΣ", "area": "", "date_entry": "07/05/2026", "date_update": "14/05/2026"}];
+const W={"Ermal":90,"Kariki":80,"Χάρης":80,"Amarildo":70,"Leonidas":70,"Adriatic":60,"Nektarios":60,"Sergio":50,"Rildo":80};
+
+// ═══ LIVE DATA ═══
+const S1="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGYnjaOv4NKd-tvBnf43C-dzntd7G86PJmBaH59PoaDIvqkWpYuvgublTGJC-CcnugwSTsegbrYJ6H/pub?output=csv";
+const S2="https://docs.google.com/spreadsheets/d/e/2PACX-1vRTLaqzV6Z_vB416oTLwmsWpr4dhYL8l4keeayXMPC3xb2G9CefJn7rAdPJo8ENm6rYrxrGh4EhL2QK/pub?output=csv";
+let O=[...EMBEDDED_O], F=[...EMBEDDED_F];
+let lastUpdate = "Ενσωματωμένα δεδομένα: 14/05/2026";
 
 // CSV parser
 function parseCSV(txt){
-  const lines=txt.trim().split('\n');
-  const headers=splitLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,''));
+  const lines=txt.trim().split("\n");
+  const headers=splitLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,""));
   return lines.slice(1).filter(l=>l.trim()).map(l=>{
     const vals=splitLine(l);
     const obj={};
-    headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+    headers.forEach((h,i)=>obj[h]=(vals[i]||"").replace(/^"|"$/g,"").trim());
     return obj;
   });
 }
 function splitLine(l){
-  const res=[];let cur='',q=false;
+  const res=[];let cur="",q=false;
   for(let i=0;i<l.length;i++){
     if(l[i]==='"'){q=!q}
-    else if(l[i]===','&&!q){res.push(cur);cur=''}
+    else if(l[i]===","&&!q){res.push(cur);cur=""}
     else cur+=l[i];
   }
   res.push(cur);return res;
 }
 
-// Map sheet columns to our data format — protoproduction compatible
 function mapOrders(rows){
-  function pdt(v){
-    if(!v||v==='nan'||v==='NaT'||v==='None')return '';
-    // Handle "2026-04-20 00:00:00" or "2026-04-20" or "20/04/2026"
-    const s=String(v).trim();
-    if(s.includes('-')&&s.length>=10){
-      const p=s.substring(0,10).split('-');
-      if(p.length===3)return `${p[2]}/${p[1]}/${p[0]}`;
+  const norm={'ΚΑΡΙΚΙ':'Kariki','KARIKI':'Kariki','ΧΑΡΗΣ':'Χάρης','ΧΆΡΗΣ':'Χάρης','ΡΙΛΝΤΟ':'Rildo','RILDO':'Rildo','ΕΡΜΑΛ':'Ermal','ERMAL':'Ermal','ΑΜΑΡΙΛΝΤΟ':'Amarildo','AMARILDO':'Amarildo','ΛΕΩΝΙΔΑΣ':'Leonidas','LEONIDAS':'Leonidas','ADRIATIC':'Adriatic','ΝΕΚΤΑΡΙΟΣ':'Nektarios','ΝΕΚΤΆΡΙΟΣ':'Nektarios','NEKTARIOS':'Nektarios','SERGIO':'Sergio','ΣΕΡΓΚΙΟ':'Sergio'};
+  function normName(n){return norm[n.trim().toUpperCase()]||norm[n.trim()]||n.trim();}
+  function mapCrew(s){
+    if(!s||s==="nan"||s==="None")return "";
+    if(s.includes(" - ")){
+      const pts=s.split(" - ").map(p=>p.trim()).filter(p=>p&&p.length>1);
+      return pts.slice(0,2).map(normName).join("+");
     }
-    if(s.includes('/')&&s.length>=8)return s.substring(0,10);
-    return '';
+    if(s.includes("+"))return s.split("+").map(p=>normName(p.trim())).join("+");
+    return normName(s);
   }
-  function extractDays(ttype){
-    if(!ttype||ttype==='nan')return 1;
-    const s=String(ttype).toUpperCase();
-    if(s.includes('TAKE AWAY'))return 0;
-    const m=s.match(/(\d+)\s*ΜΕΡΕ/);
-    if(m)return parseInt(m[1]);
-    if(s.includes('1 ΜΕΡΑ'))return 1;
-    return 1;
+  function mapPhase(p,t){
+    if(t&&String(t).toLowerCase().includes("take away"))return "Take Away";
+    if(!p||p==="nan")return "Χωρίς Φάση";
+    const s=String(p).toLowerCase();
+    if(s.includes("ολοκληρωμένη παραγωγή"))return "Ολοκληρωμένη παραγωγή";
+    if(s.includes("ολοκληρωμένη παραλαβή"))return "Ολοκληρωμένη παραλαβή υλικών";
+    if(s.includes("αναμον"))return "Αναμονή Europa";
+    if(s.includes("μεταλλικ"))return "Μεταλλικές Κατασκευές";
+    if(s.includes("μερικώς")||s.includes("μερικως"))return "Μερικώς Παραδομένα";
+    if(s.includes("τελικά μέτρα")||s.includes("τελικα μετρα"))return "Δεν Έχουμε Μέτρα";
+    return "Χωρίς Φάση";
   }
-  function mapPhase(phase, ttype){
-    const t=String(ttype||'').toLowerCase();
-    if(t.includes('take away'))return 'Take Away';
-    if(!phase||phase==='nan'||phase==='None')return 'Χωρίς Φάση';
-    const p=String(phase).toLowerCase();
-    if(p.includes('ολοκληρωμένη παραγωγή')||p.includes('ολοκληρωμενη παραγωγη'))return 'Ολοκληρωμένη παραγωγή';
-    if(p.includes('ολοκληρωμένη παραλαβή')||p.includes('ολοκληρωμενη παραλαβη'))return 'Ολοκληρωμένη παραλαβή υλικών';
-    if(p.includes('αναμονή υλικών')||p.includes('αναμονη υλικων')||p.includes('αναμον'))return 'Αναμονή Europa';
-    if(p.includes('μεταλλικ'))return 'Μεταλλικές Κατασκευές';
-    if(p.includes('μερικώς')||p.includes('μερικως'))return 'Μερικώς Παραδομένα';
-    if(p.includes('τελικά μέτρα')||p.includes('τελικα μετρα'))return 'Δεν Έχουμε Μέτρα';
-    return 'Χωρίς Φάση';
+  function mapStatus(ph,topo){
+    if(ph==="Take Away")return "Take Away";
+    if(ph==="Ολοκληρωμένη παραγωγή"||ph==="Ολοκληρωμένη παραλαβή υλικών")
+      return topo?"Προγραμματισμένο":"Έτοιμο προς Τοποθέτηση";
+    if(["Αναμονή Europa","Μεταλλικές Κατασκευές","Μερικώς Παραδομένα"].includes(ph))return "Σε Αναμονή";
+    return "Εκκρεμεί Πληροφορία";
   }
-  function mapStatus(phase, topo){
-    if(phase==='Take Away')return 'Take Away';
-    if(phase==='Ολοκληρωμένη παραγωγή'||phase==='Ολοκληρωμένη παραλαβή υλικών')
-      return topo?'Προγραμματισμένο':'Έτοιμο προς Τοποθέτηση';
-    if(['Αναμονή Europa','Μεταλλικές Κατασκευές','Μερικώς Παραδομένα'].includes(phase))return 'Σε Αναμονή';
-    if(phase==='Δεν Έχουμε Μέτρα')return 'Εκκρεμεί Πληροφορία';
-    return 'Εκκρεμεί Πληροφορία';
+  function pdt(v){
+    if(!v||v==="nan"||v==="None"||v==="NaT")return "";
+    const s=String(v).trim();
+    if(s.includes("-")&&s.length>=10){const p=s.substring(0,10).split("-");return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:""}
+    if(s.includes("/"))return s.substring(0,10);
+    return "";
   }
-  function mapCrew(synerg){
-    if(!synerg||synerg==='nan'||synerg==='None')return '';
-    const s=String(synerg).trim();
-    // Normalize common uppercase Greek variants to match wage keys
-    const norm={'ΚΑΡΙΚΙ':'Kariki','KARIKI':'Kariki','ΡΙΛΝΤΟ':'Rildo','ΕΡΜΑΛ':'Ermal',
-      'ΧΑΡΗΣ':'Χάρης','ΧΆΡΗΣ':'Χάρης','ΑΜΑΡΙΛΝΤΟ':'Amarildo','ΛΕΩΝΙΔΑΣ':'Leonidas',
-      'LEONIDAS':'Leonidas','ADRIATIC':'Adriatic','ΝΕΚΤΑΡΙΟΣ':'Nektarios','ΣΕΡΓΚΙΟ':'Sergio',
-      'SERGIO':'Sergio','ΝΕΚΤΆΡΙΟΣ':'Nektarios'};
-    function normName(n){return norm[n.trim().toUpperCase()]||norm[n.trim()]||n.trim();}
-    // Handle separator formats
-    let parts=[];
-    if(s.includes(' - '))parts=s.split(' - ').map(p=>p.trim()).filter(p=>p&&p.length>1);
-    else if(s.includes('+'))parts=s.split('+').map(p=>p.trim());
-    else parts=[s];
-    const normed=parts.slice(0,2).map(normName);
-    // Skip if looks like an external contractor (too long / no match)
-    if(normed[0].length>20)return normed[0].substring(0,15)+'...';
-    return normed.join('+');
+  function exdays(t){
+    if(!t||t==="nan")return 1;
+    const s=String(t).toUpperCase();
+    if(s.includes("TAKE AWAY"))return 0;
+    const m=s.match(/(\d+)\s*ΜΕΡΕ/);if(m)return parseInt(m[1]);
+    if(s.includes("1 ΜΕΡΑ"))return 1;return 1;
   }
-
   return rows.map(r=>{
-    // Support both protoproduction column names AND already-mapped names
-    const phase_raw = r['Φάση έργου']||r['Φάση']||r['phase']||'';
-    const ttype = r['Τύπος έργου']||r['Τύπος_Έργου']||r['ttype']||'';
-    const phase = mapPhase(phase_raw, ttype);
-    const topo = pdt(r['Τοποθέτηση']||r['Ημ_Τοποθέτησης']||r['topo']||'');
-    const status = mapStatus(phase, topo);
-    const days = extractDays(ttype);
-    // repair: True/False boolean or ✓ or text
-    const repRaw = r['Επισκευή']||r['repair']||'';
-    const repair = repRaw===true||repRaw==='True'||repRaw==='true'||repRaw==='✓'||repRaw==='1'?'✓':'';
-
+    const ph=mapPhase(r["Φάση έργου"]||r["Φάση"]||r["phase"]||"",r["Τύπος έργου"]||r["ttype"]||"");
+    const topo=pdt(r["Τοποθέτηση"]||r["Ημ_Τοποθέτησης"]||r["topo"]||"");
+    const rep=r["Επισκευή"]||r["repair"]||"";
     return {
-      offer:   r['Σχετική προσφορά']||r['Προσφορά']||r['offer']||'',
-      client:  r['Πελάτης']||r['client']||'',
-      related: r['Σχετικός πελάτης']||r['Εργοτάξιο']||r['related']||'',
-      phase:   phase,
-      status:  status,
-      topo:    topo,
-      pithani: pdt(r['Πιθανή Παράδοση']||r['pithani']||''),
-      europa:  pdt(r['Αποστολή']||r['Πιθ_Παράδοση_Europa']||r['europa']||''),
-      order_date: pdt(r['Ημερομηνία']||r['Ημ_Παραγγελίας']||r['order_date']||''),
-      prod_start: pdt(r['Έναρξη παραγωγής']||r['prod_start']||''),
-      prod_end:   pdt(r['Λήξη παραγωγής']||r['prod_end']||''),
-      crew:    mapCrew(r['Συνεργείο']||r['crew']||''),
-      kouw:    parseInt(r['Αρ. κουφωμάτων']||r['Κουφώματα']||r['kouw'])||0,
-      rola:    parseInt(r['Αρ. ρολών']||r['Ρολά']||r['rola'])||0,
-      eis:     parseInt(r['Αρ. εισόδων']||r['Είσοδοι']||r['eis'])||0,
-      days:    days,
-      value:   String(r['Αξία_Σύμβασης']||r['value']||'').replace(/[^0-9.]/g,''),
-      area:    r['Περιοχή Π']||r['Περιοχή']||r['area']||'',
-      addr:    r['Διεύθυνση Π']||r['Διεύθυνση']||r['addr']||'',
-      floor:   r['Δρομολόγιο']||r['floor']||'',
-      repair:  repair,
-      ttype:   ttype
+      offer:r["Σχετική προσφορά"]||r["Προσφορά"]||r["offer"]||"",
+      order_date:pdt(r["Ημερομηνία"]||r["Ημ_Παραγγελίας"]||r["order_date"]||""),
+      client:r["Πελάτης"]||r["client"]||"",
+      related:r["Σχετικός πελάτης"]||r["Εργοτάξιο"]||r["related"]||"",
+      phase:ph,status:mapStatus(ph,topo),
+      ttype:r["Τύπος έργου"]||r["ttype"]||"",
+      prod_start:pdt(r["Έναρξη παραγωγής"]||r["prod_start"]||""),
+      prod_end:pdt(r["Λήξη παραγωγής"]||r["prod_end"]||""),
+      europa:pdt(r["Αποστολή"]||r["Πιθ_Παράδοση_Europa"]||r["europa"]||""),
+      topo:topo,
+      pithani:pdt(r["Πιθανή Παράδοση"]||r["pithani"]||""),
+      days:exdays(r["Τύπος έργου"]||r["ttype"]||""),
+      crew:mapCrew(r["Συνεργείο"]||r["crew"]||""),
+      kouw:parseInt(r["Αρ. κουφωμάτων"]||r["Κουφώματα"]||r["kouw"])||0,
+      eis:parseInt(r["Αρ. εισόδων"]||r["Είσοδοι"]||r["eis"])||0,
+      rola:parseInt(r["Αρ. ρολών"]||r["Ρολά"]||r["rola"])||0,
+      area:r["Περιοχή Π"]||r["Περιοχή"]||r["area"]||"",
+      addr:r["Διεύθυνση Π"]||r["Διεύθυνση"]||r["addr"]||"",
+      floor:r["Δρομολόγιο"]||r["floor"]||"",
+      repair:(rep===true||rep==="True"||rep==="true"||rep==="✓"||rep==="1")?"✓":"",
+      value:r["Αξία_Σύμβασης"]||r["value"]||""
     };
-  }).filter(r=>r.offer&&r.offer!=='nan'&&r.offer!=='None'&&r.offer!=='ΤΕΣΤ'&&r.client!=='ΤΕΣΤ');
-}
-// Loading state
-let isLoading=false;
-function showLoading(){
-  const el=document.getElementById('page-title');
-  if(el)el.textContent='Φόρτωση...';
-}
-function showError(msg){
-  const actPage=document.querySelector('.page.active')||document.getElementById('pg-overview');
-  if(actPage)actPage.innerHTML=`<div style="background:var(--rb);border:1px solid rgba(248,81,73,.3);border-radius:8px;padding:20px;margin:20px;color:var(--rd)"><strong>⚠ Σφάλμα φόρτωσης</strong><br><br>${msg}<br><br>Βεβαιωθείτε ότι το Google Sheet είναι Published to web.</div>`;
+  }).filter(r=>r.offer&&r.offer!=="nan"&&r.offer!=="None");
 }
 
+function mapFinancials(rows){
+  return rows.map(r=>{
+    const v=parseFloat(String(r["Συνολική καθαρή αξία"]||r["Συνολική_Καθαρή_Αξία"]||r["value"]||"0").replace(/[^0-9.]/g,""))||0;
+    const d=parseFloat(String(r["Έκπτωση1 %"]||r["Έκπτωση_%"]||r["discount"]||"0").replace(/[^0-9.]/g,""))||0;
+    const m=parseFloat(String(r["Προσαύξηση τιμών"]||r["markup"]||"0").replace(/[^0-9.]/g,""))||0;
+    return {
+      offer:String(r["Α/Α προσφοράς"]||r["Προσφορά"]||r["offer"]||""),
+      client:r["Πελάτης"]||r["client"]||"",
+      related:r["Σχετικός πελάτης"]||r["related"]||"",
+      value:v,discount:d,markup:m,
+      invoice:r["Παραστατικό"]||r["invoice"]||"",
+      area:r["Περιοχή Π"]||r["Περιοχή"]||r["area"]||"",
+      date_entry:String(r["Ημερομηνία εισαγωγής"]||r["Ημ_Εισαγωγής"]||"").substring(0,10),
+      date_update:String(r["Ημερομηνία ενημέρωσης"]||r["Ημ_Ενημέρωσης"]||"").substring(0,10),
+    };
+  }).filter(r=>r.client&&r.client!=="nan"&&r.client!=="None"&&r.value>0);
+}
+
+let isLoading=false;
 async function loadData(){
-  if(isLoading)return;
-  isLoading=true;
-  showLoading();
+  if(isLoading)return;isLoading=true;
+  const updEl=document.getElementById("upd");
+  if(updEl)updEl.textContent="Φόρτωση live δεδομένων...";
   try{
-    const proxy='https://corsproxy.io/?';
-    const[r1,r2]=await Promise.all([
-      fetch(proxy+encodeURIComponent(S1)).then(r=>r.ok?r.text():Promise.reject('Sheet1 HTTP '+r.status)),
-      fetch(proxy+encodeURIComponent(S2)).then(r=>r.ok?r.text():Promise.reject('Sheet2 HTTP '+r.status))
+    const proxy="https://corsproxy.io/?";
+    const [r1,r2]=await Promise.all([
+      fetch(proxy+encodeURIComponent(S1)).then(r=>r.ok?r.text():Promise.reject("Sheet1: "+r.status)),
+      fetch(proxy+encodeURIComponent(S2)).then(r=>r.ok?r.text():Promise.reject("Sheet2: "+r.status))
     ]);
-    O=mapOrders(parseCSV(r1));
-    F=mapFinancials(parseCSV(r2));
-    const updEl=document.getElementById('upd');if(updEl)updEl.textContent='Ενημέρωση: '+new Date().toLocaleString('el-GR');
-    // Re-render active page
-    const active=document.querySelector('.page.active');
-    const pgId=active?.id?.replace('pg-','');
-    if(pgId&&renders[pgId])renders[pgId]();
+    const newO=mapOrders(parseCSV(r1));
+    const newF=mapFinancials(parseCSV(r2));
+    if(newO.length>0){O=newO;F=newF;lastUpdate="Live: "+new Date().toLocaleString("el-GR");}
+    else{lastUpdate="Live κενό — χρήση embedded: 14/05/2026";}
   }catch(e){
-    showError(e.toString());
+    console.warn("Live fetch failed, using embedded data:",e);
+    lastUpdate="Embedded: 14/05/2026 (live fetch απέτυχε)";
   }finally{
+    if(updEl)updEl.textContent=lastUpdate;
     isLoading=false;
+    // Re-render active page
+    const active=document.querySelector(".page.active");
+    const pgId=active?.id?.replace("pg-","");
+    if(pgId&&renders[pgId])renders[pgId]();
   }
 }
-
-// Auto-refresh every 5 minutes
-setInterval(loadData, 5*60*1000);
+setInterval(loadData,5*60*1000);
 
 const TITLES={overview:"Επισκόπηση",orders:"Παραγγελίες",production:"Παραγωγή",placements:"Τοποθετήσεις",works:"Έργα",financials:"Οικονομικά",problems:"Προβλήματα",crews:"Συνεργεία",reports:"Αναφορές",settings:"Ρυθμίσεις"};
 
@@ -1066,6 +1055,8 @@ function renderSettings(){
 
 const renders={overview:renderOverview,orders:renderOrders,production:renderProduction,placements:renderPlacements,works:renderWorks,financials:renderFinancials,problems:renderProblems,crews:renderCrews,reports:renderReports,settings:renderSettings};
 document.addEventListener("DOMContentLoaded", function(){
+  // Show embedded data immediately, then try live
+  renderOverview();
   loadData();
 });
 
