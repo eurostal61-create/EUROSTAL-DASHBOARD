@@ -1058,9 +1058,8 @@ const renders={overview:renderOverview,orders:renderOrders,production:renderProd
 document.addEventListener("DOMContentLoaded", function(){
   loadData();
 });
-</script>
-</body>
-</htmlfunction mapFinancials(rows){
+
+function mapFinancials(rows){
   return rows.map(r=>{
     // Support protoproduction Σύντομη_προσφορά column names
     const disc = parseFloat(String(r['Έκπτωση1 %']||r['Έκπτωση_%']||r['discount']||'0').replace('%',''))||0;
@@ -1080,4 +1079,7 @@ document.addEventListener("DOMContentLoaded", function(){
       date_update: String(r['Ημερομηνία ενημέρωσης']||r['Ημ_Ενημέρωσης']||'').substring(0,10),
     };
   }).filter(r=>r.client&&r.client!=='nan'&&val!==0||r.value>0);
-}>
+}
+</script>
+</body>
+</html>
