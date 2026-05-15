@@ -328,30 +328,33 @@ function mapFinancials(rows){
 
 let isLoading=false;
 async function loadData(){
-  if(isLoading)return;isLoading=true;
+  // Primary: use embedded data immediately
+  O=[...EMBEDDED_O];
+  F=[...EMBEDDED_F];
   const updEl=document.getElementById("upd");
-  if(updEl)updEl.textContent="Φόρτωση live δεδομένων...";
+  if(updEl)updEl.textContent="Δεδομένα: 15/05/2026";
+  // Try live fetch in background (silent - won't overwrite if fails)
   try{
     const proxy="https://corsproxy.io/?";
     const [r1,r2]=await Promise.all([
-      fetch(proxy+encodeURIComponent(S1)).then(r=>r.ok?r.text():Promise.reject("Sheet1: "+r.status)),
-      fetch(proxy+encodeURIComponent(S2)).then(r=>r.ok?r.text():Promise.reject("Sheet2: "+r.status))
+      fetch(proxy+encodeURIComponent(S1),{signal:AbortSignal.timeout(8000)}).then(r=>r.ok?r.text():null),
+      fetch(proxy+encodeURIComponent(S2),{signal:AbortSignal.timeout(8000)}).then(r=>r.ok?r.text():null)
     ]);
-    const newO=mapOrders(parseCSV(r1));
-    const newF=mapFinancials(parseCSV(r2));
-    if(newO.length>0){O=newO;F=newF;lastUpdate="Live: "+new Date().toLocaleString("el-GR");}
-    else{lastUpdate="Live κενό — χρήση embedded: 14/05/2026";}
+    if(r1&&r2){
+      const newO=mapOrders(parseCSV(r1));
+      const newF=mapFinancials(parseCSV(r2));
+      if(newO.length>=EMBEDDED_O.length){
+        O=newO; F=newF;
+        if(updEl)updEl.textContent="Live: "+new Date().toLocaleString("el-GR");
+      }
+    }
   }catch(e){
-    console.warn("Live fetch failed, using embedded data:",e);
-    lastUpdate="Embedded: 14/05/2026 (live fetch απέτυχε)";
-  }finally{
-    if(updEl)updEl.textContent=lastUpdate;
-    isLoading=false;
-    // Re-render active page
-    const active=document.querySelector(".page.active");
-    const pgId=active?.id?.replace("pg-","");
-    if(pgId&&renders[pgId])renders[pgId]();
+    // Silent fail - keep embedded data
   }
+  // Render active page
+  const active=document.querySelector(".page.active");
+  const pgId=active?.id?.replace("pg-","");
+  if(pgId&&renders[pgId])renders[pgId]();
 }
 setInterval(loadData,5*60*1000);
 
