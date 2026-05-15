@@ -179,7 +179,7 @@ body{font-family:"IBM Plex Sans",sans-serif;background:var(--bg);color:var(--tx)
     </div>
     <div class="page" id="pg-reports">
       <div class="stat-grid" id="rep-stats"></div>
-      <div class="g2" id="rep-charts"></div>
+      <div id="rep-charts"></div>
     </div>
     <div class="page" id="pg-settings">
       <div class="panel">
@@ -411,33 +411,76 @@ function renderProduction(){
 function renderPlacements(){
   const placed=O.filter(o=>o.topo).sort((a,b)=>pgd(a.topo)-pgd(b.topo));
   document.getElementById("pl-cnt").textContent=`${placed.length} τοποθετήσεις`;
-  // Mini calendar
-  const dm={};placed.forEach(j=>{const k=j.topo.split("/").reverse().join("-");if(!dm[k])dm[k]=[];dm[k].push(j)});
+
+  // Build day map: key = YYYY-MM-DD
+  const dm={};
+  placed.forEach(j=>{
+    const parts=j.topo.split("/");
+    if(parts.length===3){
+      const k=`${parts[2]}-${parts[1].padStart(2,"0")}-${parts[0].padStart(2,"0")}`;
+      if(!dm[k])dm[k]=[];dm[k].push(j);
+    }
+  });
+
   function dsL(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
   const GRM=["ΙΑΝ","ΦΕΒ","ΜΑΡ","ΑΠΡ","ΜΑΪΟΣ","ΙΟΥΝΙΟΣ","ΙΟΥΛΙΟΣ","ΑΥΓ","ΣΕΠ","ΟΚΤ","ΝΟΕ","ΔΕΚ"];
-  const TODAY=new Date("2026-05-12");
+  const DNAMES=["ΔΕΥ","ΤΡΙ","ΤΕΤ","ΠΕΜ","ΠΑΡ","ΣΑΒ"];
+  const TODAY=new Date();
   let ch="";
+
   [{y:2026,m:4},{y:2026,m:5},{y:2026,m:6}].forEach(({y,m})=>{
-    ch+=`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--bd)">${GRM[m]} ${y}</div>`;
+    // Month title
+    ch+=`<div style="margin-bottom:14px">`;
+    ch+=`<div style="font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--bd)">${GRM[m]} ${y}</div>`;
+
+    // Day headers (Mon-Sat, 6 cols)
+    ch+=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:3px">`;
+    DNAMES.forEach((d,i)=>ch+=`<div style="font-size:10px;font-weight:500;color:var(--t2);text-align:center;padding:2px 0;${i===5?"opacity:.6":""}">${d}</div>`);
+    ch+=`</div>`;
+
+    // Days grid (Mon=col1 ... Sat=col6, skip Sun)
     ch+=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px">`;
-    const first=new Date(y,m,1);const dow=first.getDay();const back=dow===0?6:dow-1;
-    const days=new Date(y,m+1,0).getDate();
-    for(let i=0;i<back;i++)ch+=`<div style="min-height:50px"></div>`;
-    for(let d=1;d<=days;d++){
-      const cur=new Date(y,m,d);if(cur.getDay()===0){ch+=`<div style="min-height:50px;opacity:.15;border-radius:4px;background:var(--s3);display:grid;place-items:center;font-size:9px;color:var(--t3)">Κυρ</div>`;continue}
-      const k=dsL(cur);const ent=dm[k]||[];const isSat=cur.getDay()===6;
-      const hasCrew=ent.some(e=>e.crew);const isPast=cur<TODAY;
-      const bg=ent.length?(hasCrew?"rgba(63,185,80,.12)":"rgba(210,153,34,.12)"):"var(--s3)";
-      const br=ent.length?(hasCrew?"#3fb950":"#d29922"):"var(--bd)";
-      ch+=`<div style="min-height:50px;border-radius:4px;padding:3px 4px;background:${bg};border:0.5px solid ${br};border-style:${isSat?"dashed":"solid"};opacity:${isPast?.35:1}">`;
-      ch+=`<div style="font-size:9px;font-weight:600;color:var(--t2);margin-bottom:2px">${d}</div>`;
-      ent.slice(0,2).forEach(e=>{ch+=`<div style="font-size:8px;color:var(--tx);line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.client.substring(0,11)}</div>`});
+
+    const firstDay=new Date(y,m,1);
+    const firstJsDay=firstDay.getDay(); // 0=Sun,1=Mon,...,6=Sat
+    // Col index: Mon=0,Tue=1,...,Sat=5  (Sun=-1, skip)
+    const firstCol=firstJsDay===0?6:firstJsDay-1; // Mon-based: Mon=0..Sat=5, Sun→skip entire row start
+
+    // Add empty cells before first day
+    for(let i=0;i<firstCol;i++)ch+=`<div style="min-height:56px"></div>`;
+
+    const daysInMonth=new Date(y,m+1,0).getDate();
+    for(let day=1;day<=daysInMonth;day++){
+      const cur=new Date(y,m,day);
+      const jd=cur.getDay();
+      if(jd===0) continue; // skip Sunday entirely
+
+      const k=dsL(cur);
+      const ent=dm[k]||[];
+      const isSat=jd===6;
+      const isPast=cur<TODAY;
+      const hasCrew=ent.some(e=>e.crew);
+
+      const bg=ent.length?(hasCrew?"rgba(63,185,80,.13)":"rgba(210,153,34,.13)"):"var(--s3)";
+      const brd=ent.length?(hasCrew?"#3fb950":"#d29922"):"var(--bd)";
+
+      ch+=`<div style="min-height:56px;border-radius:5px;padding:4px 5px;background:${bg};border:0.5px ${isSat?"dashed":"solid"} ${brd};opacity:${isPast?.35:1}">`;
+      ch+=`<div style="font-size:10px;font-weight:600;color:var(--t2);margin-bottom:3px">${day}${isSat?` <span style="font-size:8px;opacity:.5">ΣΑΒ</span>`:""}</div>`;
+      ent.slice(0,2).forEach(e=>{
+        const crew=e.crew?e.crew.split("+")[0]:"";
+        const crewColor={"Kariki":"#388bfd","Rildo":"#a371f7","Ermal":"#ec4899","Χάρης":"#d29922"}[crew]||"var(--tx)";
+        ch+=`<div style="font-size:8px;color:var(--tx);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.client.substring(0,12)}</div>`;
+        if(crew)ch+=`<div style="font-size:7px;color:${crewColor};font-weight:600">${crew}</div>`;
+      });
       if(ent.length>2)ch+=`<div style="font-size:8px;color:var(--t3)">+${ent.length-2}</div>`;
       ch+=`</div>`;
+
+      // After Saturday, nothing to do - Sunday skipped, next Mon continues naturally
     }
     ch+=`</div></div>`;
   });
-  document.getElementById("cal-wrap").innerHTML=`<div class="panel"><div class="ph"><div class="pt">Ημερολόγιο Μάιος–Ιούλιος 2026</div><div class="ps">🟢 με συνεργείο · 🟡 χωρίς</div></div><div class="pb">${ch}</div></div>`;
+
+  document.getElementById("cal-wrap").innerHTML=`<div class="panel"><div class="ph"><div class="pt">Ημερολόγιο Μάιος–Ιούλιος 2026</div><div class="ps">🟢 με συνεργείο &nbsp;·&nbsp; 🟡 χωρίς συνεργείο</div></div><div class="pb" style="padding:16px">${ch}</div></div>`;
   document.getElementById("pl-body").innerHTML=placed.map(o=>{
     const fn=flN(o.floor);const hasL=fn>=1&&fn<=30;
     return`<tr>
@@ -513,25 +556,380 @@ function renderCrews(){
 
 // REPORTS
 function renderReports(){
-  const placed=O.filter(o=>o.topo),tK=O.reduce((s,o)=>s+(o.kouw||0),0),tR=O.reduce((s,o)=>s+(o.rola||0),0);
-  const avgD=placed.filter(o=>o.days>0).reduce((s,o)=>s+o.days,0)/Math.max(placed.filter(o=>o.days>0).length,1);
-  const withL=placed.filter(o=>{const n=flN(o.floor);return n>=1&&n<=30});
+  const TODAY=new Date();
+  const placed=O.filter(o=>o.topo);
+  const tK=O.reduce((s,o)=>s+(o.kouw||0),0);
+  const tR=O.reduce((s,o)=>s+(o.rola||0),0);
+  const repairs=O.filter(o=>o.repair&&o.repair.trim());
+  const withCrew=placed.filter(o=>o.crew);
+  const withFloor=placed.filter(o=>{const n=flN(o.floor);return n>=1&&n<=30});
+
+  // ── Helper: days between two DD/MM/YYYY dates ──
+  function daysBetween(d1str,d2str){
+    const p1=d1str.split("/"),p2=d2str.split("/");
+    if(p1.length!==3||p2.length!==3)return null;
+    const d1=new Date(p1[2],p1[1]-1,p1[0]),d2=new Date(p2[2],p2[1]-1,p2[0]);
+    return Math.round((d2-d1)/(1000*60*60*24));
+  }
+  function daysSince(dstr){
+    const p=dstr.split("/");if(p.length!==3)return null;
+    return Math.round((TODAY-new Date(p[2],p[1]-1,p[0]))/(1000*60*60*24));
+  }
+  function monthKey(dstr){
+    const p=dstr.split("/");if(p.length!==3)return null;
+    return `${p[2]}-${p[1].padStart(2,"0")}`;
+  }
+
+  // ── REPORT DATA ──
+
+  // #1 Μηνιαία παραγωγή
+  const byMonth={};
+  O.forEach(o=>{
+    const mk=monthKey(o.order_date||o.europa||"");
+    if(mk){if(!byMonth[mk])byMonth[mk]={cnt:0,kouw:0};byMonth[mk].cnt++;byMonth[mk].kouw+=(o.kouw||0);}
+  });
+  const monthKeys=Object.keys(byMonth).sort();
+
+  // #3 Κατανομή ανά περιοχή
+  const areas={};
+  O.filter(o=>o.area).forEach(o=>{areas[o.area]=(areas[o.area]||0)+1});
+  const topAreas=Object.entries(areas).sort((a,b)=>b[1]-a[1]);
+  const maxA=topAreas[0]?.[1]||1;
+
+  // #4 Seasonality - by month of topo
+  const seasonal={};
+  placed.forEach(o=>{
+    const mk=monthKey(o.topo);
+    if(mk){if(!seasonal[mk])seasonal[mk]=0;seasonal[mk]++;}
+  });
+  const seasonKeys=Object.keys(seasonal).sort();
+  const maxSea=Math.max(...Object.values(seasonal),1);
+
+  // #5 Επιστρέφοντες πελάτες
+  const clientCount={};
+  O.forEach(o=>{clientCount[o.client]=(clientCount[o.client]||0)+1});
+  const returning=Object.entries(clientCount).filter(([,c])=>c>1).sort((a,b)=>b[1]-a[1]);
+
+  // #8 Κουφώματα ανά τύπο
+  const typeKouw={"Αλουμίνια":0,"Μεταλλικές":0,"Ψευτόκασες":0,"Άλλο":0};
+  O.forEach(o=>{
+    const ph=o.phase||"";
+    if(ph.includes("Μεταλλ"))typeKouw["Μεταλλικές"]+=(o.kouw||0);
+    else if(ph.includes("Ψευτόκ")||ph.includes("ψευτόκ"))typeKouw["Ψευτόκασες"]+=(o.kouw||0);
+    else if(ph!=="Take Away")typeKouw["Αλουμίνια"]+=(o.kouw||0);
+    else typeKouw["Άλλο"]+=(o.kouw||0);
+  });
+
+  // #9 Ρολά vs Κουφώματα
+  const totKouw=O.reduce((s,o)=>s+(o.kouw||0),0);
+  const totRola=O.reduce((s,o)=>s+(o.rola||0),0);
+  const totItems=totKouw+totRola||1;
+
+  // #10 Χρόνος παραγγελίας → τοποθέτηση
+  const leadTimes=O.filter(o=>o.topo&&o.europa).map(o=>{
+    const d=daysBetween(o.europa,o.topo);return d!==null&&d>0?d:null;
+  }).filter(d=>d!==null);
+  const avgLead=leadTimes.length?Math.round(leadTimes.reduce((s,d)=>s+d,0)/leadTimes.length):null;
+  const minLead=leadTimes.length?Math.min(...leadTimes):null;
+  const maxLead=leadTimes.length?Math.max(...leadTimes):null;
+
+  // #11 Απόδοση ανά συνεργείο
+  const crewPerf={};
+  withCrew.forEach(o=>{
+    const m=o.crew.split("+")[0].trim();
+    if(!crewPerf[m])crewPerf[m]={kouw:0,days:0,jobs:0};
+    crewPerf[m].kouw+=(o.kouw||0);
+    crewPerf[m].days+=(o.days||1);
+    crewPerf[m].jobs++;
+  });
+  const crewPerfList=Object.entries(crewPerf).map(([n,d])=>({n,kouw:d.kouw,days:d.days,jobs:d.jobs,kpd:d.days>0?Math.round(d.kouw/d.days*10)/10:0})).sort((a,b)=>b.kpd-a.kpd);
+
+  // #12 Aging εκκρεμών
+  const pending=O.filter(o=>o.status==="Εκκρεμεί Πληροφορία"||o.phase==="Δεν Έχουμε Μέτρα"||o.phase==="Μερικώς Παραδομένα");
+  const aging=pending.map(o=>{
+    const days=o.europa?daysSince(o.europa):null;
+    return{...o,ageDays:days};
+  }).sort((a,b)=>(b.ageDays||0)-(a.ageDays||0));
+
+  // #14 Pipeline αξία
+  const pipeline=O.filter(o=>o.status!=="Take Away");
+  const pipeVal=pipeline.reduce((s,o)=>s+(parseFloat(o.value)||0),0);
+  const schedVal=O.filter(o=>o.status==="Προγραμματισμένο").reduce((s,o)=>s+(parseFloat(o.value)||0),0);
+  const waitVal=O.filter(o=>o.status==="Σε Αναμονή").reduce((s,o)=>s+(parseFloat(o.value)||0),0);
+
+  // ── RENDER ──
+  function noData(msg=""){return`<div style="text-align:center;padding:20px;color:var(--t2);font-size:12px">⏳ Αναμένονται δεδομένα${msg?": <strong>"+msg+"</strong>":""}</div>`;}
+  function bar(pct,color="var(--a2)",h=6){return`<div style="background:var(--s3);border-radius:3px;height:${h}px;overflow:hidden"><div style="width:${Math.min(pct,100)}%;height:100%;background:${color};border-radius:3px"></div></div>`;}
+
   document.getElementById("rep-stats").innerHTML=`
     <div class="stat"><div class="stat-val">${tK}</div><div class="stat-lbl">Σύνολο Κουφωμάτων</div></div>
     <div class="stat"><div class="stat-val">${tR}</div><div class="stat-lbl">Σύνολο Ρολών</div></div>
-    <div class="stat"><div class="stat-val">${Math.round(avgD*10)/10}</div><div class="stat-lbl">Μέσες Ημ./Τοποθέτηση</div></div>
-    <div class="stat"><div class="stat-val">${O.filter(o=>o.repair).length}</div><div class="stat-lbl">Επισκευές</div></div>
-    <div class="stat"><div class="stat-val">${withL.length}</div><div class="stat-lbl">Τοποθ. με Ανυψωτικό</div></div>
-    <div class="stat"><div class="stat-val">€${withL.length*140}</div><div class="stat-lbl">Κόστος Ανυψωτικών</div></div>`;
-  const areas={};O.filter(o=>o.area).forEach(o=>{areas[o.area]=(areas[o.area]||0)+1});
-  const topA=Object.entries(areas).sort((a,b)=>b[1]-a[1]).slice(0,8),maxA=topA[0]?.[1]||1;
-  const phases={};O.forEach(o=>{phases[o.phase]=(phases[o.phase]||0)+1});
+    <div class="stat"><div class="stat-val">${avgLead!==null?avgLead+"":"—"}<span style="font-size:14px"> μέρες</span></div><div class="stat-lbl">Μέσος Χρόνος Europa→Τοποθ.</div></div>
+    <div class="stat"><div class="stat-val">${repairs.length}</div><div class="stat-lbl">Επισκευές</div></div>
+    <div class="stat"><div class="stat-val">${withFloor.length}</div><div class="stat-lbl">Τοποθ. με Ανυψωτικό</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--gn)">€${Math.round(pipeVal/1000)}K</div><div class="stat-lbl">Pipeline Αξία</div></div>`;
+
   document.getElementById("rep-charts").innerHTML=`
-    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Κατανομή ανά Περιοχή</div></div><div class="pb" style="padding:8px 16px">${topA.map(([a,cnt])=>`<div class="cr"><div class="crn">${a}</div><div class="cb"><div class="cbf" style="width:${Math.round(cnt/maxA*100)}%;background:var(--a2)"></div></div><div class="cv">${cnt} παρ.</div></div>`).join("")}</div></div>
-    <div class="panel" style="margin-bottom:0"><div class="ph"><div class="pt">Αναφορές που θα προστεθούν</div></div><div class="pb" style="font-size:13px;color:var(--t2);line-height:2.2">✅ Κατανομή ανά περιοχή<br>✅ Κόστος ανυψωτικών<br>✅ Μέσες ημέρες τοποθέτησης<br>⏳ Μηνιαία παραγωγή<br>⏳ Europa accuracy<br>⏳ Seasonality<br>⏳ Επιστρέφοντες πελάτες<br>⏳ Χάρτης Αττικής (Phase 2)</div></div>`;
+
+    <!-- ROW 1 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- #3 Κατανομή περιοχών -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#3 Κατανομή ανά Περιοχή</div><div class="ps">${topAreas.length} περιοχές</div></div>
+        <div class="pb" style="padding:8px 16px">
+          ${topAreas.length?topAreas.map(([a,cnt])=>`
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--bd)">
+              <div style="flex:1;font-size:12px">${a}</div>
+              <div style="width:120px">${bar(cnt/maxA*100)}</div>
+              <div style="font-size:11px;color:var(--t2);width:40px;text-align:right">${cnt}</div>
+            </div>`).join(""):noData("στήλη Περιοχή")}
+        </div>
+      </div>
+
+      <!-- #14 Pipeline αξία -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#14 Αξία Pipeline</div><div class="ps">Αναμενόμενα έσοδα</div></div>
+        <div class="pb">
+          ${[
+            ["Προγραμματισμένο","#3fb950",schedVal],
+            ["Σε Αναμονή","#d29922",waitVal],
+            ["Εκκρεμεί Πληροφορία","#f85149",O.filter(o=>o.status==="Εκκρεμεί Πληροφορία").reduce((s,o)=>s+(parseFloat(o.value)||0),0)],
+          ].map(([lbl,col,val])=>`
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--bd)">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:10px;height:10px;border-radius:2px;background:${col}"></div>
+                <span style="font-size:12px">${lbl}</span>
+              </div>
+              <span style="font-family:monospace;font-weight:600;color:${col}">€${Math.round(val).toLocaleString("el-GR")}</span>
+            </div>`).join("")}
+          <div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:600">
+            <span>Σύνολο Pipeline</span>
+            <span style="font-family:monospace;color:var(--gn)">€${Math.round(pipeVal).toLocaleString("el-GR")}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- #8 Κουφώματα ανά τύπο -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#8 Κουφώματα ανά Τύπο</div><div class="ps">${tK} σύνολο</div></div>
+        <div class="pb">
+          ${Object.entries(typeKouw).filter(([,v])=>v>0).map(([t,v])=>{
+            const pct=Math.round(v/tK*100)||0;
+            const col={"Αλουμίνια":"var(--a2)","Μεταλλικές":"var(--or)","Ψευτόκασες":"var(--pp)","Άλλο":"var(--t2)"}[t];
+            return`<div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px">
+                <span style="color:${col};font-weight:500">${t}</span>
+                <span style="color:var(--t2)">${v} (${pct}%)</span>
+              </div>
+              ${bar(pct,col,8)}
+            </div>`;}).join("")}
+        </div>
+      </div>
+
+      <!-- #9 Ρολά vs Κουφώματα -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#9 Ρολά vs Κουφώματα</div><div class="ps">${totItems} τεμάχια</div></div>
+        <div class="pb">
+          <div style="display:flex;gap:20px;align-items:center;justify-content:center;padding:10px 0">
+            <div style="text-align:center">
+              <div style="font-size:36px;font-weight:700;color:var(--a2)">${totKouw}</div>
+              <div style="font-size:12px;color:var(--t2)">Κουφώματα</div>
+              <div style="font-size:11px;color:var(--t3)">${Math.round(totKouw/totItems*100)}%</div>
+            </div>
+            <div style="font-size:24px;color:var(--b2)">vs</div>
+            <div style="text-align:center">
+              <div style="font-size:36px;font-weight:700;color:var(--pp)">${totRola}</div>
+              <div style="font-size:12px;color:var(--t2)">Ρολά</div>
+              <div style="font-size:11px;color:var(--t3)">${Math.round(totRola/totItems*100)}%</div>
+            </div>
+          </div>
+          <div style="display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:8px">
+            <div style="width:${Math.round(totKouw/totItems*100)}%;background:var(--a2)"></div>
+            <div style="flex:1;background:var(--pp)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 3 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- #10 Χρόνος Europa→Τοποθέτηση -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#10 Χρόνος Europa → Τοποθέτηση</div><div class="ps">${leadTimes.length} παραγγελίες</div></div>
+        <div class="pb">
+          ${leadTimes.length?`
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center;margin-bottom:12px">
+              <div style="background:var(--s3);border-radius:6px;padding:10px">
+                <div style="font-size:22px;font-weight:700;color:var(--gn)">${minLead}</div>
+                <div style="font-size:11px;color:var(--t2)">Ελάχιστο</div>
+              </div>
+              <div style="background:var(--s3);border-radius:6px;padding:10px">
+                <div style="font-size:22px;font-weight:700;color:var(--a2)">${avgLead}</div>
+                <div style="font-size:11px;color:var(--t2)">Μέσο</div>
+              </div>
+              <div style="background:var(--s3);border-radius:6px;padding:10px">
+                <div style="font-size:22px;font-weight:700;color:var(--or)">${maxLead}</div>
+                <div style="font-size:11px;color:var(--t2)">Μέγιστο</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--t2)">Ημέρες από Europa παράδοση έως τοποθέτηση</div>
+          `:noData("Ημ_Τοποθέτησης + Πιθ_Παράδοση_Europa")}
+        </div>
+      </div>
+
+      <!-- #11 Απόδοση ανά συνεργείο -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#11 Απόδοση Συνεργείου</div><div class="ps">Κουφώματα/μέρα</div></div>
+        <div class="pb" style="padding:8px 16px">
+          ${crewPerfList.length?`<table class="mt"><tr><th>Μάστορας</th><th>Δουλειές</th><th>Κουφ.</th><th>Ημέρες</th><th>Κουφ./Μέρα</th></tr>
+          ${crewPerfList.map(c=>`<tr>
+            <td style="font-weight:500">${c.n}</td>
+            <td style="text-align:center">${c.jobs}</td>
+            <td style="text-align:center">${c.kouw}</td>
+            <td style="text-align:center">${c.days}</td>
+            <td><span style="font-weight:600;color:${c.kpd>=5?"var(--gn)":c.kpd>=3?"var(--or)":"var(--rd)"}">${c.kpd}</span></td>
+          </tr>`).join("")}</table>`:noData("στήλη Συνεργείο")}
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 4 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- #12 Aging εκκρεμών -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#12 Aging Εκκρεμών</div><div class="ps">${aging.length} παραγγελίες</div></div>
+        <div class="pb" style="padding:8px 16px">
+          ${aging.length?`<table class="mt"><tr><th>Πελάτης</th><th>Φάση</th><th>Ημέρες</th><th>Κατηγορία</th></tr>
+          ${aging.map(o=>{
+            const d=o.ageDays||0;
+            const col=d>90?"var(--rd)":d>60?"var(--or)":"var(--t2)";
+            const cat=d>90?"Κρίσιμο":d>60?"Σοβαρό":"Φυσιολογικό";
+            return`<tr>
+              <td>${o.client.substring(0,18)}</td>
+              <td>${pb(o.phase)}</td>
+              <td style="font-weight:600;color:${col}">${d>0?d+" μ.":"—"}</td>
+              <td><span style="font-size:10px;color:${col}">${cat}</span></td>
+            </tr>`;}).join("")}</table>`:noData()}
+        </div>
+      </div>
+
+      <!-- #5 Επιστρέφοντες πελάτες -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#5 Επιστρέφοντες Πελάτες</div><div class="ps">${returning.length} πελάτες</div></div>
+        <div class="pb" style="padding:8px 16px">
+          ${returning.length?`<table class="mt"><tr><th>Πελάτης</th><th>Παραγγελίες</th></tr>
+          ${returning.map(([n,c])=>`<tr>
+            <td>${n.substring(0,25)}</td>
+            <td style="text-align:center"><span style="font-weight:600;color:var(--gn)">${c}</span></td>
+          </tr>`).join("")}</table>
+          <div style="margin-top:8px;font-size:11px;color:var(--t2)">Από ${Object.keys(clientCount).length} συνολικά πελάτες — ${Math.round(returning.length/Object.keys(clientCount).length*100)}% επιστρέφουν</div>
+          `:noData("περισσότερα ιστορικά δεδομένα")}
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 5 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- #4 Seasonality -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#4 Seasonality Τοποθετήσεων</div><div class="ps">ανά μήνα</div></div>
+        <div class="pb">
+          ${seasonKeys.length?seasonKeys.map(mk=>{
+            const cnt=seasonal[mk];
+            const [y,m]=mk.split("-");
+            const mname=["ΙΑΝ","ΦΕΒ","ΜΑΡ","ΑΠΡ","ΜΑΙ","ΙΟΥΝ","ΙΟΥΛ","ΑΥΓ","ΣΕΠ","ΟΚΤ","ΝΟΕ","ΔΕΚ"][parseInt(m)-1];
+            return`<div style="display:flex;align-items:center;gap:8px;padding:5px 0">
+              <div style="width:55px;font-size:11px;color:var(--t2)">${mname} ${y}</div>
+              <div style="flex:1">${bar(cnt/maxSea*100,"var(--tl)",8)}</div>
+              <div style="font-size:12px;font-weight:600;width:20px;text-align:right">${cnt}</div>
+            </div>`;}).join(""):noData("Ημ_Τοποθέτησης")}
+        </div>
+      </div>
+
+      <!-- #13 Επισκευές ανά τύπο -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#13 Ποσοστό Επισκευών</div><div class="ps">ανά τύπο έργου</div></div>
+        <div class="pb">
+          ${repairs.length?`
+            <div style="text-align:center;margin-bottom:12px">
+              <div style="font-size:36px;font-weight:700;color:${repairs.length/Math.max(placed.length,1)>0.1?"var(--rd)":"var(--gn)"}">${Math.round(repairs.length/Math.max(placed.length,1)*100)}%</div>
+              <div style="font-size:12px;color:var(--t2)">${repairs.length} επισκευές από ${placed.length} τοποθετήσεις</div>
+            </div>
+            <table class="mt"><tr><th>Πελάτης</th><th>Φάση</th></tr>
+            ${repairs.map(o=>`<tr><td>${o.client.substring(0,22)}</td><td>${pb(o.phase)}</td></tr>`).join("")}
+            </table>
+          `:noData("στήλη Επισκευή (✓)")}
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 6 - needs more data -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- #1 Μηνιαία παραγωγή -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#1 Μηνιαία Παραγωγή</div></div>
+        <div class="pb">
+          ${monthKeys.length?monthKeys.map(mk=>{
+            const d=byMonth[mk];
+            const [y,m]=mk.split("-");
+            const mname=["ΙΑΝ","ΦΕΒ","ΜΑΡ","ΑΠΡ","ΜΑΙ","ΙΟΥΝ","ΙΟΥΛ","ΑΥΓ","ΣΕΠ","ΟΚΤ","ΝΟΕ","ΔΕΚ"][parseInt(m)-1];
+            return`<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:0.5px solid var(--bd)">
+              <span style="color:var(--t2)">${mname} ${y}</span>
+              <span>${d.cnt} παρ.</span>
+              <span style="color:var(--tl)">${d.kouw} κουφ.</span>
+            </div>`;}).join(""):noData("Ημ_Παραγγελίας")}
+        </div>
+      </div>
+
+      <!-- #2 & #6 Europa Performance -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#2 & #6 Europa Performance</div></div>
+        <div class="pb">
+          ${noData("Ημ_Πραγματικής_Παράδοσης_Europa")}
+          <div style="font-size:11px;color:var(--t2);padding:8px;background:var(--s3);border-radius:6px;line-height:1.6">
+            Προσθήκη στο Sheet:<br>
+            <span style="color:var(--a2);font-weight:500">Ημ_Πραγματικής_Παράδοσης_Europa</span><br>
+            Καταγράφεις πότε ήρθαν τα υλικά
+          </div>
+        </div>
+      </div>
+
+      <!-- #7 Μέση αξία/μήνα -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="ph"><div class="pt">#7 Μέση Αξία/Μήνα</div></div>
+        <div class="pb">
+          ${noData("Ημ_Παραγγελίας + Αξία_Σύμβασης")}
+          <div style="font-size:11px;color:var(--t2);padding:8px;background:var(--s3);border-radius:6px;line-height:1.6">
+            Θα εμφανιστεί μόλις οι παραγγελίες έχουν ημερομηνία καταχώρησης
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSING DATA SUMMARY -->
+    <div class="panel">
+      <div class="ph"><div class="pt">📋 Στήλες που λείπουν από το Sheet — Προτεραιότητα</div></div>
+      <div class="pb" style="padding:8px 16px">
+        <table class="mt">
+          <tr><th>#</th><th>Στήλη</th><th>Τι καταγράφεις</th><th>Αναφορές που ξεκλειδώνει</th><th>Προτεραιότητα</th></tr>
+          <tr><td>1</td><td style="color:var(--a2);font-weight:500">Συνεργείο</td><td>π.χ. Kariki+Sergio</td><td>#11 Απόδοση, Crews score, Εργατικά</td><td><span class="badge br">Άμεσα</span></td></tr>
+          <tr><td>2</td><td style="color:var(--a2);font-weight:500">Επισκευή</td><td>✓ ή κενό</td><td>#13 Ποσοστό επισκευών, Score</td><td><span class="badge br">Άμεσα</span></td></tr>
+          <tr><td>3</td><td style="color:var(--a2);font-weight:500">Ημ_Ολοκλήρωσης</td><td>Πότε τελείωσε τοποθέτηση</td><td>#2 Europa accuracy, #10 Lead time</td><td><span class="badge bo">Σύντομα</span></td></tr>
+          <tr><td>4</td><td style="color:var(--a2);font-weight:500">Ημ_Πραγματικής_Παράδοσης_Europa</td><td>Πότε ήρθαν τα υλικά</td><td>#2 & #6 Europa performance</td><td><span class="badge bo">Σύντομα</span></td></tr>
+        </table>
+      </div>
+    </div>`;
 }
 
-// SETTINGS
 function renderSettings(){
   document.getElementById("wage-body").innerHTML=Object.entries(W).map(([n,w])=>`<tr><td style="font-weight:500">${n}</td><td class="mono" style="color:var(--gn)">€${w}</td></tr>`).join("");
 }
