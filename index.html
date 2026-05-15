@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EUROSTAL</title>
+<title>EUROSTAL v2.1</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d1117;--sf:#161b22;--s3:#21262d;--bd:#30363d;--b2:#3d444d;--tx:#e6edf3;--t2:#8b949e;--t3:#6e7681;--ac:#1f6feb;--a2:#388bfd;--gn:#3fb950;--gb:#0d2818;--or:#d29922;--ob:#271d03;--rd:#f85149;--rb:#2d1117;--pp:#a371f7;--pb:#1e1040;--tl:#39c5cf}
@@ -240,7 +240,7 @@ function mapOrders(rows){
     if(!s||s==="nan"||s==="None")return "";
     if(s.includes(" - ")){
       const pts=s.split(" - ").map(p=>p.trim()).filter(p=>p&&p.length>1);
-      return pts.slice(0,2).map(normName).join("+");
+      return pts.map(normName).join("+");
     }
     if(s.includes("+"))return s.split("+").map(p=>normName(p.trim())).join("+");
     return normName(s);
